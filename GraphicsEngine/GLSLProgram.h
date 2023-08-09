@@ -14,6 +14,8 @@ public:
 
 	void linkShaders();
 
+	GLuint getUniformLocation(const string& uniformName);
+
 	void addAttribure(const string& attributeName);
 	void use();
 	void unuse();

@@ -5,6 +5,8 @@
 #include <glew.h>
 #include "Sprite.h"
 #include "GLSLProgram.h"
+#include "GLTexture.h"
+#include <vector>
 
 using namespace std;
 
@@ -25,12 +27,21 @@ private:
 	void HandleEvents();
 	void drawGame();
 
+	void calculateFPS();
+
 	SDL_Window* _window;
 	int _screenW;
 	int _screenH;
 	GameState _gameState;
 
-	Sprite _sprite; 
+	std::vector<Sprite*> _sprites; 
+
 	GLSLProgram _colorProgram;
+
+	float _time;
+
+	float _fps;
+	float _frameTime;
+	float max_FPS;
 };
 

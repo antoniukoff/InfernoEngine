@@ -8,4 +8,5 @@ void fatalError(std::string errorString) {
 	int tmp;
 	std::cin >> tmp;
 	SDL_Quit();
+	exit(69);
 }

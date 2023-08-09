@@ -14,13 +14,15 @@ GLSLProgram::~GLSLProgram()
 
 void GLSLProgram::compileShaders(const string& vertFile, const string& fragFile)
 {
+	_programID = glCreateProgram();
+
 	_vertexShaderID = glCreateShader(GL_VERTEX_SHADER);
 	if (_vertexShaderID == 0) {
-		fatalError("***vertex shader failed to ve created***");
+		fatalError("***vertex shader failed to be created***");
 	}
 	_fragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
 	if (_fragmentShaderID == 0) {
-		fatalError("***fragment shader failed to ve created***");
+		fatalError("***fragment shader failed to be created***");
 	}
 	compileShader(vertFile, _vertexShaderID);
 	compileShader(fragFile, _fragmentShaderID);
@@ -31,7 +33,7 @@ void GLSLProgram::linkShaders()
 	// Vertex and fragment shaders are successfully compiled.
 // Now time to link them together into a program.
 // Get a program object.
-	_programID = glCreateProgram();
+	
 
 	// Attach our shaders to our program
 	glAttachShader(_programID, _vertexShaderID);
@@ -73,9 +75,19 @@ void GLSLProgram::linkShaders()
 	glDeleteShader(_fragmentShaderID);
 }
 
+GLuint GLSLProgram::getUniformLocation(const string& uniformName)
+{
+	GLint location = glGetUniformLocation(_programID, uniformName.c_str());
+	if (location == GL_INVALID_INDEX) {
+		fatalError("Uniform " + uniformName + " not found in shader");
+	}
+	return location;
+}
+
 void GLSLProgram::addAttribure(const string& attributeName)
 {
 	glBindAttribLocation(_programID, _numAttributes++, attributeName.c_str());
+	
 
 }
 
@@ -103,7 +115,7 @@ void GLSLProgram::compileShader(const string& filePath, GLuint id)
 		fatalError("failed to open " + filePath);
 	}
 
-	string fileContents = "";
+	string fileContents = "";                                                                  
 	string line;
 	while (getline(vertexFile, line)) {
 		fileContents += line + "\n";
