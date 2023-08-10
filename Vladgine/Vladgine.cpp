@@ -1,9 +1,17 @@
-// Vladgine.cpp : Defines the functions for the static library.
-//
-
 #include "framework.h"
+#include "Vladgine.h"
+#include <SDL.h>
+#include <glew.h>
 
-// TODO: This is an example of a library function
-void fnVladgine()
-{
+namespace Vladgine {
+
+	int init()
+	{
+		SDL_Init(SDL_INIT_EVERYTHING);
+
+		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+
+		return 0;
+	}
+
 }

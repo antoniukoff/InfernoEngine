@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GraphicsEngine", "GraphicsEngine\GraphicsEngine.vcxproj", "{DC579688-E191-4FAA-AE8E-A066267C8AA2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9EB4E76C-DEC1-4749-8A10-A43FEDFD44C8} = {9EB4E76C-DEC1-4749-8A10-A43FEDFD44C8}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Vladgine", "Vladgine\Vladgine.vcxproj", "{9EB4E76C-DEC1-4749-8A10-A43FEDFD44C8}"
 EndProject

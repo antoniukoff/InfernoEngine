@@ -76,8 +76,8 @@
     <LibraryPath>$(SolutionDir)deps/SDL/lib/x64</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)deps\OpenGL\include;$(SolutionDir)deps\SDL\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)deps\OpenGL\lib;$(SolutionDir)deps\SDL\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir);$(SolutionDir)deps\OpenGL\include;$(SolutionDir)deps\SDL\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)deps\OpenGL\lib;$(SolutionDir)deps\SDL\lib;$(SolutionDir)Debug\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -89,7 +89,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32.lib;opengl32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32.lib;opengl32.lib;glew32s.lib;Vladgine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -138,29 +138,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Errors.cpp" />
-    <ClCompile Include="GLSLProgram.cpp" />
-    <ClCompile Include="IMGLoader.cpp" />
-    <ClCompile Include="IOManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainGame.cpp" />
-    <ClCompile Include="picoPNG.cpp" />
-    <ClCompile Include="ResourceManager.cpp" />
-    <ClCompile Include="Sprite.cpp" />
-    <ClCompile Include="TextureCache.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Errors.h" />
-    <ClInclude Include="GLSLProgram.h" />
-    <ClInclude Include="GLTexture.h" />
-    <ClInclude Include="IMGLoader.h" />
-    <ClInclude Include="IOManager.h" />
     <ClInclude Include="MainGame.h" />
-    <ClInclude Include="picoPNG.h" />
-    <ClInclude Include="ResourceManager.h" />
-    <ClInclude Include="Sprite.h" />
-    <ClInclude Include="TextureCache.h" />
-    <ClInclude Include="Vertex.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\defaultFrag.glsl" />
