@@ -9,6 +9,8 @@
 #include <Vladgine/Camera2D.h>
 #include <Vladgine/SpriteBatch.h>
 #include <Vladgine/ResourceManager.h>
+#include <Vladgine/InputManager.h>
+#include <Vladgine/Timing.h>
 
 using namespace std;
 
@@ -29,8 +31,6 @@ private:
 	void HandleEvents();
 	void drawGame();
 
-	void calculateFPS();
-
 	Vladgine::Window _window;
 	int _screenW;
 	int _screenH;
@@ -39,11 +39,12 @@ private:
 	Vladgine::GLSLProgram _colorProgram;
 	Vladgine::Camera2D camera;
 	Vladgine::SpriteBatch spriteBatch;
+	Vladgine::InputManager _inputManager;
+	Vladgine::FPSLimiter _fpsLimiter;
 
-	float _time;
-
-	float _fps;
-	float _frameTime;
 	float max_FPS;
+	float _time;
+	float _fps;
+	
 };
 

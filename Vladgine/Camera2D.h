@@ -14,6 +14,7 @@ namespace Vladgine {
 		void init(int screenW, int screenH);
 
 		void update();
+		glm::vec2 converScreenToWorld(glm::vec2 screenCoords);
 
 		//setters
 		void setPos(const glm::vec2& newPos) { _position = newPos; 	_needsMatrixUpdate = true; }

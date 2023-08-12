@@ -25,11 +25,13 @@ void MainGame::initSystems()
 	//Initialize SDL
 	Vladgine::init();
 
-	_window.create("Vladgine", _screenW, _screenH, Vladgine::BORDERLESS);
+	_window.create("Vladgine", _screenW, _screenH, 0);
 
 	initShaders();
 
 	spriteBatch.init();
+
+	_fpsLimiter.init(max_FPS);
 }
 
 void MainGame::initShaders()
@@ -45,40 +47,23 @@ void MainGame::Update()
 {
 	//game loop
 	while (_gameState != GameState::EXIT) {
-		//used for frame time measuring
-		float startTicks = SDL_GetTicks();
 
+		//used for frame time measuring
+		_fpsLimiter.begin();
 		HandleEvents();
 		_time += 0.01f;
 
 		//Updates the camera position and in case of the event(Moves everything in the opposite dir)
 		camera.update();
-
 		drawGame();
-		calculateFPS();
-
+		_fps = _fpsLimiter.calculate();
 
 		//print every 10 frames
 		static int frameCounter = 0;
 		frameCounter++;
-		if(frameCounter == 10){ 
+		if (frameCounter == 10) {
 			std::cout << _fps << std::endl;
 			frameCounter = 0;
-		}
-		
-		// limit fps to the max fps
-		
-		//if it takes less time to process the game loop we are going to delay the 
-		//frametime by the difference between the desired framerite and the current framerate
-		//When we call calculatefps() we update the currentTicks by calling sdl_getticks function
-		//the function does not stop calculating time even after we called sdl_delay and is
-		//resulting in a bigger time difference between the frames, which in turn going to calculate
-		//lower frame rate per 10 samples
-
-		float frameTicks = SDL_GetTicks() - startTicks;
-
-		if (1000.0f / max_FPS > frameTicks) {
-			SDL_Delay(1000.0f / max_FPS - frameTicks);
 		}
 	}
 }
@@ -86,7 +71,7 @@ void MainGame::Update()
 void MainGame::HandleEvents()
 {
 
-	const float CAMERA_SPEED = 20.0f;
+	const float CAMERA_SPEED = 10.0f;
 	const float SCALE_SPEED = 0.1f;
 
 	SDL_Event event;
@@ -95,32 +80,45 @@ void MainGame::HandleEvents()
 		case SDL_QUIT:
 			_gameState = GameState::EXIT;
 			break;
-		case SDL_MOUSEMOTION:
-		
-			break;
 		case SDL_KEYDOWN:
+			_inputManager.pressKey(event.key.keysym.sym);
+			break;
 			// updates private variables of the camera
-			switch (event.key.keysym.sym) {
-			case SDLK_w:
-				camera.setPos(camera.getPos() + glm::vec2(0.0, 1.0 * CAMERA_SPEED));
-				break;
-			case SDLK_s:
-				camera.setPos(camera.getPos() + glm::vec2(0.0, -1.0 * CAMERA_SPEED));
-				break;
-			case SDLK_d:
-				camera.setPos(camera.getPos() + glm::vec2(CAMERA_SPEED, 0.0));
-				break;
-			case SDLK_a:
-				camera.setPos(camera.getPos() + glm::vec2(-CAMERA_SPEED, 0.0));
-				break;
-			case SDLK_q:
-				camera.setScale(camera.getScale() + SCALE_SPEED);
-				break;
-			case SDLK_e:
-				camera.setScale(camera.getScale() - SCALE_SPEED);
-				break;
-			}
+		case SDL_KEYUP:
+			_inputManager.releaseKey(event.key.keysym.sym);
+			break;
+		case SDL_MOUSEBUTTONDOWN:
+			_inputManager.pressKey(event.button.button);
+			break;
+		case SDL_MOUSEBUTTONUP:
+			_inputManager.releaseKey(event.button.button);
+			break;
+		case SDL_MOUSEMOTION:
+			_inputManager.setMouseCoords(event.motion.x, event.motion.y);
 		}
+	}
+	if(_inputManager.isKeyPressed(SDLK_w)){
+		camera.setPos(camera.getPos() + glm::vec2(0.0, 1.0 * CAMERA_SPEED));
+	}
+	if (_inputManager.isKeyPressed(SDLK_s)) {
+		camera.setPos(camera.getPos() + glm::vec2(0.0, -1.0 * CAMERA_SPEED));
+	}
+	if (_inputManager.isKeyPressed(SDLK_d)) {
+		camera.setPos(camera.getPos() + glm::vec2(CAMERA_SPEED, 0.0));
+	}
+	if (_inputManager.isKeyPressed(SDLK_a)) {
+		camera.setPos(camera.getPos() + glm::vec2(-CAMERA_SPEED, 0.0));
+	}
+	if (_inputManager.isKeyPressed(SDLK_q)) {
+		camera.setScale(camera.getScale() + SCALE_SPEED);
+	}
+	if (_inputManager.isKeyPressed(SDLK_e)) {
+		camera.setScale(camera.getScale() - SCALE_SPEED);
+	}
+	if (_inputManager.isKeyPressed(SDL_BUTTON_LEFT)) {
+		glm::vec2 mouseCoords = _inputManager.getMouseCoords();
+		mouseCoords = camera.converScreenToWorld(mouseCoords);
+		std::cout << mouseCoords.x << "  " << mouseCoords.y << endl;
 	}
 }
 
@@ -142,9 +140,6 @@ void MainGame::drawGame()
 
 	
 	//set the camera matrix
-	GLuint timeLocation = _colorProgram.getUniformLocation("time");
-	glUniform1f(timeLocation, _time);
-	
 	// set the uniform variable to the updated camera matrix in the draw call.
 	GLint pLocation = _colorProgram.getUniformLocation("P");
 	glm::mat4 cameraMatrix = camera.getCameraMatrix();
@@ -154,17 +149,15 @@ void MainGame::drawGame()
 
 	glm::vec4 position(0, 0, 50, 50);
 	glm::vec4 uv(0.0f, 0.0f, 1.0f, 1.0f);
-	Vladgine::GLTexture texture = Vladgine::ResourceManager::getTexture("Textures/PNG/CharacterRight_Standing.png");
+	static Vladgine::GLTexture texture = Vladgine::ResourceManager::getTexture("Textures/PNG/CharacterRight_Standing.png");
 	Vladgine::Color color;
 	color.r = 255;
 	color.g = 255;
 	color.b = 255;
 	color.a = 255;
-
-
+	
 	spriteBatch.draw(position, uv, texture.id, 0.0f, color);
 
-	
 	spriteBatch.end();
 	spriteBatch.renderBatch();
 
@@ -177,53 +170,4 @@ void MainGame::drawGame()
 
 }
 
-void MainGame::calculateFPS()
-{
 
-	// initialize variables only once at the start of the program
-	static const int  NUM_SAMPLES = 10;
-	static float frameTimes[NUM_SAMPLES];
-	static int currentFrame = 0;
-
-	static float prevTicks = SDL_GetTicks();
-
-	// have to reset it every frame by using updated ticks
-	float currentTicks;
-	currentTicks = SDL_GetTicks();
-
-	//calculate frame time(how long it took to process all the game loop code from the previous code to the current code)
-	_frameTime = currentTicks - prevTicks;
-
-	// creating a circular buffer - updates frame time for each sample by calculating the modulo
-	frameTimes[currentFrame % NUM_SAMPLES] = _frameTime;
-
-	// set the prev ticks to current ticks to keep track of the prevTicks in the next frame(the next time the function is called)
-	prevTicks = currentTicks;
-	int count;
-	currentFrame++;
-
-	//if there are less then 10 samples in the buffer avarage the existing once, otherwise avarages 10 samles(if 20 frames has passed still 10 samples going to be avaraged)
-	if (currentFrame < NUM_SAMPLES) {
-		count = currentFrame;
-	}
-	else {
-		count = NUM_SAMPLES;
-	}
-	
-	//sum up all the existing frametimes of all samlples and divide by the count
-	float frameTimeAverage = 0;
-	for (int i = 0; i < count; i++) {
-		frameTimeAverage += frameTimes[i];
-	}
-	frameTimeAverage /= count;
-
-	// calculate the fps
-	if (frameTimeAverage > 0) {
-		_fps = 1000.0f / frameTimeAverage;
-	}
-	else {
-		_fps = 70.0f;
-	}
-
-	
-}
