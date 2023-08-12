@@ -4,7 +4,7 @@
 #include <Vladgine/Vladgine.h>
 
 
-MainGame::MainGame(): _screenW(1024), _screenH(768), _gameState(GameState::PLAY), _time(0.0f), max_FPS(60.0f)
+MainGame::MainGame() : _screenW(1024), _screenH(768), _gameState(GameState::PLAY), _time(0.0f), max_FPS(60.0f)
 {
 	camera.init(_screenW, _screenH);
 }
@@ -16,7 +16,7 @@ MainGame::~MainGame()
 void MainGame::run()
 {
 	initSystems();
-	
+
 	Update();
 }
 
@@ -61,7 +61,7 @@ void MainGame::Update()
 		//print every 10 frames
 		static int frameCounter = 0;
 		frameCounter++;
-		if (frameCounter == 10) {
+		if (frameCounter == 1000) {
 			std::cout << _fps << std::endl;
 			frameCounter = 0;
 		}
@@ -97,7 +97,7 @@ void MainGame::HandleEvents()
 			_inputManager.setMouseCoords(event.motion.x, event.motion.y);
 		}
 	}
-	if(_inputManager.isKeyPressed(SDLK_w)){
+	if (_inputManager.isKeyPressed(SDLK_w)) {
 		camera.setPos(camera.getPos() + glm::vec2(0.0, 1.0 * CAMERA_SPEED));
 	}
 	if (_inputManager.isKeyPressed(SDLK_s)) {
@@ -138,13 +138,13 @@ void MainGame::drawGame()
 	GLint texturelocation = _colorProgram.getUniformLocation("mySampler");
 	glUniform1i(texturelocation, 0);
 
-	
+
 	//set the camera matrix
 	// set the uniform variable to the updated camera matrix in the draw call.
 	GLint pLocation = _colorProgram.getUniformLocation("P");
 	glm::mat4 cameraMatrix = camera.getCameraMatrix();
 	glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
-			
+
 	spriteBatch.begin();
 
 	glm::vec4 position(0, 0, 50, 50);
@@ -155,7 +155,7 @@ void MainGame::drawGame()
 	color.g = 255;
 	color.b = 255;
 	color.a = 255;
-	
+
 	spriteBatch.draw(position, uv, texture.id, 0.0f, color);
 
 	spriteBatch.end();

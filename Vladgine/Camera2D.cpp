@@ -39,8 +39,7 @@ namespace Vladgine {
 
 	glm::vec2 Camera2D::converScreenToWorld(glm::vec2 screenCoords)
 	{
-		screenCoords -= glm::vec2(_screenWidth
-			/ 2, _screenHeight / 2);
+		screenCoords -= glm::vec2(_screenWidth/ 2, _screenHeight / 2);
 		screenCoords /= _scale;
 		screenCoords += _position;
 		return screenCoords;
