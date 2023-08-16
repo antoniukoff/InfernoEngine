@@ -1,3 +1,5 @@
+
+#include "MainGame.h"
 #include "MainGame.h"
 #include <string>
 #include <Vladgine/Errors.h>
@@ -43,6 +45,7 @@ void MainGame::initShaders()
 	_colorProgram.linkShaders();
 }
 
+
 void MainGame::Update()
 {
 	//game loop
@@ -55,6 +58,19 @@ void MainGame::Update()
 
 		//Updates the camera position and in case of the event(Moves everything in the opposite dir)
 		camera.update();
+
+		// update bullets
+		for (int i = 0; i < _bullets.size();) {
+			if (_bullets[i].update() == true) {
+				_bullets[i] = _bullets.back();
+				_bullets.pop_back();
+
+			}
+			else {
+				i++;
+			}
+		}
+
 		drawGame();
 		_fps = _fpsLimiter.calculate();
 
@@ -97,28 +113,32 @@ void MainGame::HandleEvents()
 			_inputManager.setMouseCoords(event.motion.x, event.motion.y);
 		}
 	}
-	if (_inputManager.isKeyPressed(SDLK_w)) {
+	if (_inputManager.isKeyDown(SDLK_w)) {
 		camera.setPos(camera.getPos() + glm::vec2(0.0, 1.0 * CAMERA_SPEED));
 	}
-	if (_inputManager.isKeyPressed(SDLK_s)) {
+	if (_inputManager.isKeyDown(SDLK_s)) {
 		camera.setPos(camera.getPos() + glm::vec2(0.0, -1.0 * CAMERA_SPEED));
 	}
-	if (_inputManager.isKeyPressed(SDLK_d)) {
+	if (_inputManager.isKeyDown(SDLK_d)) {
 		camera.setPos(camera.getPos() + glm::vec2(CAMERA_SPEED, 0.0));
 	}
-	if (_inputManager.isKeyPressed(SDLK_a)) {
+	if (_inputManager.isKeyDown(SDLK_a)) {
 		camera.setPos(camera.getPos() + glm::vec2(-CAMERA_SPEED, 0.0));
 	}
-	if (_inputManager.isKeyPressed(SDLK_q)) {
+	if (_inputManager.isKeyDown(SDLK_q)) {
 		camera.setScale(camera.getScale() + SCALE_SPEED);
 	}
-	if (_inputManager.isKeyPressed(SDLK_e)) {
+	if (_inputManager.isKeyDown(SDLK_e)) {
 		camera.setScale(camera.getScale() - SCALE_SPEED);
 	}
-	if (_inputManager.isKeyPressed(SDL_BUTTON_LEFT)) {
+	if (_inputManager.isKeyDown(SDL_BUTTON_LEFT)) {
 		glm::vec2 mouseCoords = _inputManager.getMouseCoords();
 		mouseCoords = camera.converScreenToWorld(mouseCoords);
-		std::cout << mouseCoords.x << "  " << mouseCoords.y << endl;
+		glm::vec2 playerPosition(0.0f);
+		glm::vec2 direction = mouseCoords - playerPosition;
+		direction = glm::normalize(direction);
+
+		_bullets.emplace_back(playerPosition, direction, 1.0f, 1000);
 	}
 }
 
@@ -150,13 +170,17 @@ void MainGame::drawGame()
 	glm::vec4 position(0, 0, 50, 50);
 	glm::vec4 uv(0.0f, 0.0f, 1.0f, 1.0f);
 	static Vladgine::GLTexture texture = Vladgine::ResourceManager::getTexture("Textures/PNG/CharacterRight_Standing.png");
-	Vladgine::Color color;
+	Vladgine::ColorRGB8 color;
 	color.r = 255;
 	color.g = 255;
 	color.b = 255;
 	color.a = 255;
 
 	spriteBatch.draw(position, uv, texture.id, 0.0f, color);
+
+	for (int i = 0; i < _bullets.size(); i++) {
+		_bullets[i].draw(spriteBatch);
+	}
 
 	spriteBatch.end();
 	spriteBatch.renderBatch();

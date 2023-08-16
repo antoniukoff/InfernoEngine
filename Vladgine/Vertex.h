@@ -6,7 +6,12 @@ namespace Vladgine {
 		float x, y;
 	};
 
-	struct Color {
+	struct ColorRGB8 {
+		ColorRGB8() :r(0), g(0), b(0), a(0) {}
+		ColorRGB8(GLubyte R, GLubyte G, GLubyte B,GLubyte A) :
+			r(R), g(G), b(B), a(A) {}
+
+
 		GLubyte r, g, b, a;
 	};
 
@@ -18,7 +23,7 @@ namespace Vladgine {
 	struct Vertex {
 		Position position;
 
-		Color color;
+		ColorRGB8 color;
 
 		UV uv;
 

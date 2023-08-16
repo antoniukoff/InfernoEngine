@@ -11,6 +11,7 @@
 #include <Vladgine/ResourceManager.h>
 #include <Vladgine/InputManager.h>
 #include <Vladgine/Timing.h>
+#include "Bullet.h"
 
 using namespace std;
 
@@ -41,6 +42,8 @@ private:
 	Vladgine::SpriteBatch spriteBatch;
 	Vladgine::InputManager _inputManager;
 	Vladgine::FPSLimiter _fpsLimiter;
+
+	std::vector<Bullet> _bullets;
 
 	float max_FPS;
 	float _time;

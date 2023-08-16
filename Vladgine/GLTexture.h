@@ -1,5 +1,5 @@
 #pragma once
-#include<glew.h>
+#include <glew.h>
 namespace Vladgine {
 
 	struct GLTexture {
