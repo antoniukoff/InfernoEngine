@@ -3,14 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GraphicsEngine", "GraphicsEngine\GraphicsEngine.vcxproj", "{DC579688-E191-4FAA-AE8E-A066267C8AA2}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Vladgine", "Vladgine\Vladgine.vcxproj", "{9EB4E76C-DEC1-4749-8A10-A43FEDFD44C8}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DieDieZombie", "DieDieZombie\DieDieZombie.vcxproj", "{7914091C-8C4D-4CA7-896D-3590D551E24D}"
 	ProjectSection(ProjectDependencies) = postProject
 		{9EB4E76C-DEC1-4749-8A10-A43FEDFD44C8} = {9EB4E76C-DEC1-4749-8A10-A43FEDFD44C8}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Vladgine", "Vladgine\Vladgine.vcxproj", "{9EB4E76C-DEC1-4749-8A10-A43FEDFD44C8}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DieDieZombie", "DieDieZombie\DieDieZombie.vcxproj", "{7914091C-8C4D-4CA7-896D-3590D551E24D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BallMadness", "BallMadness\BallMadness.vcxproj", "{F23F69B4-CA8D-4DCF-ABFB-626EE41B1638}"
 	ProjectSection(ProjectDependencies) = postProject
 		{9EB4E76C-DEC1-4749-8A10-A43FEDFD44C8} = {9EB4E76C-DEC1-4749-8A10-A43FEDFD44C8}
 	EndProjectSection
@@ -23,14 +23,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{DC579688-E191-4FAA-AE8E-A066267C8AA2}.Debug|x64.ActiveCfg = Debug|x64
-		{DC579688-E191-4FAA-AE8E-A066267C8AA2}.Debug|x64.Build.0 = Debug|x64
-		{DC579688-E191-4FAA-AE8E-A066267C8AA2}.Debug|x86.ActiveCfg = Debug|Win32
-		{DC579688-E191-4FAA-AE8E-A066267C8AA2}.Debug|x86.Build.0 = Debug|Win32
-		{DC579688-E191-4FAA-AE8E-A066267C8AA2}.Release|x64.ActiveCfg = Release|x64
-		{DC579688-E191-4FAA-AE8E-A066267C8AA2}.Release|x64.Build.0 = Release|x64
-		{DC579688-E191-4FAA-AE8E-A066267C8AA2}.Release|x86.ActiveCfg = Release|Win32
-		{DC579688-E191-4FAA-AE8E-A066267C8AA2}.Release|x86.Build.0 = Release|Win32
 		{9EB4E76C-DEC1-4749-8A10-A43FEDFD44C8}.Debug|x64.ActiveCfg = Debug|x64
 		{9EB4E76C-DEC1-4749-8A10-A43FEDFD44C8}.Debug|x64.Build.0 = Debug|x64
 		{9EB4E76C-DEC1-4749-8A10-A43FEDFD44C8}.Debug|x86.ActiveCfg = Debug|Win32
@@ -47,6 +39,14 @@ Global
 		{7914091C-8C4D-4CA7-896D-3590D551E24D}.Release|x64.Build.0 = Release|x64
 		{7914091C-8C4D-4CA7-896D-3590D551E24D}.Release|x86.ActiveCfg = Release|Win32
 		{7914091C-8C4D-4CA7-896D-3590D551E24D}.Release|x86.Build.0 = Release|Win32
+		{F23F69B4-CA8D-4DCF-ABFB-626EE41B1638}.Debug|x64.ActiveCfg = Debug|x64
+		{F23F69B4-CA8D-4DCF-ABFB-626EE41B1638}.Debug|x64.Build.0 = Debug|x64
+		{F23F69B4-CA8D-4DCF-ABFB-626EE41B1638}.Debug|x86.ActiveCfg = Debug|Win32
+		{F23F69B4-CA8D-4DCF-ABFB-626EE41B1638}.Debug|x86.Build.0 = Debug|Win32
+		{F23F69B4-CA8D-4DCF-ABFB-626EE41B1638}.Release|x64.ActiveCfg = Release|x64
+		{F23F69B4-CA8D-4DCF-ABFB-626EE41B1638}.Release|x64.Build.0 = Release|x64
+		{F23F69B4-CA8D-4DCF-ABFB-626EE41B1638}.Release|x86.ActiveCfg = Release|Win32
+		{F23F69B4-CA8D-4DCF-ABFB-626EE41B1638}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -13,9 +13,10 @@ public:
 		std::vector<Human*>& humans,
 		std::vector<Zombie*>& zombie,
 		float deltaTime) override;
+		
 private:
-	glm::vec2 _direction;
 
+	
 	int _frames;
 };
 

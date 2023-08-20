@@ -1,13 +1,15 @@
 #pragma once
 #include <string>
 #include <glm/glm.hpp>
+#include <Vladgine/AudioEngine.h>
 #include <vector>
 #include "Bullet.h"
 
 class Gun
 {
 public:
-	Gun(std::string name, int firerate, int bulletspershot, float spread, float _bulletDamage, float bulleSpeed);
+	Gun(std::string name, int firerate, int bulletspershot,
+		float spread, float _bulletDamage, float bulleSpeed, Vladgine::SoundEffect fireEffect);
 	~Gun();
 
 
@@ -16,6 +18,8 @@ public:
 
 private:
 	void fire(glm::vec2 direction, const glm::vec2& position, std::vector<Bullet>& bullets);
+
+	Vladgine::SoundEffect m_fireEffect;
 
 	std::string _name;
 

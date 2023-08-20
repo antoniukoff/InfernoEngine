@@ -3,14 +3,15 @@
 #include "Agent.h"
 #include "Human.h"
 #include "Zombie.h"
+#include <SDL_mixer.h>
 #include "Level.h"
 
 Bullet::Bullet(glm::vec2 position, glm::vec2 direction, float damage, float speed)
 {
-	_position = position;
-	_direction = direction;
-	_damage = damage; 
-	_speed = speed;
+	m_position = position;
+	m_direction = direction;
+	m_damage = damage; 
+	m_speed = speed;
 }
 
 Bullet::~Bullet()
@@ -19,7 +20,7 @@ Bullet::~Bullet()
 
 bool Bullet::update(const std::vector<std::string>& levelData, float deltaTime)
 {
-	_position += _direction * _speed * deltaTime;
+	m_position += m_direction * m_speed * deltaTime;
 
 	return collideWithWorld(levelData);
 
@@ -27,7 +28,7 @@ bool Bullet::update(const std::vector<std::string>& levelData, float deltaTime)
 
 void Bullet::draw(Vladgine::SpriteBatch& spriteBatch)
 {
-	glm::vec4 destRect(_position.x + BULLET_RADIUS, _position.y + BULLET_RADIUS, BULLET_RADIUS * 2, BULLET_RADIUS * 2);
+	glm::vec4 destRect(m_position.x + BULLET_RADIUS, m_position.y + BULLET_RADIUS, BULLET_RADIUS * 2, BULLET_RADIUS * 2);
 	
 	const glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
 	Vladgine::ColorRGB8 color;
@@ -43,7 +44,7 @@ bool Bullet::collideWithAgent(Agent* agent)
 {
 	const float MIN_DISTANCE = AGENT_RADIUS + BULLET_RADIUS;
 
-	glm::vec2 centerPosA = _position;
+	glm::vec2 centerPosA = m_position;
 	glm::vec2 centerPosB = agent->getPosition() + glm::vec2(AGENT_RADIUS);
 
 	glm::vec2 distVec = centerPosA - centerPosB;
@@ -63,8 +64,8 @@ bool Bullet::collideWithAgent(Agent* agent)
 bool Bullet::collideWithWorld(const std::vector<std::string>& levelData)
 {
 	glm::ivec2 gridPosition;
-	gridPosition.x = floor(_position.x / (float)TILE_WIDTH);
-	gridPosition.y = floor(_position.y / (float)TILE_WIDTH);
+	gridPosition.x = floor(m_position.x / (float)TILE_WIDTH);
+	gridPosition.y = floor(m_position.y / (float)TILE_WIDTH);
 
 	if (gridPosition.x < 0 || gridPosition.x >= levelData[0].length() ||
 		gridPosition.y < 0 || gridPosition.y >= levelData.size()) {

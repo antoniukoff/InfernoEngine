@@ -48,4 +48,32 @@ namespace Vladgine {
 		return screenCoords;
 	}
 
+
+	//simple aabb test to see if the glyph is within the camera borders. used for camera culling
+	bool Camera2D::isBoxInView(const glm::vec2& position, const glm::vec2& domensions)
+	{
+		glm::vec2 scaledScreenedDimension = glm::vec2(_screenWidth, _screenHeight) / (_scale);
+
+		const float MIN_DISTANCE_X = domensions.x / 2.0f + scaledScreenedDimension.x / 2.0f;
+		const float MIN_DISTANCE_Y = domensions.y / 2.0f + scaledScreenedDimension.y / 2.0f;
+
+		//center position of the parameters
+		glm::vec2 centerPos = position + domensions / 2.0f;
+		// center position of the camera
+		glm::vec2 centerCameraPos = _position;
+		//vector from the input to the camera
+		glm::vec2 distVec = centerPos - centerCameraPos;
+
+		float xDepth = MIN_DISTANCE_X - abs(distVec.x);
+		float yDepth = MIN_DISTANCE_Y - abs(distVec.y);
+
+
+		// there was a collision 
+		if (xDepth > 0 && yDepth > 0){
+			return true;
+		}
+		
+		return false;
+	}
+
 }

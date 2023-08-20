@@ -1,6 +1,7 @@
 #include "Player.h"
 
 #include <SDL.h>
+#include <Vladgine/ResourceManager.h>
 
 #include "Gun.h"
 
@@ -15,15 +16,14 @@ Player::~Player()
 
 void Player::init(float speed, glm::vec2 position, Vladgine::InputManager* inputManager, Vladgine::Camera2D* camera, std::vector<Bullet>* bullets)
 {
-	_speed = speed;
-	_position = position;
-	_color.r = 0;
-	_color.g = 0;
-	_color.b = 185;
-	_color.a = 255;
+	m_speed = speed;
+	m_position = position;
+	m_color = Vladgine::ColorRGB8(255, 255, 255, 255);
 	_inputManager = inputManager;
 	_camera = camera;
 	_bullets = bullets;
+
+	m_textureID = Vladgine::ResourceManager::getTexture("Textures/player.png").id;
 }
 
 void Player::addGun(Gun* gun)
@@ -44,16 +44,16 @@ void Player::update(const std::vector<std::string>& levelData,
 {
 
 	if (_inputManager->isKeyDown(SDLK_w)) {
-		_position.y += _speed* deltaTime;
+		m_position.y += m_speed* deltaTime;
 	}
 	else if (_inputManager->isKeyDown(SDLK_s)) {
-		_position.y -= _speed* deltaTime;
+		m_position.y -= m_speed* deltaTime;
 	}
 	if (_inputManager->isKeyDown(SDLK_d)) {
-		_position.x += _speed * deltaTime;
+		m_position.x += m_speed * deltaTime;
 	}
 	else if (_inputManager->isKeyDown(SDLK_a)) {
-		_position.x -= _speed * deltaTime;
+		m_position.x -= m_speed * deltaTime;
 	}
 
 	if (_inputManager->isKeyDown(SDLK_1) && _guns.size() >= 0) {
@@ -66,17 +66,17 @@ void Player::update(const std::vector<std::string>& levelData,
 		_currentGunIndex = 2;
 	}
 
+	glm::vec2 mouseCoords = _inputManager->getMouseCoords();
+
+	mouseCoords = _camera->converScreenToWorld(mouseCoords);
+
+	glm::vec2 centerPosition = m_position + glm::vec2(AGENT_RADIUS);
+
+	m_direction = glm::normalize(mouseCoords - centerPosition);
+
 	if (_currentGunIndex != -1) {
 		
-		glm::vec2 mouseCoords = _inputManager->getMouseCoords();
-
-		mouseCoords = _camera->converScreenToWorld(mouseCoords);
-		
-		glm::vec2 centerPosition = _position + glm::vec2(AGENT_RADIUS);
-
-		glm::vec2 direction = glm::normalize(mouseCoords - centerPosition);
-
-		_guns[_currentGunIndex]->update(_inputManager->isKeyDown(SDL_BUTTON_LEFT), centerPosition, direction, *_bullets, deltaTime);
+		_guns[_currentGunIndex]->update(_inputManager->isKeyDown(SDL_BUTTON_LEFT), centerPosition, m_direction, *_bullets, deltaTime);
 		
 	}
 

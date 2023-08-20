@@ -1,7 +1,7 @@
 #pragma once
 #include "Agent.h"
 #include <string>
-class Zombie: public Agent
+class Zombie : public Agent
 {
 public:
 	Zombie();
@@ -14,6 +14,6 @@ public:
 		std::vector<Zombie*>& zombie,
 		float deltaTime) override;
 private:
-	Human* getNearestHuman(std::vector<Human*>&humans);
+	Human* getNearestHuman(std::vector<Human*>& humans);
 };
 

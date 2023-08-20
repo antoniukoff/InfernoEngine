@@ -6,7 +6,8 @@
 const float DEG_TO_RAD = 3.14159265359f / 180.0f;
 const float RAD_TO_DEG = 180.0f / 3.14159265359f;
 
-Gun::Gun(std::string name, int firerate, int bulletspershot, float spread, float bulletDamage, float bulletSpeed)
+Gun::Gun(std::string name, int firerate, int bulletspershot,
+	float spread, float bulletDamage, float bulletSpeed, Vladgine::SoundEffect fireEffect)
 {
 	_name = name;
 	_fireRate = firerate;
@@ -15,6 +16,7 @@ Gun::Gun(std::string name, int firerate, int bulletspershot, float spread, float
 	_bulletDamage = bulletDamage;
 	_bulletSpeed = bulletSpeed;
 	_frameCounter = 0;
+	m_fireEffect = fireEffect;
 }
 
 Gun::~Gun()
@@ -34,7 +36,9 @@ void Gun::fire(glm::vec2 direction, const glm::vec2& position, std::vector<Bulle
 {
 	static std::mt19937 randoEngine(time(nullptr));
 
-	 std::uniform_real_distribution<float> randRotate(-_spread, _spread);
+	m_fireEffect.play();
+
+	std::uniform_real_distribution<float> randRotate(-_spread, _spread);
 
 	for (int i = 0; i < _bulletPerShot; i++) {
 		bullets.emplace_back(position, glm::rotate(direction, randRotate(randoEngine) * DEG_TO_RAD), _bulletDamage, _bulletSpeed);

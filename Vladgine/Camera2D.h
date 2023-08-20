@@ -16,6 +16,8 @@ namespace Vladgine {
 		void update();
 		glm::vec2 converScreenToWorld(glm::vec2 screenCoords);
 
+		bool isBoxInView(const glm::vec2& position, const glm::vec2& domensions);
+
 		//setters
 		void setPos(const glm::vec2& newPos) { _position = newPos; 	_needsMatrixUpdate = true; }
 		void setScale(float newScale) { _scale = newScale; _needsMatrixUpdate = true;}

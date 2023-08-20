@@ -3,7 +3,11 @@
 #include <Vladgine/GLSLProgram.h>
 #include <Vladgine/InputManager.h>
 #include <Vladgine/Camera2D.h>
+#include <Vladgine/SpriteFont.h>
 #include <Vladgine/SpriteBatch.h>
+#include <Vladgine/AudioEngine.h>
+#include <Vladgine/ParticleEngine2D.h>
+#include <Vladgine/ParticleBatch2D.h>
 #include "Bullet.h"
 #include "Level.h"
 #include "Player.h"
@@ -30,30 +34,39 @@ private:
 	void checkVictory();
 	void processInput();
 	void drawGame();
+	void drawHUD();
+	void addBlood(const glm::vec2& position, int numParticles);
 	
 
-	Vladgine::Window _window;
-	Vladgine::GLSLProgram _textureProgram;
-	Vladgine::InputManager _inputManager;
-	Vladgine::Camera2D _camera;
-	std::vector<Level*> _levels;
-	std::vector<Human*> _humans;
-	std::vector<Zombie*> _zombies;
-	std::vector<Bullet> _bullets;
+	Vladgine::Window m_window;
+	Vladgine::GLSLProgram m_textureProgram;
+	Vladgine::InputManager m_inputManager;
+	Vladgine::Camera2D m_camera;
+	Vladgine::Camera2D m_hudCamera;
+	std::vector<Level*> m_levels;
+	std::vector<Human*> m_humans;
+	std::vector<Zombie*> m_zombies;
+	std::vector<Bullet> m_bullets;
 
-	Vladgine::SpriteBatch _agentSpriteBatch;
+	Vladgine::SpriteBatch m_agentSpriteBatch;
+	Vladgine::SpriteBatch m_hudSpriteBatch;
+	Vladgine::ParticleEngine2D m_particleEngine;
+	Vladgine::ParticleBatch2D* m_bloodParticleBatch;
 
-	int _screenWidth, _screenHeight;
-	float _fps;
-	float _maxFPS;
+	int m_screenWidth, m_screenHeight;
+	float m_fps;
+	float m_maxFPS;
 
-	int _currentLevel;
+	int m_currentLevel;
 
-	Player* _player;
+	Player* m_player;
 
-	int _numHumansKilled;
-	int _numZombiesKilled;
+	int m_numHumansKilled;
+	int m_numZombiesKilled;
 
-	GameState _gameState;
+	Vladgine::SpriteFont* m_spriteFont;
+	Vladgine::AudioEngine m_audioEngine;
+
+	GameState m_gameState;
 };
 

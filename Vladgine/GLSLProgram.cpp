@@ -1,6 +1,6 @@
 #include "GLSLProgram.h"
 #include <fstream>
-#include"Errors.h"
+#include "VladgineErrors.h"
 #include <vector>
 
 namespace Vladgine {

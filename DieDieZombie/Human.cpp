@@ -1,8 +1,13 @@
 #include "Human.h"
+#include <iostream>
 #include <string>
 #include <random>
 #include <ctime>
 #include <glm/gtx/rotate_vector.hpp>
+#include <Vladgine/ResourceManager.h>
+
+const float DEG_TO_RAD = 3.14159265359f / 180.0f;
+const float RAD_TO_DEG = 180.0f / 3.14159265359f;
 
 Human::Human(): _frames(0)
 {
@@ -18,23 +23,25 @@ void Human::init(float speed, glm::vec2 position)
 
 	static std::uniform_real_distribution<float> randDir(-1.0f, 1.0f);
 
-	_health = 20.0f;
+	m_textureID = Vladgine::ResourceManager::getTexture("Textures/human.png").id;
 
-	_color.r = 200;
-	_color.g = 0;
-	_color.b = 200;
-	_color.a = 255;
+	m_health = 20.0f;
 
-	_speed = speed;
-	_position = position;
+	m_color = Vladgine::ColorRGB8(255, 255, 255, 255);
+
+	m_speed = speed;
+	m_position = position;
 	//gets random direction
-	_direction = glm::vec2(randDir(randoEngine), randDir(randoEngine));
-
+	m_direction = glm::vec2(randDir(randoEngine), randDir(randoEngine));
+	
 	//makes sure direction isn't zero
-	if (_direction.length() == 0) _direction = glm::vec2(1.0f, 0.0f);
+	if (m_direction.length() == 0) m_direction = glm::vec2(1.0f, 0.0f);
 
-	_direction = glm::normalize(_direction);
+	m_direction = glm::normalize(m_direction);
 }
+
+const float DIRECTION_CHANGE_INTERVAL = 1.0f; // change direction every 1 second
+float m_lastDirectionChangeTime = 0.0f;
 
 void Human::update(const std::vector<std::string>& levelData,
 	std::vector<Human*>& humans,
@@ -45,10 +52,12 @@ void Human::update(const std::vector<std::string>& levelData,
 
 	static std::uniform_real_distribution<float> randRotate(-20.1f, 20.1f);
 
-	_position += _direction * _speed * deltaTime;
+	m_position += m_direction * m_speed * deltaTime;
+
+	//std::cout << deltaTime;
 
 	if (_frames == 200) {
-		_direction = glm::rotate(_direction, randRotate(randoEngine));
+		m_direction = glm::rotate(m_direction, randRotate(randoEngine) * DEG_TO_RAD);
 		_frames = 0;
 	} else {
 		_frames++;
@@ -58,6 +67,6 @@ void Human::update(const std::vector<std::string>& levelData,
 
 		
 	if (collideWithLevel(levelData)) {
-		_direction = glm::rotate(_direction, randRotate(randoEngine));
+		m_direction = glm::rotate(m_direction, randRotate(randoEngine));
 	}
 }

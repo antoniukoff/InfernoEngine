@@ -1,4 +1,4 @@
-#include "Errors.h"
+#include "VladgineErrors.h"
 #include <iostream>
 #include<SDL.h>
 

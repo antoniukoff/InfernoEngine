@@ -1,6 +1,6 @@
 #include "IMGLoader.h"
 #include "IOManager.h"
-#include "Errors.h"
+#include "VladgineErrors.h"
 
 namespace Vladgine {
 
