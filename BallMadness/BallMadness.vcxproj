@@ -139,7 +139,6 @@
   <ItemGroup>
     <ClCompile Include="Ball.cpp" />
     <ClCompile Include="BallController.cpp" />
-    <ClCompile Include="BallMadness.cpp" />
     <ClCompile Include="BallRenderer.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainGame.cpp" />

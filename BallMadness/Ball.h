@@ -17,6 +17,6 @@ struct Ball {
     glm::vec2 position;
     unsigned int textureId = 0;
     Vladgine::ColorRGB8 color;
-    Cell* ownerCell = nullptr;
-    int cellVectorIndex = -1;
+    /*Cell* ownerCell = nullptr;
+    int cellVectorIndex = -1;*/
 };

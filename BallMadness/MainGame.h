@@ -11,7 +11,7 @@
 
 #include "BallController.h"
 #include "BallRenderer.h"
-#include "Grid.h"
+
 
 // TODO:
 // Visualize momentum with color
@@ -40,11 +40,10 @@ private:
     int m_screenWidth = 0;
     int m_screenHeight = 0;
 
-    std::vector<Ball> m_balls; ///< All the balls
-    std::unique_ptr<Grid> m_grid; ///< Grid for spatial partitioning for collision
+    std::vector<Ball> m_balls; ///< All the balls ///< Grid for spatial partitioning for collision
 
     int m_currentRenderer = 0;
-    std::vector<std::unique_ptr<BallRenderer> > m_ballRenderers;
+    BallRenderer m_ballRenderers;
 
     BallController m_ballController; ///< Controls balls
 

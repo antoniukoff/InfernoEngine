@@ -1,8 +1,8 @@
 #include "BallController.h"
 
-#include "Grid.h"
 
-void BallController::updateBalls(std::vector <Ball>& balls, Grid* grid, float deltaTime, int maxX, int maxY) {
+
+void BallController::updateBalls(std::vector <Ball>& balls, float deltaTime, int maxX, int maxY) {
     const float FRICTION = 0.01f;
     // Update our grabbed balls velocity
     if (m_grabbedBall != -1) {
@@ -30,30 +30,25 @@ void BallController::updateBalls(std::vector <Ball>& balls, Grid* grid, float de
             ball.velocity += gravity * deltaTime;
         }
         // Check wall collision
-        if (ball.position.x < ball.radius) {
-            ball.position.x = ball.radius;
+        if (ball.position.x < 0) {
+            ball.position.x = 0;
             if (ball.velocity.x < 0) ball.velocity.x *= -1;
-        } else if (ball.position.x + ball.radius >= maxX) {
-            ball.position.x = maxX - ball.radius - 1;
-            if (ball.velocity.x > 0) ball.velocity.x *= -1;
+        } else if (ball.position.x + ball.radius * 2.0f >= maxX) {
+            ball.position.x = maxX - ball.radius * 2.0f - 1;
+            if (ball.velocity.x > 0) ball.velocity.x = -1;
         }
-        if (ball.position.y < ball.radius) {
-            ball.position.y = ball.radius;
-            if (ball.velocity.y < 0) ball.velocity.y *= -1;
-        } else if (ball.position.y + ball.radius >= maxY) {
-            ball.position.y = maxY - ball.radius - 1;
-            if (ball.velocity.y > 0) ball.velocity.y *= -1;
-        }
+		if (ball.position.y < 0) {
+			ball.position.y = 0;
+			if (ball.velocity.y < 0) ball.velocity.y *= -1;
+		} else if (ball.position.y + ball.radius * 2.0f >= maxY) {
+			ball.position.y = maxY - ball.radius * 2.0f - 1;
+			if (ball.velocity.y > 0) ball.velocity.y = -1;
+		}
 
-        // Check to see if the ball moved
-        Cell* newCell = grid->getCell(ball.position);
-        if (newCell != ball.ownerCell) {
-            grid->removeBallFromCell(&balls[i]);
-            grid->addBall(&balls[i], newCell);
+        for (int j = i + 1; j < balls.size(); j++) {
+            checkCollision(ball, balls[j]);
         }
     }
-    // Updates all collisions using the spatial partitioning
-    updateCollision(grid);
 
     //// Update our grabbed ball
     if (m_grabbedBall != -1) {
@@ -89,50 +84,10 @@ void BallController::onMouseMove(std::vector <Ball>& balls, float mouseX, float 
     }
 }
 
-void BallController::updateCollision(Grid* grid) {
-    for (size_t i = 0; i < grid->m_cells.size(); i++) {
-
-        int x = i % grid->m_numXCells;
-        int y = i / grid->m_numXCells;
-
-        Cell& cell = grid->m_cells[i];
-
-        // Loop through all balls in a cell
-        for (size_t j = 0; j < cell.balls.size(); j++) {
-            Ball* ball = cell.balls[j];
-            /// Update with the residing cell
-            checkCollision(ball, cell.balls, j + 1);
-
-            /// Update collision with neighbor cells
-            if (x > 0) {
-                // Left
-                checkCollision(ball, grid->getCell(x - 1, y)->balls, 0);
-                if (y > 0) {
-                    /// Top left
-                    checkCollision(ball, grid->getCell(x - 1, y - 1)->balls, 0);
-                }
-                if (y < grid->m_numYCells - 1) {
-                    // Bottom left
-                    checkCollision(ball, grid->getCell(x - 1, y + 1)->balls, 0);
-                }
-            }
-            // Up cell
-            if (y > 0) {
-                checkCollision(ball, grid->getCell(x, y - 1)->balls, 0);
-            }
-        }
-    }
-}
-
-void BallController::checkCollision(Ball* ball, std::vector<Ball*>& ballsToCheck, int startingIndex) {
-    for (size_t i = startingIndex; i < ballsToCheck.size(); i++) {
-        checkCollision(*ball, *ballsToCheck[i]);
-    }
-}
 
 void BallController::checkCollision(Ball& b1, Ball& b2) {
     // We add radius since position is the top left corner
-    glm::vec2 distVec = b2.position - b1.position;
+    glm::vec2 distVec = (b2.position + b2.radius) - (b1.position + b1.radius);
     glm::vec2 distDir = glm::normalize(distVec);
     float dist = glm::length(distVec);
     float totalRadius = b1.radius + b2.radius;
@@ -142,8 +97,11 @@ void BallController::checkCollision(Ball& b1, Ball& b2) {
     if (collisionDepth > 0) {
 
         // Push away the balls based on ratio of masses
-        b1.position -= distDir * collisionDepth * (b2.mass / b1.mass) * 0.5f;
-        b2.position += distDir * collisionDepth * (b1.mass / b2.mass) * 0.5f;
+        if (b1.mass < b2.mass) {
+            b1.position -= distDir * collisionDepth;
+        } else {
+            b2.position += distDir * collisionDepth;
+        }
        
         // Calculate deflection. http://stackoverflow.com/a/345863
         // Fixed thanks to youtube user Sketchy502
@@ -156,13 +114,6 @@ void BallController::checkCollision(Ball& b1, Ball& b2) {
         b1.velocity += (acf - aci) * distDir;
         b2.velocity += (bcf - bci) * distDir;
 
-        if (glm::length(b1.velocity + b2.velocity) > 0.5f) {
-            // Choose the faster ball
-            bool choice = glm::length(b1.velocity) < glm::length(b2.velocity);
-
-            // Faster ball transfers it's color to the slower ball
-            choice ? b2.color = b1.color : b1.color = b2.color;
-        }
     }
 }
 
@@ -173,7 +124,7 @@ bool BallController::isMouseOnBall(Ball&b, float mouseX, float mouseY) {
 }
 
 glm::vec2 BallController::getGravityAccel() {
-    const float GRAVITY_FORCE = 0.02f;
+    const float GRAVITY_FORCE = 0.1f;
     glm::vec2 gravity;
 
     switch (m_gravityDirection) {
