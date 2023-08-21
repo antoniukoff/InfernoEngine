@@ -8,6 +8,7 @@
 #include <Vladgine/Timing.h>
 #include <Vladgine/SpriteFont.h>
 #include <memory>
+#include "Grid.h"
 
 #include "BallController.h"
 #include "BallRenderer.h"
@@ -40,7 +41,8 @@ private:
     int m_screenWidth = 0;
     int m_screenHeight = 0;
 
-    std::vector<Ball> m_balls; ///< All the balls ///< Grid for spatial partitioning for collision
+    std::vector<Ball> m_balls; ///< All the balls 
+    std::unique_ptr<Grid> m_grid; ///< Grid for spatial partitioning for collision
 
     int m_currentRenderer = 0;
     BallRenderer m_ballRenderers;

@@ -8,6 +8,7 @@
 #include <ctime>
 #include <algorithm>
 #include <cmath>
+#include <iostream>
 
 // Some helpful constants.
 const float DESIRED_FPS = 60.0f; // FPS the game is designed to run at
@@ -15,6 +16,7 @@ const int MAX_PHYSICS_STEPS = 6; // Max number of physics steps per frame
 const float MS_PER_SECOND = 1000; // Number of milliseconds in a second
 const float DESIRED_FRAMETIME = MS_PER_SECOND / DESIRED_FPS; // The desired frame time per frame
 const float MAX_DELTA_TIME = 1.0f; // Maximum size of deltaTime
+
 
 MainGame::~MainGame() {
     // Empty
@@ -104,10 +106,18 @@ struct BallSpawn {
     float probability;
     std::uniform_real_distribution<float> randSpeed;
 };
-#include <iostream>
+
 void MainGame::initBalls() {
 
-    const int NUM_BALLS = 100;
+    //init the grid
+    m_grid = std::make_unique<Grid>(m_screenWidth, m_screenHeight, CELL_SIZE);
+
+
+#define ADD_BALL(p, ...)  \
+    totalProbability += p; \
+    possibleBalls.emplace_back(__VA_ARGS__);
+
+    const int NUM_BALLS = 40000;  
 
     // Random engine stuff
     std::mt19937 randomEngine((unsigned int)time(nullptr));
@@ -119,21 +129,15 @@ void MainGame::initBalls() {
     std::vector <BallSpawn> possibleBalls;
     float totalProbability = 0.0f;
 
-    /// Random values for ball types
-    std::uniform_real_distribution<float> r1(2.0f, 6.0f);
-    std::uniform_int_distribution<int> r2(0, 255);
+   
 
-    totalProbability += 20.0f;
-    possibleBalls.emplace_back(Vladgine::ColorRGB8(255, 255, 255, 255), 20.0f,
-                                1.0f, 0.1f, 7.0f, totalProbability);
-
-    totalProbability += 10.0f;
-	possibleBalls.emplace_back(Vladgine::ColorRGB8(0, 0, 255, 255), 30.0f,
+    ADD_BALL(20.0, Vladgine::ColorRGB8(255, 255, 255, 255), 1.0f,
+        1.0f, 0.1f, 7.0f, totalProbability);
+	ADD_BALL(10.0, Vladgine::ColorRGB8(0, 0, 255, 255), 2.0f,
 		2.0f, 0.1f, 3.0f, totalProbability);
-
-    totalProbability += 1.0f;
-	possibleBalls.emplace_back(Vladgine::ColorRGB8(255, 0, 0, 255), 50.0f,
+	ADD_BALL(1.0f, Vladgine::ColorRGB8(255, 0, 0, 255), 3.0f,
 		4.0f, 0.0f, 0.0f, totalProbability);
+   
 
     // Random probability for ball spawn
     std::uniform_real_distribution<float> spawn(0.0f, totalProbability);
@@ -171,11 +175,14 @@ void MainGame::initBalls() {
                              Vladgine::ResourceManager::getTexture("Textures/circle.png").id,
                              ballToSpawn->color);
         // Add the ball do the grid. IF YOU EVER CALL EMPLACE BACK AFTER INIT BALLS, m_grid will have DANGLING POINTERS!
+           
+        m_grid->addBall(&m_balls.back());
+    
     }
 }
 
 void MainGame::update(float deltaTime) {
-    m_ballController.updateBalls(m_balls, deltaTime, m_screenWidth, m_screenHeight);
+    m_ballController.updateBalls(m_balls, m_grid.get(), deltaTime, m_screenWidth, m_screenHeight);
 }
 
 void MainGame::draw() {
