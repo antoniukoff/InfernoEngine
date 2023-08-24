@@ -46,7 +46,8 @@ void BallController::updateBalls(std::vector <Ball>& balls, Grid* grid, float de
 		}
         Cell* newCell = grid->getCell(ball.position);
         if (newCell != ball.ownerCell) {
-            //need to shift the ball
+            //need to shift the ball to the new cell if the owner cell from previous    
+            // frame is not equal to the new cell from the current frame
             grid->removeBallFromCell(&balls[i]);
             grid->addBall(&balls[i], newCell);
         }
@@ -146,12 +147,8 @@ void BallController::checkCollision(Ball& b1, Ball& b2) {
     // Check for collision
     if (collisionDepth > 0) {
 
-        // Push away the balls based on ratio of masses
-        if (b1.mass < b2.mass) {
-            b1.position -= distDir * collisionDepth;
-        } else {
-            b2.position += distDir * collisionDepth;
-        }
+        b1.position -= distDir * collisionDepth * (b2.mass / b1.mass) * 0.5f;
+        b2.position += distDir * collisionDepth * (b1.mass / b2.mass) * 0.5f;
        
         // Calculate deflection. http://stackoverflow.com/a/345863
         float aci = glm::dot(b1.velocity, distDir);
@@ -162,6 +159,13 @@ void BallController::checkCollision(Ball& b1, Ball& b2) {
 
         b1.velocity += (acf - aci) * distDir;
         b2.velocity += (bcf - bci) * distDir;
+
+        if (glm::length(b1.velocity) < glm::length(b2.velocity)) {
+            bool choice = glm::length(b1.velocity) < glm::length(b2.velocity);
+
+
+            choice ? b2.color = b1.color : b1.color = b2.color;
+        }
 
     }
 }

@@ -19,6 +19,7 @@ Grid::~Grid()
 {
 }
 
+// adds the ball to the vector of balls on the cell they are on based on their position 
 void Grid::addBall(Ball* ball)
 {
 	Cell* cell = getCell(ball->position);
@@ -29,7 +30,7 @@ void Grid::addBall(Ball* ball)
 
 	ball->cellVectorIndex = cell->balls.size() - 1;
 }
-
+// adds the ball to the vector of balls based on a particular cell
 void Grid::addBall(Ball* ball, Cell* cell)
 {
 	cell->balls.push_back(ball);
@@ -38,18 +39,21 @@ void Grid::addBall(Ball* ball, Cell* cell)
 
 	ball->cellVectorIndex = cell->balls.size() - 1;
 }
-
+///get the cell 
 Cell* Grid::getCell(int x, int y)
 {
 	if (x < 0) x = 0;
-	if (x >= m_numXCells) x = m_numXCells;
+	if (x >= m_numXCells) x = m_numXCells - 1;
 
 	if (y < 0) y = 0;
-	if (y >= m_numYCells) y = m_numYCells;
-
+	if (y >= m_numYCells) y = m_numYCells - 1;
+	// get the position of a 1d array as if it was a 2d array(better cache-coherency)
+	//each row represents a data of columns scattered around no the heap which does 
+	//not make the 2D array contiguous
 	return &m_cells[y * m_numXCells + x];
 }
 
+//gets the cell based on the balls position
 Cell* Grid::getCell(const glm::vec2 pos)
 {
 	
@@ -63,11 +67,13 @@ Cell* Grid::getCell(const glm::vec2 pos)
 
 void Grid::removeBallFromCell(Ball* ball)
 {
+	//just a shortcut to the balls vector of the cell that the ball we pass belongs to
 	std::vector<Ball*>& balls = ball->ownerCell->balls;
-	//normal vector swap
+	//overriding the position of the ball we pass in in the vector with the back element of the vector 
 	balls[ball->cellVectorIndex] = balls.back();
+	// popping the original back element
 	balls.pop_back();
-	//update vector index
+	//update the new element with the index of the previous element that we passed in
 	if (ball->cellVectorIndex < balls.size()) {
 		balls[ball->cellVectorIndex]->cellVectorIndex = ball->cellVectorIndex;
 	}

@@ -19,7 +19,9 @@ const float MAX_DELTA_TIME = 1.0f; // Maximum size of deltaTime
 
 
 MainGame::~MainGame() {
-    // Empty
+    for (int i = 0; i < m_ballRenderers.size(); i++) {
+        delete m_ballRenderers[i];
+    }
 }
 
 void MainGame::run() {
@@ -87,6 +89,19 @@ void MainGame::init() {
 
     m_fpsLimiter.setMaxFPS(60.0f);
     
+    initRenderers();
+}
+
+
+void MainGame::initRenderers()
+{
+    m_ballRenderers.push_back(new BallRenderer);
+    m_ballRenderers.push_back(new MomentumBallRenderer);
+    m_ballRenderers.push_back(new VelocityBallRenderer(m_screenWidth, m_screenHeight));
+    m_ballRenderers.push_back(new ShadowBallRenderer);
+    m_ballRenderers.push_back(new TrailBallRenderer);
+    m_ballRenderers.push_back(new HaloBallRenderer);
+
 }
 
 struct BallSpawn {
@@ -117,7 +132,7 @@ void MainGame::initBalls() {
     totalProbability += p; \
     possibleBalls.emplace_back(__VA_ARGS__);
 
-    const int NUM_BALLS = 40000;  
+    const int NUM_BALLS = 10000;  
 
     // Random engine stuff
     std::mt19937 randomEngine((unsigned int)time(nullptr));
@@ -129,15 +144,20 @@ void MainGame::initBalls() {
     std::vector <BallSpawn> possibleBalls;
     float totalProbability = 0.0f;
 
-   
+	std::uniform_real_distribution<float> r1(2.0f, 6.0f);
+	std::uniform_int_distribution<int> r2(0.0f, 255);
 
-    ADD_BALL(20.0, Vladgine::ColorRGB8(255, 255, 255, 255), 1.0f,
+    ADD_BALL(1.0, Vladgine::ColorRGB8(255, 255, 255, 255), 1.0f,
         1.0f, 0.1f, 7.0f, totalProbability);
 	ADD_BALL(10.0, Vladgine::ColorRGB8(0, 0, 255, 255), 2.0f,
 		2.0f, 0.1f, 3.0f, totalProbability);
 	ADD_BALL(1.0f, Vladgine::ColorRGB8(255, 0, 0, 255), 3.0f,
 		4.0f, 0.0f, 0.0f, totalProbability);
    
+    for (int i = 0; i < NUM_BALLS; i++) {
+		ADD_BALL(1.0f, Vladgine::ColorRGB8(r2(randomEngine), r2(randomEngine), r2(randomEngine), 255), r1(randomEngine),
+            r1(randomEngine), 0.0f, 0.0f, totalProbability);
+    }
 
     // Random probability for ball spawn
     std::uniform_real_distribution<float> spawn(0.0f, totalProbability);
@@ -191,27 +211,25 @@ void MainGame::draw() {
     // Clear the color and depth buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    m_textureProgram.use();
+
 
     glActiveTexture(GL_TEXTURE0);
+
+    // Grab the camera matrix
+    glm::mat4 projectionMatrix = m_camera.getCameraMatrix();
+
+   
+
+    m_ballRenderers[m_currentRenderer]->renderBalls(m_spriteBatch, m_balls, projectionMatrix);
+
+    
+    m_textureProgram.use();
 
 	GLint textureUniform = m_textureProgram.getUniformLocation("mySampler");
 	glUniform1i(textureUniform, 0);
 
-    // Grab the camera matrix
-    glm::mat4 projectionMatrix = m_camera.getCameraMatrix();
 	GLint pUniform = m_textureProgram.getUniformLocation("P");
 	glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
-
-
-    m_spriteBatch.begin(); 
-
-    for (auto& ball : m_balls) {
-        m_ballRenderers.renderBalls(m_spriteBatch, ball);
-   } 
-
-    m_spriteBatch.end();
-    m_spriteBatch.renderBatch(); 
 
     drawHud();
 
@@ -234,6 +252,7 @@ void MainGame::drawHud() {
 }
 
 void MainGame::processInput() {
+    m_inputManager.update();
 
     SDL_Event evnt;
     //Will keep looping until there are no more events to process
@@ -277,6 +296,13 @@ void MainGame::processInput() {
         m_ballController.setGravityDirection(GravityDirection::DOWN);
     } else if (m_inputManager.isKeyPressed(SDLK_SPACE)) {
         m_ballController.setGravityDirection(GravityDirection::NONE);
+    }
+
+    if (m_inputManager.isKeyPressed(SDLK_1)) {
+        m_currentRenderer++;
+        if (m_currentRenderer >= m_ballRenderers.size()) {
+            m_currentRenderer = 0;
+        }
     }
 
 }

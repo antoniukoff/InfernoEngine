@@ -45,7 +45,9 @@ private:
     std::unique_ptr<Grid> m_grid; ///< Grid for spatial partitioning for collision
 
     int m_currentRenderer = 0;
-    BallRenderer m_ballRenderers;
+    std::vector<BallRenderer*> m_ballRenderers;
+
+  
 
     BallController m_ballController; ///< Controls balls
 

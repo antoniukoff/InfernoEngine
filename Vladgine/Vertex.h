@@ -13,6 +13,7 @@ namespace Vladgine {
 
 
 		GLubyte r, g, b, a;
+
 	};
 
 	struct UV {

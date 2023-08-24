@@ -361,3 +361,4 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/DieDieZombie/Release/DieDieZombie.tlog/link.read.1.tlog
