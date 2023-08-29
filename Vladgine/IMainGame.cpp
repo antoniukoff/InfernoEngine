@@ -30,7 +30,9 @@ void Vladgine::IMainGame::run()
 
 		update();
 
-		draw();
+		if (m_isRunning) {
+			draw();
+		}
 
 		m_fps = limiter.calculate();
 		m_window.swapBuffer();
@@ -93,28 +95,28 @@ void Vladgine::IMainGame::draw()
 
 void Vladgine::IMainGame::onSDLEvent(SDL_Event& event)
 {
-	while (SDL_PollEvent(&event)) {
-		switch (event.type) {
-		case SDL_QUIT:
-			exitGame();
-			break;
-		case SDL_MOUSEMOTION:
-			m_inputManager.setMouseCoords((float)event.motion.x, (float)event.motion.y);
-			break;
-		case SDL_KEYDOWN:
-			m_inputManager.pressKey(event.key.keysym.sym);
-			break;
-		case SDL_KEYUP:
-			m_inputManager.releaseKey(event.key.keysym.sym);
-			break;
-		case SDL_MOUSEBUTTONDOWN:
-			m_inputManager.pressKey(event.button.button);
-			break;
-		case SDL_MOUSEBUTTONUP:
-			m_inputManager.releaseKey(event.button.button);
-			break;
-		}
+
+	switch (event.type) {
+	case SDL_QUIT:
+		exitGame();
+		break;
+	case SDL_MOUSEMOTION:
+		m_inputManager.setMouseCoords((float)event.motion.x, (float)event.motion.y);
+		break;
+	case SDL_KEYDOWN:
+		m_inputManager.pressKey(event.key.keysym.sym);
+		break;
+	case SDL_KEYUP:
+		m_inputManager.releaseKey(event.key.keysym.sym);
+		break;
+	case SDL_MOUSEBUTTONDOWN:
+		m_inputManager.pressKey(event.button.button);
+		break;
+	case SDL_MOUSEBUTTONUP:
+		m_inputManager.releaseKey(event.button.button);
+		break;
 	}
+	
 }
 
 bool Vladgine::IMainGame::init()

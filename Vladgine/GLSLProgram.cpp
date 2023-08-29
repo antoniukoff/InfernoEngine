@@ -2,6 +2,7 @@
 #include <fstream>
 #include "VladgineErrors.h"
 #include <vector>
+#include "IOManager.h"
 
 namespace Vladgine {
 
@@ -14,7 +15,7 @@ namespace Vladgine {
 	{
 	}
 
-	void GLSLProgram::compileShaders(const string& vertFile, const string& fragFile)
+	void GLSLProgram::compileShadersFromSource(const char* vertSource, const char* fragSource)
 	{
 		_programID = glCreateProgram();
 
@@ -26,8 +27,19 @@ namespace Vladgine {
 		if (_fragmentShaderID == 0) {
 			fatalError("***fragment shader failed to be created***");
 		}
-		compileShader(vertFile, _vertexShaderID);
-		compileShader(fragFile, _fragmentShaderID);
+		compileShader(vertSource, "Vertex shader", _vertexShaderID);
+		compileShader(fragSource, "Fragment shader", _fragmentShaderID);
+	}
+
+	void GLSLProgram::compileShaders(const string& vertFile, const string& fragFile)
+	{
+		std::string vertSource;
+		std::string fragSource;
+
+		IOManager::reafFileToBuffer(vertFile, vertSource);
+		IOManager::reafFileToBuffer(fragFile, fragSource);
+
+		compileShadersFromSource(vertSource.c_str(), fragSource.c_str());
 	}
 
 	void GLSLProgram::linkShaders()
@@ -109,25 +121,16 @@ namespace Vladgine {
 		}
 	}
 
-	void GLSLProgram::compileShader(const string& filePath, GLuint id)
+	void GLSLProgram::dispose()
 	{
-		fstream vertexFile(filePath);
-		if (vertexFile.fail()) {
-			perror(filePath.c_str());
-			fatalError("failed to open " + filePath);
-		}
+		if(_programID) glDeleteProgram(_programID);
+	}
 
-		string fileContents = "";
-		string line;
-		while (getline(vertexFile, line)) {
-			fileContents += line + "\n";
-		}
+	void GLSLProgram::compileShader(const char* source, const std::string& name, GLuint id)
+	{
+		
 
-		vertexFile.close();
-
-		const char* contentsPtr = fileContents.c_str();
-
-		glShaderSource(id, 1, &contentsPtr, nullptr);
+		glShaderSource(id, 1, &source, nullptr);
 
 		glCompileShader(id);
 
@@ -143,7 +146,7 @@ namespace Vladgine {
 			glDeleteShader(id);
 
 			printf("%s\n", &errorLog[0]);
-			fatalError("shader " + filePath + " failed to compile");
+			fatalError("shader " + name + " failed to compile");
 		}
 	}
 

@@ -15,6 +15,8 @@ namespace Vladgine {
 	{
 		// setting the current flag to open gl
 		Uint32 flags = SDL_WINDOW_OPENGL;
+		_screenW = screenW;
+		_screenH = screenH;
 
 		// if we want to or on some more flags we are going to check if 
 		// the flag we pass is going to match the enum flags bitwise

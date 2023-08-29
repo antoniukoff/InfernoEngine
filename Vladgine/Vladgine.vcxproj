@@ -75,7 +75,7 @@
     <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>C:\Users\volod\source\repos\GraphicsEngine\deps\TTF\include;$(SolutionDir)deps\OpenGL\include;$(SolutionDir)deps\SDL\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)deps\TTF\include;$(SolutionDir)deps\OpenGL\include;$(SolutionDir)deps\Box2D\include;$(SolutionDir)deps\SDL\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -144,11 +144,13 @@
   <ItemGroup>
     <ClInclude Include="AudioEngine.h" />
     <ClInclude Include="Camera2D.h" />
+    <ClInclude Include="DebugRenderer.h" />
     <ClInclude Include="IGameScreen.h" />
     <ClInclude Include="IMainGame.h" />
     <ClInclude Include="ParticleBatch2D.h" />
     <ClInclude Include="ParticleEngine2D.h" />
     <ClInclude Include="ScreenList.h" />
+    <ClInclude Include="TileSheet.h" />
     <ClInclude Include="VladgineErrors.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="GLSLProgram.h" />
@@ -170,6 +172,7 @@
   <ItemGroup>
     <ClCompile Include="AudioEngine.cpp" />
     <ClCompile Include="Camera2D.cpp" />
+    <ClCompile Include="DebugRenderer.cpp" />
     <ClCompile Include="IMainGame.cpp" />
     <ClCompile Include="ParticleBatch2D.cpp" />
     <ClCompile Include="ParticleEngine2D.cpp" />

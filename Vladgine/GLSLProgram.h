@@ -11,6 +11,9 @@ namespace Vladgine {
 		GLSLProgram();
 		~GLSLProgram();
 
+
+		void compileShadersFromSource(const char* vertSource, const char* fragSource);
+
 		void compileShaders(const string& vertFile, const string& fragFile);
 
 		void linkShaders();
@@ -20,10 +23,12 @@ namespace Vladgine {
 		void addAttribure(const string& attributeName);
 		void use();
 		void unuse();
+
+		void dispose();
 	private:
 		int _numAttributes;
 
-		void compileShader(const string& filePath, GLuint id);
+		void compileShader(const char* source, const std::string& name, GLuint id);
 		GLuint _programID;
 
 		GLuint _vertexShaderID;
