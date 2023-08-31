@@ -59,3 +59,11 @@ void Capsule::drawDebug(Vladgine::DebugRenderer& debugRenderer)
 	debugRenderer.drawCircle(glm::vec2(destRect.x + m_dimensions.x / 2.0f, destRect.y), color, m_dimensions.x / 2.0f);
 	debugRenderer.drawCircle(glm::vec2(destRect.x + m_dimensions.x / 2.0f, destRect.y + destRect.w), color, m_dimensions.x / 2.0f);
 }
+
+void Capsule::destroy(b2World* world)
+{
+	if (m_body) {
+		world->DestroyBody(m_body);
+		m_body = nullptr;
+	}
+}

@@ -45,14 +45,14 @@ void GameplayScreen::onEntry()
 
 	m_debugRenderer.init();
 
+	
+
+	m_texture = Vladgine::ResourceManager::getTexture("Textures/brick_wall.png");
+
 	// Make the ground
-	b2BodyDef groundBodyDef;
-	groundBodyDef.position.Set(0.0f, -20.0f);
-	b2Body* groundBody = m_world->CreateBody(&groundBodyDef);
-	// Make the ground fixture
-	b2PolygonShape groundBox;
-	groundBox.SetAsBox(50.0f, 10.0f);
-	groundBody->CreateFixture(&groundBox, 0.0f);
+	Box groundBox;
+	groundBox.init(m_world.get(), glm::vec2(0.0f, -20.0f), glm::vec2(50.0f, 10.0f), m_texture, Vladgine::ColorRGB8(255, 255, 255, 255), false, false);
+	m_boxes.push_back(groundBox);
 
 	std::mt19937 randGenerator;
     std::uniform_real_distribution<float> xDist(-10.0f, 10.0f);
@@ -61,13 +61,13 @@ void GameplayScreen::onEntry()
     std::uniform_real_distribution<float> color(0, 255);
 	const int numBoxes = 10;
 
-	m_texture = Vladgine::ResourceManager::getTexture("Textures/brick_wall.png");
 
 	for (int i = 0; i < numBoxes; i++) {
 		Box newBox;
-		newBox.init(m_world.get(), glm::vec2(xDist(randGenerator), yDist(randGenerator)), 
-					glm::vec2(size(randGenerator), size(randGenerator)), m_texture, Vladgine::ColorRGB8(color(randGenerator),
-					color(randGenerator), color(randGenerator), 255), false);
+		newBox.init(m_world.get(), glm::vec2(xDist(randGenerator), yDist(randGenerator)),
+			glm::vec2(size(randGenerator), size(randGenerator)), m_texture,
+			Vladgine::ColorRGB8(color(randGenerator), color(randGenerator), color(randGenerator), 255),
+			false, true);
 	
 		m_boxes.push_back(newBox);
 	}
@@ -107,6 +107,8 @@ void GameplayScreen::onEntry()
 void GameplayScreen::onExit()
 {
 	m_debugRenderer.dispose();
+	m_boxes.clear();
+	m_world.reset();
 }
 
 void GameplayScreen::update()
@@ -212,15 +214,13 @@ void GameplayScreen::initUI()
 	m_gui.init("GUI");
 	m_gui.loadScheme("TaharezLook.scheme");
 	m_gui.setFont("DejaVuSans-10");
-	CEGUI::PushButton* testButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget("TaharezLook/Button", glm::vec4(0.5f, 0.5f, 0.1f, 0.05f), glm::vec4(0.0f), "TestButton"));
+	CEGUI::PushButton* testButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget("TaharezLook/Button", glm::vec4(0.01f, 0.01f, 0.1f, 0.05f), glm::vec4(0.0f), "TestButton"));
 	testButton->setText("Exit Game!");
 
 	//set the event to be called when we click 
 	testButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&GameplayScreen::onExitClicked, this));
 
-	CEGUI::Combobox* testComboButton = static_cast<CEGUI::Combobox*>(m_gui.createWidget("TaharezLook/Combobox", glm::vec4(0.2f, 0.2f, 0.1f, 0.05f), glm::vec4(0.0f), "testComboBox"));
-
-
+	
 	m_gui.setMouseCursor("TaharezLook/MouseArrow");
 	m_gui.showMouseCursor();
 	SDL_ShowCursor(0);
@@ -233,13 +233,9 @@ void GameplayScreen::checkInput()
 	{
 		m_game->onSDLEvent(evnt);
 		m_gui.onSDLEvent(evnt);
-
-		switch (evnt.type)
-		{
+		switch (evnt.type) {
 		case SDL_QUIT:
 			onExitClicked(CEGUI::EventArgs());
-			break;
-		default:
 			break;
 		}
 	}

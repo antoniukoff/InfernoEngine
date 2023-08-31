@@ -12,9 +12,19 @@ public:
 	~Box();
 
 	void init(b2World* world, const glm::vec2& position, const glm::vec2& dimensions, Vladgine::GLTexture texture,
-			  Vladgine::ColorRGB8 color, bool fixedRotation, glm::vec4 uvRrct = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+		Vladgine::ColorRGB8 color, bool fixedRotation, bool isDynamic,
+		float angle = 0.0f, glm::vec4 uvRrct = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+
+	void destroy(b2World* world);
 
 	void draw(Vladgine::SpriteBatch& spriteBatch);
+
+	bool isDynamic() const { return m_body->GetType() == b2_dynamicBody; }
+
+	// Test if a point is inside the box
+	bool testPoint(float x, float y) const { return m_fixture->TestPoint(b2Vec2(x, y)); }
+
+	glm::vec2 getPosition() const { return glm::vec2(m_body->GetPosition().x, m_body->GetPosition().y); }
 
 	b2Body* getBody() const { return m_body; }
 	b2Fixture* getFixture() const { return m_fixture; }

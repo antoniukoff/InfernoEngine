@@ -13,6 +13,8 @@ public:
 
 	void init(b2World* world, const glm::vec2& position, const glm::vec2& drawDims, const glm::vec2& collisionDims, Vladgine::ColorRGB8 color);
 
+	void destroy(b2World* world);
+
 	void draw(Vladgine::SpriteBatch& spriteBatch);
 	void drawDebug(Vladgine::DebugRenderer& debugRenderer);
 

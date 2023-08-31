@@ -112,6 +112,7 @@ void Vladgine::DebugRenderer::drawLine(const glm::vec2& a, const glm::vec2& b, c
 {
 	int i = m_verts.size();
 	m_verts.resize(m_verts.size() + 2);
+
 	m_verts[i].position = a;
 	m_verts[i].color = color;
 	m_verts[i + 1].position = b;

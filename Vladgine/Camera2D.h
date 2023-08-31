@@ -26,9 +26,10 @@ namespace Vladgine {
 		void setScale(float newScale) { _scale = newScale; _needsMatrixUpdate = true;}
 
 		//getters
-		glm::vec2 getPos() { return _position; }
-		float getScale() { return _scale; }
-		glm::mat4 getCameraMatrix() { return _cameraMatrix;  }
+		glm::vec2 getPos() const { return _position; }
+		float getScale() const { return _scale; }
+		glm::mat4 getCameraMatrix() const { return _cameraMatrix;  }
+		float getAspectRatio() const { return (float)_screenWidth / (float)_screenHeight; }
 
 	private:
 		int _screenWidth, _screenHeight;

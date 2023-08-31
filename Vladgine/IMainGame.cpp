@@ -99,7 +99,6 @@ void Vladgine::IMainGame::onSDLEvent(SDL_Event& event)
 
 	switch (event.type) {
 	case SDL_QUIT:
-		exitGame();
 		break;
 	case SDL_MOUSEMOTION:
 		m_inputManager.setMouseCoords((float)event.motion.x, (float)event.motion.y);

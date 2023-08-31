@@ -9,7 +9,8 @@ Box::~Box()
 {
 }
 void Box::init(b2World* world, const glm::vec2& position, const glm::vec2& dimensions, Vladgine::GLTexture texture,
-			   Vladgine::ColorRGB8 color, bool fixedRotation, glm::vec4 uvRect /*= glm::vec4(0.0f, 0.0f, 1.0f, 1.0f)*/)
+	Vladgine::ColorRGB8 color, bool fixedRotation, bool isDynamic,
+	float angle, /* = 0.0f */ glm::vec4 uvRect /*= glm::vec4(0.0f, 0.0f, 1.0f, 1.0f)*/)
 {
 	m_color = color;
 	m_dimensions = dimensions;
@@ -17,9 +18,15 @@ void Box::init(b2World* world, const glm::vec2& position, const glm::vec2& dimen
 	m_uvRect = uvRect;
 	//make the body
 	b2BodyDef bodyDef;
-	bodyDef.type = b2_dynamicBody;
+	if (isDynamic) {
+		bodyDef.type = b2_dynamicBody;
+	}
+	else {
+		bodyDef.type = b2_staticBody;
+	}
 	bodyDef.position.Set(position.x, position.y);
 	bodyDef.fixedRotation = fixedRotation;  
+	bodyDef.angle = angle;
 	m_body = world->CreateBody(&bodyDef);
 
 	b2PolygonShape boxShape;
@@ -31,6 +38,10 @@ void Box::init(b2World* world, const glm::vec2& position, const glm::vec2& dimen
 	fixtureDef.friction = 0.3f;
 	m_fixture = m_body->CreateFixture(&fixtureDef);
 
+}
+
+void Box::destroy(b2World* world) {
+	world->DestroyBody(m_body);
 }
 
 void Box::draw(Vladgine::SpriteBatch& spriteBatch)

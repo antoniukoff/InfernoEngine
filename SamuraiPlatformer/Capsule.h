@@ -15,6 +15,7 @@ public:
 
 	void drawDebug(Vladgine::DebugRenderer& debugRenderer);
 
+	void destroy(b2World* world);
 
 	b2Body* getBody() const { return m_body; }
 	b2Fixture* getFixture(int index) const { return m_fixtures[index]; }
