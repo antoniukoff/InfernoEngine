@@ -23,6 +23,5 @@ void main(){
 	fragmentColor = vertexColor;
 
 	
-
 	fragUV = vertUV;
 }

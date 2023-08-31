@@ -18,6 +18,9 @@ namespace Vladgine {
 
 		bool isBoxInView(const glm::vec2& position, const glm::vec2& domensions);
 
+		void offsetPosition(const glm::vec2& offset) { _position += offset; _needsMatrixUpdate = true; }
+		void offsetScale(float cameraOffset) { _scale += cameraOffset; if (_scale <= 0.001f) _scale = 0.001f; _needsMatrixUpdate = true; }
+
 		//setters
 		void setPos(const glm::vec2& newPos) { _position = newPos; 	_needsMatrixUpdate = true; }
 		void setScale(float newScale) { _scale = newScale; _needsMatrixUpdate = true;}

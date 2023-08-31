@@ -72,6 +72,7 @@ void Vladgine::IMainGame::update()
 				m_currentScreen->setRunning();
 				m_currentScreen->onEntry();
 			}
+			break;
 		case Screen_State::EXIT_APPLICATION:
 			exitGame();
 			break;

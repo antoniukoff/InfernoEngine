@@ -9,6 +9,7 @@
 #include <Vladgine/GLTexture.h>
 #include <Vladgine/Window.h>
 #include <Vladgine/DebugRenderer.h>
+#include <Vladgine/GUI.h>
 #include "Player.h"
 
 class GameplayScreen : public Vladgine::IGameScreen
@@ -36,7 +37,11 @@ public:
 	virtual void draw() override;
 
 private:
+	void initUI();
 	void checkInput();
+
+	bool onExitClicked(const CEGUI::EventArgs& e);
+
 	Vladgine::SpriteBatch m_spriteBatch;
 	Vladgine::GLSLProgram m_textureProgram;
 	Vladgine::GLSLProgram m_lightProgram;
@@ -44,6 +49,7 @@ private:
 	Vladgine::GLTexture m_texture;
 	Vladgine::Window* m_window;
 	Vladgine::DebugRenderer m_debugRenderer;
+	Vladgine::GUI m_gui;
 
 	bool m_renderDebug = false;
 

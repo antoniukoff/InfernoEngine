@@ -6,10 +6,12 @@
 #include "Light.h"
 #include "Box.h"
 #include <random>
-
-
+#include "ScreenIndices.h"
 
 GameplayScreen::GameplayScreen(Vladgine::Window* window) : m_window(window) {
+
+	m_screenIndex = SCREEN_INDEX_GAMEPLAY;
+
 }
 
 GameplayScreen::~GameplayScreen()
@@ -23,7 +25,7 @@ int GameplayScreen::getNextScreenIndex() const
 
 int GameplayScreen::getPreviousScreenIndex() const
 {
-	return SCREEN_INDEX_NO_SCREEN;
+	return SCREEN_INDEX_MAINMENU;
 }
 
 void GameplayScreen::build()
@@ -36,6 +38,8 @@ void GameplayScreen::destroy()
 
 void GameplayScreen::onEntry()
 {
+	
+
 	b2Vec2 gravity(0.0f, -25.0f);
 	m_world = std::make_unique<b2World>(gravity);
 
@@ -97,6 +101,7 @@ void GameplayScreen::onEntry()
 
 	//init player
 	m_player.init(m_world.get(), glm::vec2(0.0f, 30.0f), glm::vec2(2.0f), glm::vec2(1.0f, 1.8f), Vladgine::ColorRGB8(255, 255, 255, 255));
+	initUI();
 }
 
 void GameplayScreen::onExit()
@@ -175,6 +180,8 @@ void GameplayScreen::draw()
 	mouseLight.position = mousePos;
 	mouseLight.size = 15.0f;
 
+	
+
 	m_lightProgram.use();
 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
@@ -193,6 +200,30 @@ void GameplayScreen::draw()
 
 	m_lightProgram.unuse();
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	m_gui.draw();
+	
+	glEnable(GL_BLEND);
+}
+
+void GameplayScreen::initUI()
+{
+	//init GUI
+	m_gui.init("GUI");
+	m_gui.loadScheme("TaharezLook.scheme");
+	m_gui.setFont("DejaVuSans-10");
+	CEGUI::PushButton* testButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget("TaharezLook/Button", glm::vec4(0.5f, 0.5f, 0.1f, 0.05f), glm::vec4(0.0f), "TestButton"));
+	testButton->setText("Exit Game!");
+
+	//set the event to be called when we click 
+	testButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&GameplayScreen::onExitClicked, this));
+
+	CEGUI::Combobox* testComboButton = static_cast<CEGUI::Combobox*>(m_gui.createWidget("TaharezLook/Combobox", glm::vec4(0.2f, 0.2f, 0.1f, 0.05f), glm::vec4(0.0f), "testComboBox"));
+
+
+	m_gui.setMouseCursor("TaharezLook/MouseArrow");
+	m_gui.showMouseCursor();
+	SDL_ShowCursor(0);
 }
 
 void GameplayScreen::checkInput()
@@ -201,5 +232,22 @@ void GameplayScreen::checkInput()
 	while (SDL_PollEvent(&evnt))
 	{
 		m_game->onSDLEvent(evnt);
+		m_gui.onSDLEvent(evnt);
+
+		switch (evnt.type)
+		{
+		case SDL_QUIT:
+			onExitClicked(CEGUI::EventArgs());
+			break;
+		default:
+			break;
+		}
 	}
+}
+
+bool GameplayScreen::onExitClicked(const CEGUI::EventArgs& e)
+{
+	m_currentState = Vladgine::Screen_State::CHANGE_PREVIOUS;
+
+	return true;
 }

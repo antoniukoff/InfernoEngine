@@ -19,7 +19,7 @@ namespace Vladgine {
 
 		void destroy();
 
-		IGameScreen* getCurrent();
+		IGameScreen* getCurrent(); 
 
 	protected:
 		IMainGame* m_game = nullptr;
