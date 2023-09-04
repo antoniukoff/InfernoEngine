@@ -82,6 +82,16 @@ namespace Vladgine {
 		createVertexArray();
 	}
 
+	void SpriteBatch::dispose()
+	{
+		if (_vao != 0) {
+			glDeleteVertexArrays(1, &_vao);
+		}
+		if (_vbo != 0) {
+			glDeleteBuffers(1, &_vbo);
+		}
+	}
+
 	// setting up our sprite batch before drawing we are coing to clear the allocated memory
 	//for render batches and glyphs and are going to delete the glyphs on the heap
 	void SpriteBatch::begin(GlyphSortType sortType/* = GlyphSortType::TEXTURE*/)
@@ -134,7 +144,6 @@ namespace Vladgine {
 			glDrawArrays(GL_TRIANGLES, _renderBatches[i].offset, _renderBatches[i].numVertices);
 		}
 		glBindVertexArray(0);
-		
 	}
 
 	void SpriteBatch::createRenderBatches()
@@ -261,7 +270,5 @@ namespace Vladgine {
 	{
 		return (a->texture < b->texture);
 	}
-
-
 
 }

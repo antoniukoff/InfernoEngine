@@ -10,6 +10,7 @@ void Player::init(b2World* world, const glm::vec2& position, const glm::vec2& dr
 	m_drawDims = drawDims;
 	m_capsule.init(world, position, collisionDims, 1.0f, 0.1f, true);
 	m_texture.init(texture, glm::ivec2(10, 2));
+	m_collisionDims = collisionDims;
 }
 
 void Player::destroy(b2World* world)

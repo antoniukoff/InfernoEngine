@@ -131,6 +131,4 @@ void Agent::collideWithTile(glm::vec2 tilePos)
 			}
 		}
 	}
-
-
 }

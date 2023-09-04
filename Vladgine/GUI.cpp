@@ -195,7 +195,7 @@ void Vladgine::GUI::onSDLEvent(SDL_Event& event)
 
 	switch (event.type) {
 	case SDL_MOUSEMOTION:
-		m_context->injectMousePosition(event.motion.x, event.motion.y);
+		m_context->injectMousePosition((float)event.motion.x, (float)event.motion.y);
 		break;
 	case SDL_KEYDOWN:
 		m_context->injectKeyDown(SDLKeyToCEGUIKey(event.key.keysym.sym));

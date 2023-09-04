@@ -31,10 +31,15 @@ public:
 		return rv;
  }
 
+	const glm::vec2& getDrawDims() const { return m_drawDims; }
+	const glm::vec2& getCollisionDims() const { return m_collisionDims; }
+	const Vladgine::ColorRGB8& getColor() const { return m_color; }
+
 private:
 	MoveState m_moveState = MoveState::STANDING;
 	Vladgine::TileSheet m_texture;
 	Vladgine::ColorRGB8 m_color;
+	glm::vec2 m_collisionDims;
 	Capsule m_capsule;
 	float m_animTime = 0;
 	glm::vec2 m_drawDims;

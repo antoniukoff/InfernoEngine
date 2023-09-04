@@ -37,6 +37,7 @@ namespace Vladgine {
 
         texture.width = width;
         texture.height = height;
+        texture.filePath = filePath;
 
         return texture;
     }

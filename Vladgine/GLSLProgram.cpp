@@ -101,8 +101,6 @@ namespace Vladgine {
 	void GLSLProgram::addAttribure(const string& attributeName)
 	{
 		glBindAttribLocation(_programID, _numAttributes++, attributeName.c_str());
-
-
 	}
 
 	void GLSLProgram::use()

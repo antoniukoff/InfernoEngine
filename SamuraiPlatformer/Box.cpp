@@ -18,6 +18,8 @@ void Box::init(b2World* world, const glm::vec2& position, const glm::vec2& dimen
 	m_uvRect = uvRect;
 	//make the body
 	b2BodyDef bodyDef;
+	m_fixedRotation = fixedRotation;
+	m_isDynamic = isDynamic;
 	if (isDynamic) {
 		bodyDef.type = b2_dynamicBody;
 	}
@@ -37,6 +39,7 @@ void Box::init(b2World* world, const glm::vec2& position, const glm::vec2& dimen
 	fixtureDef.density = 1.0f;
 	fixtureDef.friction = 0.3f;
 	m_fixture = m_body->CreateFixture(&fixtureDef);
+
 
 }
 

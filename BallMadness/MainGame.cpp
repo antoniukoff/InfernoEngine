@@ -132,7 +132,7 @@ void MainGame::initBalls() {
     totalProbability += p; \
     possibleBalls.emplace_back(__VA_ARGS__);
 
-    const int NUM_BALLS = 10000;  
+    const int NUM_BALLS = 40000;  
 
     // Random engine stuff
     std::mt19937 randomEngine((unsigned int)time(nullptr));

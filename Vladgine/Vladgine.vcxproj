@@ -74,7 +74,7 @@
     <IncludePath>$(SolutionDir)deps\;$(SolutionDir)deps\TTF\include;$(SolutionDir)deps\OpenGL\include;$(SolutionDir)deps\SDL\include;$(SolutionDir)deps\Box2D\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir)deps\TTF\include;$(SolutionDir)deps\OpenGL\include;$(SolutionDir)deps\Box2D\include;$(SolutionDir)deps\SDL\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)deps\TTF\include;$(SolutionDir)deps\OpenGL\include;$(SolutionDir)deps\Box2D\include;$(SolutionDir)deps\;$(SolutionDir)deps\SDL\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -101,6 +101,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp14</LanguageStandard>
+      <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>

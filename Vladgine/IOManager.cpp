@@ -1,6 +1,11 @@
+#define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
+
 #include "IOManager.h"
 
 #include <fstream>
+#include <experimental/filesystem>
+
+namespace fs = std::experimental::filesystem;
 
 namespace Vladgine {
 
@@ -59,5 +64,28 @@ namespace Vladgine {
 		file.close();
 		return true;
     }
+
+    bool IOManager::getDirectoryEntries(const char* path, std::vector<DirEntry>& rvEntries)
+    {
+        auto dpath = fs::path(path);
+        
+        if (!fs::is_directory(dpath)) return false;
+        for (auto it = fs::directory_iterator(dpath); it != fs::directory_iterator(); ++it) {
+            rvEntries.emplace_back();
+            rvEntries.back().path = it->path().string();
+            if (is_directory(it->path())) {
+                rvEntries.back().isDirectory = true;
+            }
+            else {
+                rvEntries.back().isDirectory = false;
+            }
+        }
+        return true;
+    }
+
+	bool IOManager::makeDiretory(const char* path)
+	{
+        return fs::create_directory(fs::path(path));
+	}
 
 }

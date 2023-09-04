@@ -1,7 +1,13 @@
 #include "EditorScreen.h"
 
+#include <iostream>
 #include <Vladgine/ResourceManager.h>
+#include <Vladgine/IOManager.h>
+#include "LevelReaderWriter.h"
 
+
+
+const b2Vec2 GRAVITY(0.0f, -25.0);
 const int MOUSE_LEFT = 0;
 const int MOUSE_RIGHT = 1;
 const float LIGHT_SELECT_RADIUS = 0.5f;
@@ -77,10 +83,22 @@ void EditorScreen::onEntry() {
 }
 
 void EditorScreen::onExit() {
+	for (auto& item : m_saveListBoxItems) {
+		// We don't have to call delete since removeItem does it for us
+		m_saveWindowCombobox->removeItem(item);
+	}
+	m_saveListBoxItems.clear();
+	for (auto& item : m_loadListBoxItems) {
+		// We don't have to call delete since removeItem does it for us
+		m_loadWindowCombobox->removeItem(item);
+	}
+	m_loadListBoxItems.clear();
 	m_gui.destroy();
 	m_textureProgram.dispose();
+	m_spriteBatch.dispose();
 	m_spriteFont.dispose();
 	m_widgetLabels.clear();
+	clearLevel();
 	m_world.reset();
 }
 
@@ -123,6 +141,7 @@ void EditorScreen::update() {
 	}
 
 	// Light scaling from keypress
+	
 	if ((m_objectMode == ObjectMode::LIGHT && m_selectMode == SelectionMode::PLACE) || m_selectedLight != NO_LIGHT) {
 		const double SCALE_SPEED = 0.1;
 		const float ALPHA_SPEED = 1.0f;
@@ -141,6 +160,24 @@ void EditorScreen::update() {
 			m_aSlider->setCurrentValue(m_aSlider->getCurrentValue() + ALPHA_SPEED);
 		}
 	}
+
+
+	// Check for deleting an object
+	if (m_inputManager.isKeyPressed(SDLK_DELETE)) {
+		if (m_selectedLight != NO_LIGHT) {
+			m_lights.erase(m_lights.begin() + m_selectedLight);
+			m_selectedLight = NO_LIGHT;
+		}
+		else if (m_selectedBox != NO_BOX) {
+			m_boxes[m_selectedBox].destroy(m_world.get());
+			m_boxes.erase(m_boxes.begin() + m_selectedBox);
+			m_selectedBox = NO_BOX;
+		}
+	}
+
+	m_gui.update();
+
+
 }
 
 void EditorScreen::draw() {
@@ -168,7 +205,7 @@ void EditorScreen::drawUI() {
 			// Make temporary light to render
 			Light tmpLight;
 			tmpLight.position = pos;
-			tmpLight.color = Vladgine::ColorRGB8(m_colorPickerRed, m_colorPickerGreen, m_colorPickerBlue, m_colorPickerAlpha);
+			tmpLight.color = Vladgine::ColorRGB8((GLubyte)m_colorPickerRed, (GLubyte)m_colorPickerGreen, (GLubyte)m_colorPickerBlue, (GLubyte)m_colorPickerAlpha);
 			tmpLight.size = m_lightSize;
 
 			// Draw light
@@ -234,7 +271,7 @@ void EditorScreen::drawUI() {
 		// Sorry for this
 		destRect.x = m_aSlider->getXPosition().d_scale * m_window->getScreenWidth() + 10.0f - m_window->getScreenWidth() / 2.0f + QUAD_SIZE / 2.0f;
 		destRect.y = m_window->getScreenHeight() / 2.0f - m_aSlider->getYPosition().d_scale * m_window->getScreenHeight() -
-			m_aSlider->getHeight().d_scale * m_window->getScreenHeight() * 0.5 - QUAD_SIZE / 4.0f;
+			m_aSlider->getHeight().d_scale * m_window->getScreenHeight() * 0.5f - QUAD_SIZE / 4.0f;
 		destRect.z = QUAD_SIZE;
 		destRect.w = QUAD_SIZE;
 		m_spriteBatch.draw(destRect, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), m_blankTexture.id, 0.0f, Vladgine::ColorRGB8((GLubyte)m_colorPickerRed, (GLubyte)m_colorPickerGreen, (GLubyte)m_colorPickerBlue, 255));
@@ -349,6 +386,15 @@ void EditorScreen::drawWorld() {
 
 }
 
+void EditorScreen::clearLevel()
+{
+	m_boxes.clear();
+	m_lights.clear();
+	m_hasPlayer = false;
+	m_world.reset();
+	m_world = std::make_unique<b2World>(GRAVITY);
+}
+
 void EditorScreen::initUI() {
 	// Init the UI
 	m_gui.init("GUI");
@@ -356,7 +402,7 @@ void EditorScreen::initUI() {
 	m_gui.setFont("DejaVuSans-10");
 
 	// Add group box back panel
-	m_groupBox = static_cast<CEGUI::GroupBox*>(m_gui.createWidget("TaharezLook/GroupBox", glm::vec4(0.001f, 0.0f, 0.18f, 0.67f), glm::vec4(0.0f), "GroupBox"));
+	m_groupBox = static_cast<CEGUI::GroupBox*>(m_gui.createWidget("TaharezLook/GroupBox", glm::vec4(0.001f, 0.0f, 0.18f, 0.72f), glm::vec4(0.0f), "GroupBox"));
 	// Group box should be behind everything.
 	m_groupBox->setAlwaysOnTop(false);
 	m_groupBox->moveToBack();
@@ -523,14 +569,60 @@ void EditorScreen::initUI() {
 	}
 
 	{ // Add save and back buttons
-		CEGUI::PushButton* saveButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget("TaharezLook/Button", glm::vec4(0.03f, 0.5f, 0.1f, 0.05f), glm::vec4(0.0f), "SaveButton"));
-		saveButton->setText("Save");
-		saveButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&EditorScreen::onSaveMouseClick, this));
+		m_saveButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget("TaharezLook/Button", glm::vec4(0.03f, 0.5f, 0.1f, 0.05f), glm::vec4(0.0f), "SaveButton"));
+		m_saveButton->setText("Save");
+		m_saveButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&EditorScreen::onSaveMouseClick, this));
 
-		CEGUI::PushButton* backButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget("TaharezLook/Button", glm::vec4(0.03f, 0.57f, 0.1f, 0.05f), glm::vec4(0.0f), "BackButton"));
-		backButton->setText("Back");
-		backButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&EditorScreen::onBackMouseClick, this));
+		m_saveButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget("TaharezLook/Button", glm::vec4(0.03f, 0.57f, 0.1f, 0.05f), glm::vec4(0.0f), "LoadButton"));
+		m_saveButton->setText("Load");
+		m_saveButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&EditorScreen::onLoadMouseClick, this));
+
+		m_backButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget("TaharezLook/Button", glm::vec4(0.03f, 0.64f, 0.1f, 0.05f), glm::vec4(0.0f), "BackButton"));
+		m_backButton->setText("Back");
+		m_backButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&EditorScreen::onBackMouseClick, this));
+
+		CEGUI::PushButton* testButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget("TaharezLook/Button", glm::vec4(0.5f, 0.7f, 0.3f, 0.1f), glm::vec4(0.0f), "TestLevelButton"));
+		testButton->setText("Test Level");
+		
 	}
+
+	{ // Add save window widgets
+		m_saveWindow = static_cast<CEGUI::FrameWindow*>(m_gui.createWidget("TaharezLook/FrameWindow", glm::vec4(0.3f, 0.3f, 0.4f, 0.4f), glm::vec4(0.0f), "SaveWindow"));
+		m_saveWindow->subscribeEvent(CEGUI::FrameWindow::EventCloseClicked, CEGUI::Event::Subscriber(&EditorScreen::onSaveCancelClick, this));
+		m_saveWindow->setText("Save Level");
+		// Don't let user drag window around
+		m_saveWindow->setDragMovingEnabled(false);
+
+		// Children of saveWindow
+		m_saveWindowCombobox = static_cast<CEGUI::Combobox*>(m_gui.createWidget(m_saveWindow, "TaharezLook/Combobox", glm::vec4(0.1f, 0.1f, 0.8f, 0.4f), glm::vec4(0.0f), "SaveCombobox"));
+		m_saveWindowSaveButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget(m_saveWindow, "TaharezLook/Button", glm::vec4(0.35f, 0.8f, 0.3f, 0.1f), glm::vec4(0.0f), "SaveCancelButton"));
+		m_saveWindowSaveButton->setText("Save");
+		m_saveWindowSaveButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&EditorScreen::onSave, this));
+
+		// Start disabled
+		m_saveWindow->setAlpha(0.0f);
+		m_saveWindow->disable();
+	}
+
+	{ // Add load window widgets
+		m_loadWindow = static_cast<CEGUI::FrameWindow*>(m_gui.createWidget("TaharezLook/FrameWindow", glm::vec4(0.3f, 0.3f, 0.4f, 0.4f), glm::vec4(0.0f), "LoadWindow"));
+		m_loadWindow->subscribeEvent(CEGUI::FrameWindow::EventCloseClicked, CEGUI::Event::Subscriber(&EditorScreen::onLoadCancelClick, this));
+		m_loadWindow->setText("Load Level");
+		// Don't let user drag window around
+		m_loadWindow->setDragMovingEnabled(false);
+
+		// Children of loadWindow
+		m_loadWindowCombobox = static_cast<CEGUI::Combobox*>(m_gui.createWidget(m_loadWindow, "TaharezLook/Combobox", glm::vec4(0.1f, 0.1f, 0.8f, 0.4f), glm::vec4(0.0f), "LoadCombobox"));
+		m_loadWindowLoadButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget(m_loadWindow, "TaharezLook/Button", glm::vec4(0.35f, 0.8f, 0.3f, 0.1f), glm::vec4(0.0f), "LoadCancelButton"));
+		m_loadWindowLoadButton->setText("Load");
+		m_loadWindowLoadButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&EditorScreen::onLoad, this));
+
+		// Start disabled
+		m_loadWindow->setAlpha(0.0f);
+		m_loadWindow->disable();
+	}
+
+	
 
 	setLightWidgetVisibility(false);
 	setPlatformWidgetVisibility(false);
@@ -541,6 +633,9 @@ void EditorScreen::initUI() {
 
 void EditorScreen::checkInput() {
 	SDL_Event evnt;
+
+	m_inputManager.update();
+
 	while (SDL_PollEvent(&evnt)) {
 		m_gui.onSDLEvent(evnt);
 		switch (evnt.type) {
@@ -569,7 +664,6 @@ void EditorScreen::checkInput() {
 		}
 	}
 
-	m_inputManager.update();
 }
 
 bool inLightSelect(const Light& l, const glm::vec2& pos) {
@@ -597,6 +691,7 @@ void EditorScreen::updateMouseDown(const SDL_Event& evnt) {
 			}
 			else {
 				// Unselect9
+				m_selectedLight = NO_LIGHT;
 				// Find the box that we are selecting
 				for (size_t i = 0; i < m_lights.size(); i++) {
 					if (inLightSelect(m_lights[i], pos)) {
@@ -611,6 +706,11 @@ void EditorScreen::updateMouseDown(const SDL_Event& evnt) {
 				m_selectOffset = pos - m_lights[m_selectedLight].position;
 				m_selectedBox = NO_LIGHT;
 				m_isDragging = true;
+				m_colorPickerRed = m_lights[m_selectedLight].color.r;
+				m_colorPickerGreen = m_lights[m_selectedLight].color.g;
+				m_colorPickerBlue = m_lights[m_selectedLight].color.b;
+				m_colorPickerAlpha = m_lights[m_selectedLight].color.a;
+				m_lightSize = m_lights[m_selectedLight].size;
 				// Set widget values
 				m_rSlider->setCurrentValue(m_lights[m_selectedLight].color.r);
 				m_gSlider->setCurrentValue(m_lights[m_selectedLight].color.g);
@@ -641,6 +741,13 @@ void EditorScreen::updateMouseDown(const SDL_Event& evnt) {
 				// Get the offset from the center so we can drag correctly
 				m_selectOffset = pos - m_boxes[m_selectedBox].getPosition();
 				m_isDragging = true;
+
+				m_rotation = m_boxes[m_selectedBox].getBody()->GetAngle();
+				m_boxDims.x = m_boxes[m_selectedBox].getDimensions().x;
+				m_boxDims.y = m_boxes[m_selectedBox].getDimensions().y;
+				m_colorPickerRed = m_boxes[m_selectedBox].getColor().r;
+				m_colorPickerGreen = m_boxes[m_selectedBox].getColor().g;
+				m_colorPickerBlue = m_boxes[m_selectedBox].getColor().b;
 				// Set widget values
 				m_rotationSpinner->setCurrentValue(m_boxes[m_selectedBox].getBody()->GetAngle());
 				m_widthSpinner->setCurrentValue(m_boxes[m_selectedBox].getDimensions().x);
@@ -744,7 +851,7 @@ void EditorScreen::refreshSelectedBox() {
 void EditorScreen::refreshSelectedBox(const glm::vec2& newPosition) {
 	if (m_selectedBox == NO_BOX) return;
 	// Texture for boxes. Its here because lazy.
-	static Vladgine::GLTexture texture = Vladgine::ResourceManager::getTexture("Assets/bricks_top.png");
+	static Vladgine::GLTexture texture = Vladgine::ResourceManager::getTexture("Textures/brick_wall.png");
 	glm::vec4 uvRect;
 	uvRect.x = newPosition.x;
 	uvRect.y = newPosition.y;
@@ -779,6 +886,11 @@ bool EditorScreen::isMouseInUI() {
 	SDL_GetMouseState(&x, &y);
 	const float SW = m_window->getScreenWidth();
 	const float SH = m_window->getScreenHeight();
+
+	if (!m_saveWindow->isDisabled() &&
+		x >= m_saveWindow->getXPosition().d_scale * SW && x <= m_saveWindow->getXPosition().d_scale * SW + m_saveWindow->getWidth().d_scale * SW &&
+		y >= m_saveWindow->getYPosition().d_scale * SH && y <= m_saveWindow->getYPosition().d_scale * SH + m_saveWindow->getHeight().d_scale * SH)
+		{return true;}
 	// Notice we aren't converting to world space, we are staying in screen space because UI.
 	return (x >= m_groupBox->getXPosition().d_scale * SW && x <= m_groupBox->getXPosition().d_scale * SW + m_groupBox->getWidth().d_scale * SW &&
 		y >= m_groupBox->getYPosition().d_scale * SH && y <= m_groupBox->getYPosition().d_scale * SH + m_groupBox->getHeight().d_scale * SH);
@@ -879,11 +991,82 @@ bool EditorScreen::onPlaceMouseClick(const CEGUI::EventArgs& e) {
 	m_selectMode = SelectionMode::PLACE;
 	m_selectedBox = NO_BOX;
 	m_selectedLight = NO_LIGHT;
+	if (m_objectMode == ObjectMode::LIGHT) {
+		setLightWidgetVisibility(true);
+	}
+	else if (m_objectMode == ObjectMode::PLATFORM) {
+		setPlatformWidgetVisibility(true);
+	}
 	return true;
 }
 
 bool EditorScreen::onSaveMouseClick(const CEGUI::EventArgs& e) {
-	puts("EditorScreen::onSaveMouseClick() not implemented");
+	// Make sure levels dir exists
+	Vladgine::IOManager::makeDiretory("Levels");
+
+	m_saveWindowCombobox->clearAllSelections();
+
+	// Remove all items
+	for (auto& item : m_saveListBoxItems) {
+		// We don't have to call delete since removeItem does it for us
+		m_saveWindowCombobox->removeItem(item);
+	}
+	m_saveListBoxItems.clear();
+
+	// Get all directory entries
+	std::vector<Vladgine::DirEntry> entries;
+	Vladgine::IOManager::getDirectoryEntries("Levels", entries);
+
+
+	// Add all files to list box
+	for (auto& e : entries) {
+		// Don't add directories
+		if (!e.isDirectory) {
+			// Remove "Levels/" substring
+			e.path.erase(0, std::string("Levels/").size());
+			m_saveListBoxItems.push_back(new CEGUI::ListboxTextItem(e.path));
+			m_saveWindowCombobox->addItem(m_saveListBoxItems.back());
+		}
+	}
+
+	m_saveWindow->enable();
+	m_saveWindow->setAlpha(1.0f);
+	m_loadWindow->disable();
+	m_loadWindow->setAlpha(0.0f);
+	return true;
+}
+
+bool EditorScreen::onLoadMouseClick(const CEGUI::EventArgs& e) {
+
+	m_loadWindowCombobox->clearAllSelections();
+
+	// Remove all items
+	for (auto& item : m_loadListBoxItems) {
+		// We don't have to call delete since removeItem does it for us
+		m_loadWindowCombobox->removeItem(item);
+	}
+	m_loadListBoxItems.clear();
+
+	// Get all directory entries
+	std::vector<Vladgine::DirEntry> entries;
+	Vladgine::IOManager::getDirectoryEntries("Levels", entries);
+
+
+	// Add all files to list box
+	for (auto& e : entries) {
+		// Don't add directories
+		if (!e.isDirectory) {
+			// Remove "Levels/" substring
+			e.path.erase(0, std::string("Levels/").size());
+			m_loadListBoxItems.push_back(new CEGUI::ListboxTextItem(e.path));
+			m_loadWindowCombobox->addItem(m_loadListBoxItems.back());
+		}
+	}
+
+	m_loadWindow->enable();
+	m_loadWindow->setAlpha(1.0f);
+	m_saveWindow->disable();
+	m_saveWindow->setAlpha(0.0f);
 	return true;
 }
 
@@ -893,30 +1076,82 @@ bool EditorScreen::onBackMouseClick(const CEGUI::EventArgs& e) {
 }
 
 bool EditorScreen::onRotationValueChange(const CEGUI::EventArgs& e) {
-	m_rotation = m_rotationSpinner->getCurrentValue();
+	m_rotation = (float)m_rotationSpinner->getCurrentValue();
 	refreshSelectedBox();
 	return true;
 }
 
 bool EditorScreen::onSizeValueChange(const CEGUI::EventArgs& e) {
-	m_lightSize = m_sizeSpinner->getCurrentValue();
+	m_lightSize = (float)m_sizeSpinner->getCurrentValue();
 	refreshSelectedLight();
 	return true;
 }
 
 bool EditorScreen::onWidthValueChange(const CEGUI::EventArgs& e) {
-	m_boxDims.x = m_widthSpinner->getCurrentValue();
+	m_boxDims.x = (float)m_widthSpinner->getCurrentValue();
 	refreshSelectedBox();
 	return true;
 }
 
 bool EditorScreen::onHeightValueChange(const CEGUI::EventArgs& e) {
-	m_boxDims.y = m_heightSpinner->getCurrentValue();
+	m_boxDims.y = (float)m_heightSpinner->getCurrentValue();
 	refreshSelectedBox();
 	return true;
 }
 
 bool EditorScreen::onDebugToggleClick(const CEGUI::EventArgs& e) {
 	m_debugRender = m_debugToggle->isSelected();
+	return true;
+}
+
+bool EditorScreen::onSaveCancelClick(const CEGUI::EventArgs& e) {
+	m_saveWindow->disable();
+	m_saveWindow->setAlpha(0.0f);
+	return true;
+}
+
+bool EditorScreen::onSave(const CEGUI::EventArgs& e) {
+	if (!m_hasPlayer) {
+		puts("Must create player before saving.");
+		return true;
+	}
+
+	puts("Saving game...");
+	// Make sure levels dir exists again, for good measure.
+	Vladgine::IOManager::makeDiretory("Levels");
+
+	// Save in text mode
+	std::string text = "Levels/" + std::string(m_saveWindowCombobox->getText().c_str());
+	if (LevelReaderWriter::saveAsBinary(text, m_player, m_boxes, m_lights)) {
+		m_saveWindow->disable();
+		m_saveWindow->setAlpha(0.0f);
+		puts("File successfully saved.");
+	}
+	else {
+		puts("Failed to save file.");
+	}
+
+	return true;
+}
+
+bool EditorScreen::onLoadCancelClick(const CEGUI::EventArgs& e) {
+	m_loadWindow->disable();
+	m_loadWindow->setAlpha(0.0f);
+	return true;
+}
+
+bool EditorScreen::onLoad(const CEGUI::EventArgs& e) {
+	puts("Loading game...");
+	std::string path = "Levels/" + std::string(m_loadWindowCombobox->getText().c_str());
+
+	clearLevel();
+
+	if (LevelReaderWriter::loadAsBinary(path, m_world.get(), m_player, m_boxes, m_lights)) {
+		m_hasPlayer = true;
+	}
+	// TODO: Binary file loading/saving
+
+	m_loadWindow->disable();
+	m_loadWindow->setAlpha(0.0f);
 	return true;
 }

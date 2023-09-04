@@ -24,12 +24,18 @@ public:
 	// Test if a point is inside the box
 	bool testPoint(float x, float y) const { return m_fixture->TestPoint(b2Vec2(x, y)); }
 
-	glm::vec2 getPosition() const { return glm::vec2(m_body->GetPosition().x, m_body->GetPosition().y); }
+	b2Body*                    getBody() const           { return m_body; }
+	b2Fixture*                 getFixture() const        { return m_fixture; }
+	const glm::vec2&           getDimensions() const     { return m_dimensions; }
+	glm::vec2                  getPosition() const       { return glm::vec2(m_body->GetPosition().x, m_body->GetPosition().y); }
+	glm::vec4                  getUvRect() const         { return m_uvRect; }
+	const Vladgine::ColorRGB8& getColor() const       { return m_color; }
+	float                      getAngle() const          { return m_body->GetAngle(); }
+	const Vladgine::GLTexture& getTexture() const     { return m_texture; }
+	const bool&                getFixedRotation() const { return m_fixedRotation; }
+	const bool&                getIsDynamic() const { return m_isDynamic; }
 
-	b2Body* getBody() const { return m_body; }
-	b2Fixture* getFixture() const { return m_fixture; }
-	const glm::vec2& getDimensions() const { return m_dimensions; }
-	const Vladgine::ColorRGB8& getColor() const { return m_color; }
+
 
 private:
 	glm::vec4 m_uvRect;
@@ -38,5 +44,7 @@ private:
 	glm::vec2 m_dimensions;
 	Vladgine::ColorRGB8 m_color;
 	Vladgine::GLTexture m_texture;
+	bool m_fixedRotation;
+	bool m_isDynamic;
 };
 
