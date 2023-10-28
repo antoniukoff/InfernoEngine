@@ -71,11 +71,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir)deps\TTF\include;$(SolutionDir)deps\OpenGL\include;$(SolutionDir)deps\;$(SolutionDir);$(SolutionDir)deps\SDL\include;$(SolutionDir)deps\Box2D\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Release\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)deps\TTF\include;$(SolutionDir);$(SolutionDir)deps\OpenGL\include;$(SolutionDir)deps\SDL\include;$(SolutionDir)deps\Box2D\include;$(SolutionDir)deps\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)deps\TTF\include;$(SolutionDir)deps\OpenGL\include;$(SolutionDir)deps\;$(SolutionDir);$(SolutionDir)deps\SDL\include;$(SolutionDir)deps\Box2D\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)deps\TTF\include;$(SolutionDir);$(SolutionDir)deps\OpenGL\include;$(SolutionDir)deps\SDL\include;$(SolutionDir)deps\Box2D\include;$(SolutionDir)deps\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Debug\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -142,6 +142,7 @@
     <ClCompile Include="Capsule.cpp" />
     <ClCompile Include="EditorScreen.cpp" />
     <ClCompile Include="GameplayScreen.cpp" />
+    <ClCompile Include="LevelMediator.cpp" />
     <ClCompile Include="LevelReaderWriter.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenuScreen.cpp" />
@@ -153,6 +154,8 @@
     <ClInclude Include="Capsule.h" />
     <ClInclude Include="EditorScreen.h" />
     <ClInclude Include="GameplayScreen.h" />
+    <ClInclude Include="LevelData.h" />
+    <ClInclude Include="LevelMediator.h" />
     <ClInclude Include="LevelReaderWriter.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="MainMenuScreen.h" />

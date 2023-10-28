@@ -22,9 +22,9 @@ namespace Vladgine {
 
 	// here i compose a vertex that has a position color and uv for texture mapping
 	struct Vertex {
-		Position position;
+		Position position = { 0, 0 };
 
-		ColorRGB8 color;
+		ColorRGB8 color = { 0, 0, 0, 0 };
 
 		UV uv;
 

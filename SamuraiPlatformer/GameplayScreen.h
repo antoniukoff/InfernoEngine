@@ -2,6 +2,7 @@
 #include <Vladgine/IGameScreen.h>
 #include <Box2D/Box2D.h>
 #include "Box.h"
+#include "Light.h"
 #include <vector>
 #include <Vladgine/SpriteBatch.h>
 #include <Vladgine/GLSLProgram.h>
@@ -11,6 +12,7 @@
 #include <Vladgine/DebugRenderer.h>
 #include <Vladgine/GUI.h>
 #include "Player.h"
+
 
 class GameplayScreen : public Vladgine::IGameScreen
 {
@@ -50,11 +52,13 @@ private:
 	Vladgine::Window* m_window;
 	Vladgine::DebugRenderer m_debugRenderer;
 	Vladgine::GUI m_gui;
-
+	
 	bool m_renderDebug = false;
 
 	std::unique_ptr<b2World> m_world;
 	std::vector<Box> m_boxes;
+	std::vector<Light> m_lights;
 	Player m_player;
+	
 };
 

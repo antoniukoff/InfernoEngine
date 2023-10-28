@@ -3,10 +3,7 @@
 
 namespace Vladgine {
 
-    ScreenList::ScreenList(IMainGame* game): m_game(game)
-    {
-        //empty
-    }
+    ScreenList::ScreenList(IMainGame* game) : m_game(game) {}
 
     ScreenList::~ScreenList()
     {

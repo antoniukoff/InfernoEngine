@@ -44,7 +44,7 @@ namespace Vladgine {
 		_regLength = ce - cs + 1;
 		int padding = size / 8;
 
-		std::cout << _regStart << " " << _regLength << std::endl;
+		//std::cout << _regStart << " " << _regLength << std::endl;
 		// First neasure all the regions
 		glm::ivec4* glyphRects = new glm::ivec4[_regLength];
 		int i = 0, advance;
@@ -167,7 +167,7 @@ namespace Vladgine {
 		_glyphs = new CharGlyph[_regLength + 1];
 		for (i = 0; i < _regLength; i++) {
 			_glyphs[i].character = (char)(cs + i);
-			std::cout << _glyphs[i].character << std::endl;
+			//std::cout << _glyphs[i].character << std::endl;
 			_glyphs[i].size = glm::vec2(glyphRects[i].z, glyphRects[i].w);
 			_glyphs[i].uvRect = glm::vec4(
 				(float)glyphRects[i].x / (float)bestWidth,

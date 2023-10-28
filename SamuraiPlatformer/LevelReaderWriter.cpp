@@ -2,6 +2,7 @@
 
 #include <Vladgine/ResourceManager.h>
 #include <fstream>
+#include <iostream>
 
 // When you want to make a new version, add it here
 const unsigned int TEXT_VERSION_0 = 100;
@@ -199,9 +200,12 @@ bool LevelReaderWriter::loadAsBinary(const std::string& filePath, b2World* world
 		file.read(reinterpret_cast<char*>(&color), sizeof(color));
 		file.read(reinterpret_cast<char*>(&uvRect), sizeof(uvRect));
 		file.read(reinterpret_cast<char*>(&angle), sizeof(angle));
-		file.read(reinterpret_cast<char*>(&fixedRotation), sizeof(fixedRotation));
 		file.read(reinterpret_cast<char*>(&isDynamic), sizeof(isDynamic));
+		file.read(reinterpret_cast<char*>(&fixedRotation), sizeof(fixedRotation));
+		std::cout << "Box " << i << " isDynamic: " << isDynamic << std::endl;
 		file.read(reinterpret_cast<char*>(&texturePathLength), sizeof(texturePathLength));
+		std::cout << "Box " << i << " texturePathLength: " << texturePathLength << std::endl;
+
 
 		texturePath.resize(texturePathLength);
 		file.read(&texturePath[0], texturePathLength);

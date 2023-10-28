@@ -42,7 +42,6 @@ namespace Vladgine {
 	bool InputManager::isKeyPressed(unsigned int keyID)
 	{
 		//check if it was pressed this frame and wasn't pressed last frame
-		bool isPressed;
 		if (isKeyDown(keyID) == true && wasKeyDown(keyID) == false) { 
 			return true;
 		}

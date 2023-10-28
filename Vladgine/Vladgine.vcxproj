@@ -89,7 +89,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32.lib;opengl32.lib;glew32s.lib;SDL2_ttf.lib;SDL2_mixer.lib;Box2D.lib;CEGUIBase-0_d.lib;CEGUIOpenGLRenderer-0_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32.lib;opengl32.lib;SDL2_ttf.lib;SDL2_mixer.lib;Box2D.lib;CEGUIBase-0_d.lib;CEGUIOpenGLRenderer-0_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)deps\TTF\lib\x86;$(SolutionDir)deps\OpenGL\lib;$(SolutionDir)deps\SDL\lib;$(SolutionDir)deps\Box2D\lib\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
@@ -112,7 +112,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_mixer.lib;opengl32.lib;glew32.lib;glew32s.lib;Box2D.lib;CEGUIBase-0.lib;CEGUIOpenGLRenderer-0.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;SDL2_ttf.lib;SDL2_mixer.lib;Box2D.lib;CEGUIBase-0.lib;CEGUIOpenGLRenderer-0.lib;SDL2.lib;SDL2main.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)deps\TTF\lib\x86;$(SolutionDir)deps\OpenGL\lib;$(SolutionDir)deps\SDL\lib;$(SolutionDir)deps\Box2D\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClInclude Include="AudioEngine.h" />
     <ClInclude Include="Camera2D.h" />
+    <ClInclude Include="Core.h" />
     <ClInclude Include="DebugRenderer.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="IGameScreen.h" />
@@ -156,6 +157,7 @@
     <ClInclude Include="ParticleBatch2D.h" />
     <ClInclude Include="ParticleEngine2D.h" />
     <ClInclude Include="ScreenList.h" />
+    <ClInclude Include="StackAllocator.h" />
     <ClInclude Include="TileSheet.h" />
     <ClInclude Include="VladgineErrors.h" />
     <ClInclude Include="framework.h" />

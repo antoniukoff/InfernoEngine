@@ -49,10 +49,10 @@ namespace Vladgine {
 		static float frameTimes[NUM_SAMPLES];
 		static int currentFrame = 0;
 
-		static float prevTicks = SDL_GetTicks();
+		static uint32_t prevTicks = SDL_GetTicks();
 
 		// have to reset it every frame by using updated ticks
-		float currentTicks;
+		uint32_t currentTicks;
 		currentTicks = SDL_GetTicks();
 
 		//calculate frame time(how long it took to process all the game loop code from the previous code to the current code)

@@ -2,6 +2,7 @@
 
 #include "Box.h"
 #include "Light.h"
+
 #include "Player.h"
 #include <Vladgine/Camera2D.h>
 #include <Vladgine/DebugRenderer.h>
@@ -13,9 +14,11 @@
 #include <Vladgine/SpriteFont.h>
 #include <Vladgine/Window.h>
 #include <vector>
+#include "LevelData.h"
 
 #include <Vladgine/GUI.h>
 
+#include "ScreenIndices.h"
 #include "ScreenIndices.h"
 
 enum class PhysicsMode {
@@ -86,6 +89,7 @@ private:
 	void refreshSelectedLight();
 	void refreshSelectedLight(const glm::vec2& newPosition);
 	bool isMouseInUI();
+	void populateLevelData();
 
 	void setPlatformWidgetVisibility(bool visible);
 	void setLightWidgetVisibility(bool visible);
@@ -119,6 +123,7 @@ private:
 	bool onLoadCancelClick(const CEGUI::EventArgs& e);
 	bool onTestLevelClick(const CEGUI::EventArgs& e);
 	bool onLoad(const CEGUI::EventArgs& e);
+
 
 	/************************************************************************/
 	/* Member Variables                                                     */
@@ -178,6 +183,7 @@ private:
 
 	Vladgine::InputManager m_inputManager;
 
+	LevelData levelData;
 	bool m_hasPlayer = false;
 	Player m_player;
 	std::vector<Box> m_boxes;
@@ -192,4 +198,5 @@ private:
 	Vladgine::Window* m_window;
 	Vladgine::GUI m_gui;
 	std::unique_ptr<b2World> m_world;
+
 };

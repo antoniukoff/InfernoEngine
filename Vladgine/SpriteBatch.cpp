@@ -63,7 +63,7 @@ namespace Vladgine {
 
 	glm::vec2 Glyph::rotatePoint(glm::vec2 pos, float angle)
 	{
-		glm::vec2 newv;
+		glm::vec2 newv = glm::vec2{};
 		newv.x = pos.x * cos(angle) - pos.y * sin(angle);
 		newv.y = pos.x * sin(angle) + pos.y * cos(angle);
 		return newv;
@@ -104,7 +104,7 @@ namespace Vladgine {
 	void SpriteBatch::end()
 	{
 		_glyphPointers.resize(_glyphs.size());
-		for (int i = 0; i < _glyphs.size(); i++) {
+		for (uint32_t i = 0; i < _glyphs.size(); i++) {
 			_glyphPointers[i] = &_glyphs[i];
 		}
 		sortGlyphs();
@@ -137,7 +137,7 @@ namespace Vladgine {
 		// bind the vao we created in the createArrayBuffer()
 		glBindVertexArray(_vao);
 		// loop through all the render batches
-		for (int i = 0; i < _renderBatches.size(); i++) {
+		for (uint32_t i = 0; i < _renderBatches.size(); i++) {
 			//bind texture of the current array and specifies the beginning of that render batch 
 			//as well as number of vertices to render until the next batch 
 			glBindTexture(GL_TEXTURE_2D, _renderBatches[i].texture);
@@ -176,7 +176,7 @@ namespace Vladgine {
 		//increment offset by 6 vertices(offset used inly for the new render batch)
 		offset += 6;
 		// loop through all the glyphs
-		for (int cg = 1; cg < _glyphs.size(); cg++) {
+		for (uint32_t cg = 1; cg < _glyphs.size(); cg++) {
 			// if the texture of the previous glyph is not the same as of the current one - create new render batch
 			if (_glyphPointers[cg]->texture != _glyphPointers[cg - 1]->texture) {
 				_renderBatches.emplace_back(offset, 6, _glyphPointers[cg]->texture);
@@ -251,7 +251,6 @@ namespace Vladgine {
 			case GlyphSortType::TEXTURE :
 				std::stable_sort(_glyphPointers.begin(), _glyphPointers.end(), compareTexture);
 				break;
-
 		}
 		
 	}

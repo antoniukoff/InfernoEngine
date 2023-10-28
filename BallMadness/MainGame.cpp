@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <cmath>
 #include <iostream>
+#include <Vladgine/Core.h>
 
 // Some helpful constants.
 const float DESIRED_FPS = 60.0f; // FPS the game is designed to run at
@@ -19,7 +20,7 @@ const float MAX_DELTA_TIME = 1.0f; // Maximum size of deltaTime
 
 
 MainGame::~MainGame() {
-    for (int i = 0; i < m_ballRenderers.size(); i++) {
+    for (uint32_t i = 0; i < m_ballRenderers.size(); i++) {
         delete m_ballRenderers[i];
     }
 }
@@ -51,7 +52,16 @@ void MainGame::run() {
             // Update all physics here and pass in deltaTime
 
             update(deltaTime);
-          
+            static int framesCount = 0;
+            if (framesCount == 200) {
+                //std::cout << m_fps << std::endl;
+                printMemory();
+                framesCount = 0;
+            }
+            else
+            {
+                framesCount++;
+            }
             // Since we just took a step that is length deltaTime, subtract from totalDeltaTime
             totalDeltaTime -= deltaTime;
             // Increment our frame counter so we can limit steps to MAX_PHYSICS_STEPS
@@ -67,8 +77,8 @@ void MainGame::run() {
 void MainGame::init() {
     Vladgine::init();
 
-    m_screenWidth = 1920;
-    m_screenHeight = 1080;
+    m_screenWidth = 2560;
+    m_screenHeight = 1440;
 
     m_window.create("Ball Game", m_screenWidth, m_screenHeight, 0);
     glClearColor(0.0, 0.0, 0.0, 1.0);
@@ -132,7 +142,7 @@ void MainGame::initBalls() {
     totalProbability += p; \
     possibleBalls.emplace_back(__VA_ARGS__);
 
-    const int NUM_BALLS = 40000;  
+    const int NUM_BALLS = 10000;
 
     // Random engine stuff
     std::mt19937 randomEngine((unsigned int)time(nullptr));
@@ -145,7 +155,7 @@ void MainGame::initBalls() {
     float totalProbability = 0.0f;
 
 	std::uniform_real_distribution<float> r1(2.0f, 6.0f);
-	std::uniform_int_distribution<int> r2(0.0f, 255);
+	std::uniform_int_distribution<int> r2(0, 255);
 
     ADD_BALL(1.0, Vladgine::ColorRGB8(255, 255, 255, 255), 1.0f,
         1.0f, 0.1f, 7.0f, totalProbability);

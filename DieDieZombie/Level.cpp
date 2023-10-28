@@ -67,12 +67,20 @@ Level::Level(const std::string& fileName)
 				_levelData[y][x] = '.';
 				_playerStartPos.x = x * TILE_WIDTH;
 				_playerStartPos.y = y * TILE_WIDTH;
+				_spriteBatch.draw(destRect,
+					uvRect,
+					Vladgine::ResourceManager::getTexture("Textures/background.png").id,
+					0.0f, Vladgine::ColorRGB8(255, 180, 180, 255));
 				break;
 			case 'Z':
 				_levelData[y][x] = '.';
 				_zombieStartPos.emplace_back(x * TILE_WIDTH, y * TILE_WIDTH);
 				break;
 			case '.':
+				_spriteBatch.draw(destRect,
+					uvRect,
+					Vladgine::ResourceManager::getTexture("Textures/background.png").id,
+					0.0f, Vladgine::ColorRGB8(255,180,180,255));
 				break;
 			default:
 				printf("Unexpected symbol %c at (%d, %d)", tile, x, y);

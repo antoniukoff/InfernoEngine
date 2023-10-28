@@ -4,6 +4,8 @@
 #include <Vladgine/ResourceManager.h>
 #include <Vladgine/IOManager.h>
 #include "LevelReaderWriter.h"
+#include "LevelData.h"
+#include "LevelMediator.h"
 
 
 
@@ -31,7 +33,7 @@ EditorScreen::~EditorScreen() {
 }
 
 int EditorScreen::getNextScreenIndex() const {
-	return SCREEN_INDEX_NO_SCREEN;
+	return SCREEN_INDEX_GAMEPLAY;
 }
 
 int EditorScreen::getPreviousScreenIndex() const {
@@ -402,7 +404,7 @@ void EditorScreen::initUI() {
 	m_gui.setFont("DejaVuSans-10");
 
 	// Add group box back panel
-	m_groupBox = static_cast<CEGUI::GroupBox*>(m_gui.createWidget("TaharezLook/GroupBox", glm::vec4(0.001f, 0.0f, 0.18f, 0.72f), glm::vec4(0.0f), "GroupBox"));
+	m_groupBox = static_cast<CEGUI::GroupBox*>(m_gui.createWidget("TaharezLook/GroupBox", glm::vec4(0.001f, 0.0f, 0.18f, 0.9f), glm::vec4(0.0f), "GroupBox"));
 	// Group box should be behind everything.
 	m_groupBox->setAlwaysOnTop(false);
 	m_groupBox->moveToBack();
@@ -581,9 +583,6 @@ void EditorScreen::initUI() {
 		m_backButton->setText("Back");
 		m_backButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&EditorScreen::onBackMouseClick, this));
 
-		CEGUI::PushButton* testButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget("TaharezLook/Button", glm::vec4(0.5f, 0.7f, 0.3f, 0.1f), glm::vec4(0.0f), "TestLevelButton"));
-		testButton->setText("Test Level");
-		
 	}
 
 	{ // Add save window widgets
@@ -616,10 +615,16 @@ void EditorScreen::initUI() {
 		m_loadWindowLoadButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget(m_loadWindow, "TaharezLook/Button", glm::vec4(0.35f, 0.8f, 0.3f, 0.1f), glm::vec4(0.0f), "LoadCancelButton"));
 		m_loadWindowLoadButton->setText("Load");
 		m_loadWindowLoadButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&EditorScreen::onLoad, this));
-
+	
 		// Start disabled
 		m_loadWindow->setAlpha(0.0f);
 		m_loadWindow->disable();
+	}
+
+	{
+		CEGUI::PushButton* m_testGameButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget("TaharezLook/Button", glm::vec4(0.04175f, 0.8f, 0.1f, 0.065f), glm::vec4(0.0f), "TestGameButton"));
+		m_testGameButton->setText("Test Game");
+		m_testGameButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&EditorScreen::onTestLevelClick, this));
 	}
 
 	
@@ -781,6 +786,7 @@ void EditorScreen::updateMouseDown(const SDL_Event& evnt) {
 				uvRect.w = m_boxDims.y;
 				newBox.init(m_world.get(), pos, m_boxDims, texture, Vladgine::ColorRGB8(m_colorPickerRed, m_colorPickerGreen, m_colorPickerBlue, 255),
 					false, m_physicsMode == PhysicsMode::DYNAMIC, m_rotation, uvRect);
+
 				m_boxes.push_back(newBox);
 				break;
 			case ObjectMode::PLAYER:
@@ -790,6 +796,7 @@ void EditorScreen::updateMouseDown(const SDL_Event& evnt) {
 				pos = m_camera.converScreenToWorld(glm::vec2(evnt.button.x, evnt.button.y));
 				m_player.init(m_world.get(), pos, glm::vec2(2.0f), glm::vec2(1.0f, 1.8f), Vladgine::ColorRGB8(m_colorPickerRed, m_colorPickerGreen, m_colorPickerBlue, 255));
 				m_hasPlayer = true;
+				std::cout << "After Setting Position in Editor - X: " << m_player.getPosition().x << " Y: " << m_player.getPosition().y << std::endl;
 				break;
 			case ObjectMode::LIGHT:
 				newLight.position = m_camera.converScreenToWorld(glm::vec2(evnt.button.x, evnt.button.y));
@@ -894,6 +901,35 @@ bool EditorScreen::isMouseInUI() {
 	// Notice we aren't converting to world space, we are staying in screen space because UI.
 	return (x >= m_groupBox->getXPosition().d_scale * SW && x <= m_groupBox->getXPosition().d_scale * SW + m_groupBox->getWidth().d_scale * SW &&
 		y >= m_groupBox->getYPosition().d_scale * SH && y <= m_groupBox->getYPosition().d_scale * SH + m_groupBox->getHeight().d_scale * SH);
+}
+
+void EditorScreen::populateLevelData()
+{
+	for (int i = 0; i < m_boxes.size(); i++) {
+		LevelData::BoxData boxData;
+		boxData.position = m_boxes[i].getPosition();
+		boxData.dimensions = m_boxes[i].getDimensions();
+		boxData.texture = m_boxes[i].getTexture();
+		boxData.color = m_boxes[i].getColor();
+		boxData.fixedRotation = m_boxes[i].getFixedRotation();
+		boxData.isDynamic = m_boxes[i].getIsDynamic();
+		boxData.angle = m_boxes[i].getAngle();
+		boxData.uvRect = m_boxes[i].getUvRect();
+		levelData.boxes.push_back(boxData);
+	}
+	for (int i = 0; i < m_lights.size(); i++) {
+		levelData.light.push_back(m_lights[i]);
+	}
+
+	levelData.player.position.x = m_player.getPosition().x; // Replace with the actual method or member
+	levelData.player.position.y = m_player.getPosition().y; 
+	// After user input updates the player's position
+	std::cout << "After User Input in Editor - X: " << m_player.getPosition().x << " Y: " << m_player.getPosition().y << std::endl;
+	std::cout << "After User Input in Editor - X2: " << levelData.player.position.x << " Y: " << levelData.player.position.y << std::endl;
+	// Replace with the actual method or member
+	levelData.player.drawDims = m_player.getDrawDims(); // ... and so on for other attributes
+	levelData.player.collisionDims = m_player.getCollisionDims();
+	levelData.player.color = m_player.getColor();
 }
 
 void EditorScreen::setPlatformWidgetVisibility(bool visible) {
@@ -1140,6 +1176,15 @@ bool EditorScreen::onLoadCancelClick(const CEGUI::EventArgs& e) {
 	return true;
 }
 
+bool EditorScreen::onTestLevelClick(const CEGUI::EventArgs& e)
+{
+	populateLevelData();
+	LevelMediator::getInstance()->setLevelData(levelData);
+	m_currentState = Vladgine::Screen_State::CHANGE_NEXT;
+
+	return true;
+}
+ 
 bool EditorScreen::onLoad(const CEGUI::EventArgs& e) {
 	puts("Loading game...");
 	std::string path = "Levels/" + std::string(m_loadWindowCombobox->getText().c_str());

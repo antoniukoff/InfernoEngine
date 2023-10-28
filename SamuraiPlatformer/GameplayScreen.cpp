@@ -7,6 +7,9 @@
 #include "Box.h"
 #include <random>
 #include "ScreenIndices.h"
+#include "LevelMediator.h"
+
+
 
 GameplayScreen::GameplayScreen(Vladgine::Window* window) : m_window(window) {
 
@@ -38,36 +41,19 @@ void GameplayScreen::destroy()
 
 void GameplayScreen::onEntry()
 {
-	
-
+	LevelData levelToLoad = LevelMediator::getInstance()->getLevelData();
 	b2Vec2 gravity(0.0f, -25.0f);
 	m_world = std::make_unique<b2World>(gravity);
-
-	m_debugRenderer.init();
-
-	
-
 	m_texture = Vladgine::ResourceManager::getTexture("Textures/brick_wall.png");
 
-	// Make the ground
-	Box groundBox;
-	groundBox.init(m_world.get(), glm::vec2(0.0f, -20.0f), glm::vec2(50.0f, 10.0f), m_texture, Vladgine::ColorRGB8(255, 255, 255, 255), false, false);
-	m_boxes.push_back(groundBox);
-
-	std::mt19937 randGenerator;
-    std::uniform_real_distribution<float> xDist(-10.0f, 10.0f);
-    std::uniform_real_distribution<float> yDist(-15.0f, 15.0f);
-    std::uniform_real_distribution<float> size(0.5, 2.5);
-    std::uniform_real_distribution<float> color(0, 255);
-	const int numBoxes = 10;
-
-
+	const int numBoxes = levelToLoad.boxes.size();;
 	for (int i = 0; i < numBoxes; i++) {
 		Box newBox;
-		newBox.init(m_world.get(), glm::vec2(xDist(randGenerator), yDist(randGenerator)),
-			glm::vec2(size(randGenerator), size(randGenerator)), m_texture,
-			Vladgine::ColorRGB8(color(randGenerator), color(randGenerator), color(randGenerator), 255),
-			false, true);
+		newBox.init(m_world.get(), levelToLoad.boxes[i].position,
+			levelToLoad.boxes[i].dimensions, m_texture,
+			levelToLoad.boxes[i].color,
+			levelToLoad.boxes[i].fixedRotation, levelToLoad.boxes[i].isDynamic,
+			levelToLoad.boxes[i].angle, levelToLoad.boxes[i].uvRect);
 	
 		m_boxes.push_back(newBox);
 	}
@@ -99,8 +85,9 @@ void GameplayScreen::onEntry()
 	m_camera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
 	m_camera.setScale(32.0f);
 
+	m_debugRenderer.init();
 	//init player
-	m_player.init(m_world.get(), glm::vec2(0.0f, 30.0f), glm::vec2(2.0f), glm::vec2(1.0f, 1.8f), Vladgine::ColorRGB8(255, 255, 255, 255));
+	m_player.init(m_world.get(), levelToLoad.player.position, levelToLoad.player.drawDims, levelToLoad.player.collisionDims, levelToLoad.player.color);
 	initUI();
 }
 
@@ -163,8 +150,12 @@ void GameplayScreen::draw()
 			destRect.w = b.getDimensions().y;
 			m_debugRenderer.drawBox(destRect, Vladgine::ColorRGB8(255, 255, 255, 255), b.getBody()->GetAngle());
 
-			//m_debugRenderer.drawCircle(glm::vec2(b.getBody()->GetPosition().x, b.getBody()->GetPosition().y), Vladgine::ColorRGB8(255, 255, 255, 255), b.getDimensions().x / 2.0f);
+			//
 		}
+		for (auto& l : LevelMediator::getInstance()->getLevelData().light) {
+			m_debugRenderer.drawCircle(glm::vec2(l.position.x, l.position.y), Vladgine::ColorRGB8(255, 255, 255, 255), l.size / 2.0f);
+		}
+
 		m_player.drawDebug(m_debugRenderer);
 
 		m_debugRenderer.end();
@@ -196,6 +187,9 @@ void GameplayScreen::draw()
 	playerLight.draw(m_spriteBatch);
 	mouseLight.draw(m_spriteBatch);
 	
+	for (auto& l : LevelMediator::getInstance()->getLevelData().light) {
+		l.draw(m_spriteBatch);
+	}
 
 	m_spriteBatch.end();
 	m_spriteBatch.renderBatch();

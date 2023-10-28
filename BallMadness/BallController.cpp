@@ -131,7 +131,7 @@ void BallController::updateCollision(Grid* grid) {
 
 void BallController::checkCollision(Ball* ball, std::vector<Ball*>& ballsToCheck, int startingIndex)
 {
-    for (int i = startingIndex; i < ballsToCheck.size(); i++) {
+    for (uint32_t i = startingIndex; i < ballsToCheck.size(); i++) {
         checkCollision(*ball, *ballsToCheck[i]);
     }
 }
