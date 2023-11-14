@@ -205,7 +205,7 @@ void Vladgine::GUI::onSDLEvent(SDL_Event& event)
 		break;
 	case SDL_TEXTINPUT:
 		cs = CEGUI::String((CEGUI::utf8*)event.text.text);
-		for (int i = 0; i < cs.size(); ++i) {
+		for (uint32_t i = 0; i < cs.size(); ++i) {
 			m_context->injectChar(cs[i]);
 		}
 		break;

@@ -169,6 +169,7 @@
     <ClInclude Include="ParticleBatch2D.h" />
     <ClInclude Include="ParticleEngine2D.h" />
     <ClInclude Include="ScreenList.h" />
+    <ClInclude Include="StackAllocator.h" />
     <ClInclude Include="TileSheet.h" />
     <ClInclude Include="VladgineErrors.h" />
     <ClInclude Include="framework.h" />

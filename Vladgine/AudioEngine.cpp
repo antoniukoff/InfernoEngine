@@ -58,7 +58,7 @@ namespace Vladgine {
 	void AudioEngine::destroy()
 	{
 		if (m_isInitialized) {
-			m_isInitialized == false;
+			m_isInitialized = false;
 
 			for (auto& it : m_effectMap) {
 				Mix_FreeChunk(it.second);

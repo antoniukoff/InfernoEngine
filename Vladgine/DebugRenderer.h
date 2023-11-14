@@ -32,5 +32,4 @@ namespace Vladgine {
 		std::vector <GLuint> m_indeces;
 		int m_numElements = 0;
 	};
-
 }

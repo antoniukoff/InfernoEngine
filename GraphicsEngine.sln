@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Vladgine", "Vladgine\Vladgine.vcxproj", "{9EB4E76C-DEC1-4749-8A10-A43FEDFD44C8}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DieDieZombie", "DieDieZombie\DieDieZombie.vcxproj", "{7914091C-8C4D-4CA7-896D-3590D551E24D}"
 	ProjectSection(ProjectDependencies) = postProject
 		{9EB4E76C-DEC1-4749-8A10-A43FEDFD44C8} = {9EB4E76C-DEC1-4749-8A10-A43FEDFD44C8}
@@ -16,6 +14,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BallMadness", "BallMadness\
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SamuraiPlatformer", "SamuraiPlatformer\SamuraiPlatformer.vcxproj", "{EDBFD8A1-35C8-4998-BB8F-270CFF4253ED}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Vladgine", "Vladgine\Vladgine.vcxproj", "{9EB4E76C-DEC1-4749-8A10-A43FEDFD44C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

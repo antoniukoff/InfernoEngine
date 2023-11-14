@@ -4,13 +4,13 @@ Grid::Grid(int width, int height, int cellSize): m_width(width),
 												m_height(height),
 												m_cellSize(cellSize)
 {
-	m_numXCells = ceil((float)m_width / cellSize);
-	m_numYCells = ceil((float)m_height / cellSize);
+	m_numXCells = static_cast<int>(ceil((float)m_width / cellSize));
+	m_numYCells = static_cast<int>(ceil((float)m_height / cellSize));
 
 	//allocating cells
 	const int BALLS_TO_RESERVE = 20;
 	m_cells.resize(m_numYCells * m_numXCells);
-	for (int i = 0; i < m_cells.size(); i++) {
+	for (uint32_t i = 0; i < m_cells.size(); i++) {
 		m_cells[i].balls.reserve(BALLS_TO_RESERVE);
 	}
 }
@@ -69,7 +69,7 @@ void Grid::removeBallFromCell(Ball* ball)
 {
 	//just a shortcut to the balls vector of the cell that the ball we pass belongs to
 	std::vector<Ball*>& balls = ball->ownerCell->balls;
-	//overriding the position of the ball we pass in in the vector with the back element of the vector 
+	//overriding the position of the ball we pass in the vector with the back element of the vector 
 	balls[ball->cellVectorIndex] = balls.back();
 	// popping the original back element
 	balls.pop_back();

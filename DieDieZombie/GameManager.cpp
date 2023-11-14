@@ -11,6 +11,13 @@
 #include <ctime>
 #include <algorithm>
 #include <Vladgine/Core.h>
+#include <mutex>
+#include <thread>
+
+std::mutex agentMutex;
+std::mutex bulletMutex;
+std::mutex renderMutex;	
+
 
 const float DEG_TO_RAD = 3.14159265359f / 180.0f;
 const float RAD_TO_DEG = 180.0f / 3.14159265359f;
@@ -38,10 +45,10 @@ void GameManager::run()
 	Vladgine::Music music = m_audioEngine.loadMusic("Sounds/Secunda.mp3");
 	music.play(-1);
 	gameLoop();
-}
+}	
 
 void GameManager::initSystems()
-{
+{	
 	Vladgine::init();
 
 	m_audioEngine.init();
@@ -139,7 +146,7 @@ void GameManager::gameLoop()
 	const float DESIRED_FRAMETIME = MS_PER_SECOND / DESIRED_FPS;
 
 	float  prevTicks = SDL_GetTicks();
-		
+
 	while (m_gameState == GameState::PLAY) {
 		fpsLimiter.begin();
 
@@ -161,16 +168,20 @@ void GameManager::gameLoop()
 
 		while (totalDeltaTime > 0.0f && i < MAX_PHYSICS_STEPS) {
 			float deltaTime = std::min(totalDeltaTime, MAX_DELTATIME);
-			updateAgents(deltaTime);
-			updateBullets(deltaTime);
+			std::thread updateAgentsThread(&GameManager::updateAgents, this, deltaTime);
+			std::thread updateBulletsThread(&GameManager::updateBullets, this, deltaTime);
+
+
+			updateAgentsThread.join();
+			updateBulletsThread.join();
 
 			m_particleEngine.update(deltaTime);
 
 			totalDeltaTime -= deltaTime;
 			i++;
 		}
-		
-		
+
+
 
 		m_camera.setPos(m_player->getPosition());
 		m_camera.update();
@@ -190,12 +201,12 @@ void GameManager::gameLoop()
 		{
 			framesCount++;
 		}
-
 	}
 }
 
 void GameManager::updateAgents(float deltaTime)
 {
+	std::lock_guard<std::mutex> lock(agentMutex);
 	for (int i = 0; i < m_humans.size(); i++) {
 		m_humans[i]->update(m_levels[m_currentLevel]->getLevelData(), m_humans, m_zombies, deltaTime);
 	}
@@ -232,10 +243,12 @@ void GameManager::updateAgents(float deltaTime)
 			m_humans[i]->collideWithAgent(m_humans[j]);
 		}
 	}
+
 }
 
 void GameManager::updateBullets(float deltaTime)
 {
+	std::lock_guard<std::mutex> lock(bulletMutex);
 	for (int i = 0; i < m_bullets.size();) {
 		if (m_bullets[i].update(m_levels[m_currentLevel]->getLevelData(), deltaTime)) {
 			m_bullets[i] = m_bullets.back();
@@ -302,6 +315,7 @@ void GameManager::updateBullets(float deltaTime)
 			}
 		}
 	}
+	
 }
 
 void GameManager::checkVictory()
@@ -326,6 +340,7 @@ void GameManager::processInput()
 		switch (event.type) {
 		case SDL_QUIT:
 			m_gameState = GameState::EXIT;
+			
 			break;
 		case SDL_KEYDOWN:
 			m_inputManager.pressKey(event.key.keysym.sym);
@@ -409,8 +424,31 @@ void GameManager::drawHUD()
 	GLint pUniform = m_textureProgram.getUniformLocation("P");
 	glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
-	m_hudSpriteBatch.begin();
+	const double MAX_LEAK = 1500000; // Set this to the maximum leak size you expect
 
+	// Scale it to be in the range [0, 1]
+	double scaledValue = (double)(memoryAllocated - memoryDeleted) / MAX_LEAK;
+
+	GLuint barTexture = Vladgine::ResourceManager::getTexture("Textures/circle.png").id;
+	m_hudSpriteBatch.begin();
+	glm::vec4 destRect(0, 96 , 64, 512 * scaledValue);
+	glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
+	Vladgine::ColorRGB8 color;
+
+	if (scaledValue < 0.58) {
+		color = Vladgine::ColorRGB8(0, 255, 0, 255);
+	}
+	else if (scaledValue < 0.61) {
+		color = Vladgine::ColorRGB8(255, 255, 0, 255);
+	}
+	else if (scaledValue < 0.62) {
+		color = Vladgine::ColorRGB8(255, 165, 0, 255);
+	}
+	else if (scaledValue >= 0.62) {
+		color = Vladgine::ColorRGB8(255, 0, 0, 255);
+	}
+
+	m_hudSpriteBatch.draw(destRect, uvRect, 0 , 0, color);
 	sprintf_s(buffer, "Num Humans %d", m_humans.size());
 
 	m_spriteFont->draw(m_hudSpriteBatch, buffer, glm::vec2(0, 0),
@@ -423,7 +461,6 @@ void GameManager::drawHUD()
 	
 	m_hudSpriteBatch.end();
 	m_hudSpriteBatch.renderBatch();
-
 }
 
 void GameManager::addBlood(const glm::vec2& position, int numParticles)

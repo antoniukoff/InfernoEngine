@@ -42,7 +42,7 @@ private:
     std::vector<Ball> m_balls; ///< All the balls 
     std::unique_ptr<Grid> m_grid; ///< Grid for spatial partitioning for collision
 
-    int m_currentRenderer = 0;
+    uint32_t m_currentRenderer = 0;
     std::vector<BallRenderer*> m_ballRenderers;
 
   
