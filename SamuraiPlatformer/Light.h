@@ -1,7 +1,7 @@
 #pragma once
 #include <Vladgine/Vertex.h>
 #include <Vladgine/SpriteBatch.h>
-#include <glm/glm.hpp>
+#include <GLEW/glm/glm.hpp>
 
 class Light
 {

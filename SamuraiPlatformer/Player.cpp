@@ -1,6 +1,6 @@
 #include "Player.h"
 #include <Vladgine/ResourceManager.h>
-#include <SDL.h>
+#include <SDL/SDL.h>
 #include <iostream>
 
 void Player::init(b2World* world, const glm::vec2& position, const glm::vec2& drawDims, const glm::vec2& collisionDims, Vladgine::ColorRGB8 color)

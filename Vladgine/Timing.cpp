@@ -1,5 +1,5 @@
 #include "Timing.h"
-#include <SDL.h>
+#include <SDL/SDL.h>
 
 namespace Vladgine {
 
@@ -66,7 +66,7 @@ namespace Vladgine {
 		int count;
 		currentFrame++;
 
-		//if there are less then 10 samples in the buffer avarage the existing once, otherwise avarages 10 samles(if 20 frames has passed still 10 samples going to be avaraged)
+		//if there are less then 10 samples in the buffer avarage the existing ones, otherwise avarages 10 samles(if 20 frames has passed still 10 samples going to be avaraged)
 		if (currentFrame < NUM_SAMPLES) {
 			count = currentFrame;
 		}

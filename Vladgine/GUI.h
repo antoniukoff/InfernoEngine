@@ -1,8 +1,8 @@
 #pragma once
 #include <CEGUI/CEGUI.h>
 #include <CEGUI/RendererModules/OpenGL/GL3Renderer.h>
-#include <glm/glm.hpp>
-#include <SDL.h>
+#include <GLEW/glm/glm.hpp>
+#include <SDL/SDL.h>
 
 namespace Vladgine {
 

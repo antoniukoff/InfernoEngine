@@ -1,5 +1,5 @@
 #pragma once
-#include <glew.h>
+#include <GLEW/glew.h>
 #include <string>
 namespace Vladgine {
 

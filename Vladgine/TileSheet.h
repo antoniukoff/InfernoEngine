@@ -1,6 +1,6 @@
 #pragma once
 #include "GLTexture.h"
-#include <glm/glm.hpp>
+#include <GLEW/glm/glm.hpp>
 
 namespace Vladgine {
 

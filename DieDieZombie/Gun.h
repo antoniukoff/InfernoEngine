@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include <glm/glm.hpp>
+#include <GLEW/glm/glm.hpp>
 #include <Vladgine/AudioEngine.h>
 #include <vector>
 #include "Bullet.h"

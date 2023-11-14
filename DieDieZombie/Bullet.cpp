@@ -3,7 +3,7 @@
 #include "Agent.h"
 #include "Human.h"
 #include "Zombie.h"
-#include <SDL_mixer.h>
+#include <SDL/SDL_mixer.h>
 #include "Level.h"
 
 Bullet::Bullet(glm::vec2 position, glm::vec2 direction, float damage, float speed)

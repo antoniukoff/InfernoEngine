@@ -1,6 +1,6 @@
 #pragma once
 #include <functional>
-#include <glm/glm.hpp>
+#include <GLEW/glm/glm.hpp>
 #include "Vertex.h"
 #include "SpriteBatch.h"
 #include "GLTexture.h"

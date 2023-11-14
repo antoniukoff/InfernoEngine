@@ -2,7 +2,7 @@
 
 #include "SpriteBatch.h"
 
-#include <SDL.h>
+#include <SDL/SDL.h>
 #include <iostream>
 
 

@@ -1,5 +1,5 @@
 #pragma once
-#include <glm/glm.hpp>
+#include <GLEW/glm/glm.hpp>
 #include <vector>
 #include <string>
 #include <Vladgine/SpriteBatch.h>

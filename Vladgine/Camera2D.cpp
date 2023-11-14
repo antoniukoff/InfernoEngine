@@ -26,7 +26,7 @@ namespace Vladgine {
 
 			// sets to move everything to the opposite side and 
 			//sets the camera origin to the middle of the screen
-			glm::vec3 translate(-_position.x + _screenWidth / 2, -_position.y + _screenHeight / 2 , 0.0f);
+			glm::vec3 translate(-_position.x + _screenWidth / 2, -_position.y + _screenHeight / 2, 0.0f);
 			//here i set the translation to the camera matrix to be 
 			//orthomatrix multiplied by the translate vector
 			_cameraMatrix = glm::translate(_orthoMatrix, translate);

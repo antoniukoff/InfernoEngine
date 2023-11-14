@@ -1,5 +1,5 @@
-#include <SDL.h>
-#include <glew.h>
+#include <SDL/SDL.h>
+#include <GLEW/glew.h>
 #include <iostream>
 #include "GameManager.h"
 

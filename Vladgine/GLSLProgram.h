@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include <glew.h>
+#include <GLEW/glew.h>
 
 using namespace std;
 namespace Vladgine {

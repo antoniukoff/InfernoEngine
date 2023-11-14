@@ -1,7 +1,7 @@
 #pragma once
-#include <glew.h>
+#include <GLEW/glew.h>
 #include "Vertex.h"
-#include <glm/glm.hpp>
+#include <GLEW/glm/glm.hpp>
 #include <vector>
 
 namespace Vladgine {

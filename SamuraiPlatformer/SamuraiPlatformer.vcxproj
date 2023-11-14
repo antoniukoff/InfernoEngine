@@ -71,12 +71,14 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir)deps\TTF\include;$(SolutionDir)deps\OpenGL\include;$(SolutionDir)deps\;$(SolutionDir);$(SolutionDir)deps\SDL\include;$(SolutionDir)deps\Box2D\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Release\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir);$(SolutionDir)vendor\include;$(IncludePath)</IncludePath>
+    <OutDir>$(SolutionDir)bin\$(ProjectName)\$(Platform)\$(Configuration)</OutDir>
+    <IntDir>$(SolutionDir)bin\temp\$(ProjectName)\$(Platform)\$(Configuration)</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)deps\TTF\include;$(SolutionDir)deps\OpenGL\include;$(SolutionDir)deps\;$(SolutionDir);$(SolutionDir)deps\SDL\include;$(SolutionDir)deps\Box2D\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Debug\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir);$(SolutionDir)vendor\include;$(IncludePath)</IncludePath>
+    <OutDir>$(SolutionDir)bin\$(ProjectName)\$(Platform)\$(Configuration)</OutDir>
+    <IntDir>$(SolutionDir)bin\temp\$(ProjectName)\$(Platform)\$(Configuration)</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -88,8 +90,10 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Vladgine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y "$(SolutionDir)vendor\bin\$(Configuration)\*.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -105,8 +109,10 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Vladgine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y "$(SolutionDir)vendor\bin\$(Configuration)\*.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -142,6 +148,7 @@
     <ClCompile Include="Capsule.cpp" />
     <ClCompile Include="EditorScreen.cpp" />
     <ClCompile Include="GameplayScreen.cpp" />
+    <ClCompile Include="LevelMediator.cpp" />
     <ClCompile Include="LevelReaderWriter.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenuScreen.cpp" />
@@ -153,6 +160,8 @@
     <ClInclude Include="Capsule.h" />
     <ClInclude Include="EditorScreen.h" />
     <ClInclude Include="GameplayScreen.h" />
+    <ClInclude Include="LevelData.h" />
+    <ClInclude Include="LevelMediator.h" />
     <ClInclude Include="LevelReaderWriter.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="MainMenuScreen.h" />
@@ -162,6 +171,11 @@
   <ItemGroup>
     <None Include="Shaders\lightFrag.glsl" />
     <None Include="Shaders\lightVert.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Vladgine\Vladgine.vcxproj">
+      <Project>{9eb4e76c-dec1-4749-8a10-a43fedfd44c8}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

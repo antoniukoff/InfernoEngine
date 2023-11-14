@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glm/glm.hpp>
+#include <GLEW/glm/glm.hpp>
 #include <Vladgine/Vertex.h>
 
 struct Cell;

@@ -1,7 +1,7 @@
 #include "Gun.h"
 #include <random>
 #include <ctime>
-#include <glm/gtx/rotate_vector.hpp>
+#include <GLEW/glm/gtx/rotate_vector.hpp>
 
 const float DEG_TO_RAD = 3.14159265359f / 180.0f;
 const float RAD_TO_DEG = 180.0f / 3.14159265359f;

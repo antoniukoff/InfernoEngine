@@ -1,5 +1,5 @@
 #pragma once
-#include <glew.h>
+#include <GLEW/glew.h>
 namespace Vladgine {
 
 	struct Position {

@@ -1,6 +1,6 @@
 #include "Player.h"
 
-#include <SDL.h>
+#include <SDL/SDL.h>
 #include <Vladgine/ResourceManager.h>
 
 #include "Gun.h"
@@ -74,10 +74,9 @@ void Player::update(const std::vector<std::string>& levelData,
 
 	m_direction = glm::normalize(mouseCoords - centerPosition);
 
-	if (_currentGunIndex != -1) {
-		
+	if (_currentGunIndex != -1) 
+	{
 		_guns[_currentGunIndex]->update(_inputManager->isKeyDown(SDL_BUTTON_LEFT), centerPosition, m_direction, *_bullets, deltaTime);
-		
 	}
 
 	collideWithLevel(levelData);

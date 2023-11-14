@@ -3,13 +3,14 @@
 #include <Vladgine/Timing.h>
 #include <Vladgine/VladgineErrors.h>
 #include <Vladgine/ResourceManager.h>
-#include <glm/gtx/rotate_vector.hpp>
+#include <GLEW/glm/gtx/rotate_vector.hpp>
 #include "Gun.h"
 #include <iostream>
 #include "Zombie.h"
 #include <random>
 #include <ctime>
 #include <algorithm>
+#include <Vladgine/Core.h>
 
 const float DEG_TO_RAD = 3.14159265359f / 180.0f;
 const float RAD_TO_DEG = 180.0f / 3.14159265359f;
@@ -18,7 +19,7 @@ const float HUMAN_SPEED = 1.0f;
 const float ZOMBIE_SPEED = 1.3f;
 const float PLAYER_SPEED = 10.0f;
 
-GameManager::GameManager(): m_screenWidth(1024), m_screenHeight(768), m_gameState(GameState::PLAY), m_maxFPS(2500.0f),
+GameManager::GameManager(): m_screenWidth(1920), m_screenHeight(1080), m_gameState(GameState::PLAY), m_maxFPS(2500.0f),
 m_player(nullptr), m_numZombiesKilled(0), m_numHumansKilled(0)
 {
 }
@@ -113,6 +114,10 @@ void GameManager::initLevel()
 	m_player->addGun(new Gun("Shotgun", 60, 12, 20.0f, 150, BULLET_SPEED, m_audioEngine.loadSoundEffect("Sounds/Shots/gun_shot_01.wav")));
 	m_player->addGun(new Gun("MP5", 1, 1, 10.0f, 20, BULLET_SPEED, m_audioEngine.loadSoundEffect("Sounds/Shots/gun_machine_01.wav")));
 
+	glm::vec2 cameraPos = glm::vec2(m_levels[m_currentLevel]->getWidth() * TILE_WIDTH / 2.0f,
+		m_levels[m_currentLevel]->getHeight() * TILE_WIDTH / 2.0f);
+	m_camera.setPos(cameraPos);
+
 }
 
 void GameManager::gameLoop()
@@ -177,7 +182,8 @@ void GameManager::gameLoop()
 
 		static int framesCount = 0;
 		if (framesCount == 200) {
-			std::cout << m_fps << std::endl;
+			//std::cout << m_fps << std::endl;
+			printMemory();
 			framesCount = 0;
 		}
 		else

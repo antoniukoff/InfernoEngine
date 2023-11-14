@@ -1,13 +1,9 @@
 #define _CRT_SECURE_NO_WARNINGS // To shut up the compiler about sprintf...
 #include "MainGame.h"
-
 #include <Vladgine/Vladgine.h>
 #include <Vladgine/ResourceManager.h>
-#include <SDL.h>
 #include <random>
 #include <ctime>
-#include <algorithm>
-#include <cmath>
 #include <iostream>
 
 // Some helpful constants.
@@ -67,8 +63,8 @@ void MainGame::run() {
 void MainGame::init() {
     Vladgine::init();
 
-    m_screenWidth = 1920;
-    m_screenHeight = 1080;
+    m_screenWidth = 1280;
+    m_screenHeight = 720;
 
     m_window.create("Ball Game", m_screenWidth, m_screenHeight, 0);
     glClearColor(0.0, 0.0, 0.0, 1.0);
@@ -132,7 +128,7 @@ void MainGame::initBalls() {
     totalProbability += p; \
     possibleBalls.emplace_back(__VA_ARGS__);
 
-    const int NUM_BALLS = 40000;  
+    const int NUM_BALLS = 10000;
 
     // Random engine stuff
     std::mt19937 randomEngine((unsigned int)time(nullptr));

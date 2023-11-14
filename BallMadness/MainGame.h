@@ -1,5 +1,4 @@
 #pragma once
-
 #include <Vladgine/Camera2D.h>
 #include <Vladgine/SpriteBatch.h>
 #include <Vladgine/InputManager.h>
@@ -7,11 +6,10 @@
 #include <Vladgine/GLSLProgram.h>
 #include <Vladgine/Timing.h>
 #include <Vladgine/SpriteFont.h>
-#include <memory>
 #include "Grid.h"
-
 #include "BallController.h"
 #include "BallRenderer.h"
+#include <memory>
 
 
 // TODO:

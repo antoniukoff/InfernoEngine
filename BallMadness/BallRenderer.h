@@ -1,5 +1,4 @@
 #pragma once
-
 #include <Vladgine/SpriteBatch.h>
 #include <Vladgine/GLSLProgram.h>
 #include <vector>

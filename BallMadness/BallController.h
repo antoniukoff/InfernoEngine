@@ -1,7 +1,5 @@
 #pragma once
-
 #include <vector>
-
 #include "Ball.h"
 
 enum class GravityDirection {NONE, LEFT, UP, RIGHT, DOWN};

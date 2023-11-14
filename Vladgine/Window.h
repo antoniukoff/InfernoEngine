@@ -1,6 +1,6 @@
 #pragma once
-#include <SDL.h>
-#include <glew.h>
+#include <SDL/SDL.h>
+#include <GLEW/glew.h>
 #include <string>
 
 namespace Vladgine {

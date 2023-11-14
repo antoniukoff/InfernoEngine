@@ -71,10 +71,14 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)deps\;$(SolutionDir)deps\TTF\include;$(SolutionDir)deps\OpenGL\include;$(SolutionDir)deps\SDL\include;$(SolutionDir)deps\Box2D\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)vendor\include;$(IncludePath)</IncludePath>
+    <OutDir>$(SolutionDir)vendor\lib\$(Configuration)\Vladgine</OutDir>
+    <IntDir>$(SolutionDir)bin\temp\$(ProjectName)\$(Platform)\$(Configuration)</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir)deps\TTF\include;$(SolutionDir)deps\OpenGL\include;$(SolutionDir)deps\Box2D\include;$(SolutionDir)deps\;$(SolutionDir)deps\SDL\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)vendor\include;$(IncludePath)</IncludePath>
+    <OutDir>$(SolutionDir)vendor\lib\$(Configuration)\Vladgine</OutDir>
+    <IntDir>$(SolutionDir)bin\temp\$(ProjectName)\$(Platform)\$(Configuration)</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -90,8 +94,12 @@
     </Link>
     <Lib>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32.lib;opengl32.lib;glew32s.lib;SDL2_ttf.lib;SDL2_mixer.lib;Box2D.lib;CEGUIBase-0_d.lib;CEGUIOpenGLRenderer-0_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)deps\TTF\lib\x86;$(SolutionDir)deps\OpenGL\lib;$(SolutionDir)deps\SDL\lib;$(SolutionDir)deps\Box2D\lib\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)vendor\lib\$(Configuration)\GLEW;$(SolutionDir)vendor\lib\$(Configuration)\CEGUI;$(SolutionDir)vendor\lib\$(Configuration)\Box2D;$(SolutionDir)vendor\lib\$(Configuration)\SDL</AdditionalLibraryDirectories>
     </Lib>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -112,9 +120,13 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_mixer.lib;opengl32.lib;glew32.lib;glew32s.lib;Box2D.lib;CEGUIBase-0.lib;CEGUIOpenGLRenderer-0.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)deps\TTF\lib\x86;$(SolutionDir)deps\OpenGL\lib;$(SolutionDir)deps\SDL\lib;$(SolutionDir)deps\Box2D\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2_mixer.lib;glew32.lib;opengl32.lib;Box2D.lib;CEGUIBase-0.lib;CEGUIOpenGLRenderer-0.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)vendor\lib\$(Configuration)\GLEW;$(SolutionDir)vendor\lib\$(Configuration)\CEGUI;$(SolutionDir)vendor\lib\$(Configuration)\Box2D;$(SolutionDir)vendor\lib\$(Configuration)\SDL</AdditionalLibraryDirectories>
     </Lib>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -149,6 +161,7 @@
   <ItemGroup>
     <ClInclude Include="AudioEngine.h" />
     <ClInclude Include="Camera2D.h" />
+    <ClInclude Include="Core.h" />
     <ClInclude Include="DebugRenderer.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="IGameScreen.h" />
