@@ -1,8 +1,8 @@
 #include "GameManager.h"
-#include <Vladgine/Vladgine.h>
-#include <Vladgine/Timing.h>
-#include <Vladgine/VladgineErrors.h>
-#include <Vladgine/ResourceManager.h>
+#include <InfernoEngine/Vladgine.h>
+#include <InfernoEngine/Timing.h>
+#include <InfernoEngine/VladgineErrors.h>
+#include <InfernoEngine/ResourceManager.h>
 #include <GLEW/glm/gtx/rotate_vector.hpp>
 #include "Gun.h"
 #include <iostream>
@@ -10,7 +10,7 @@
 #include <random>
 #include <ctime>
 #include <algorithm>
-#include <Vladgine/Core.h>
+#include <InfernoEngine/Core.h>
 #include <mutex>
 #include <thread>
 

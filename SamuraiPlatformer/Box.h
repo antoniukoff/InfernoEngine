@@ -1,9 +1,9 @@
 #pragma once
 #include <Box2D/Box2D.h>
 #include <GLEW/glm/glm.hpp>
-#include <Vladgine/Vertex.h>
-#include <Vladgine/SpriteBatch.h>
-#include <Vladgine/GLTexture.h>
+#include <InfernoEngine/Vertex.h>
+#include <InfernoEngine/SpriteBatch.h>
+#include <InfernoEngine/GLTexture.h>
 
 class Box
 {

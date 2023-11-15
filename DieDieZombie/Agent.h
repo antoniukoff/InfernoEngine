@@ -1,8 +1,8 @@
 #pragma once
 #include <GLEW/glm/glm.hpp>
-#include <Vladgine/SpriteBatch.h>
+#include <InfernoEngine/SpriteBatch.h>
 #include <string>
-#include <Vladgine/Vertex.h>
+#include <InfernoEngine/Vertex.h>
 
 const float AGENT_WIDTH = 60.0f;
 const float AGENT_RADIUS = (float)AGENT_WIDTH / 2;

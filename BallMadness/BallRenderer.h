@@ -1,6 +1,6 @@
 #pragma once
-#include <Vladgine/SpriteBatch.h>
-#include <Vladgine/GLSLProgram.h>
+#include <InfernoEngine/SpriteBatch.h>
+#include <InfernoEngine/GLSLProgram.h>
 #include <vector>
 #include "Ball.h"
 #include <memory>

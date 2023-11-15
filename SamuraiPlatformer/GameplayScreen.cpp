@@ -1,7 +1,7 @@
 #include "GameplayScreen.h"
 #include <iostream>
-#include <Vladgine/IMainGame.h>
-#include <Vladgine/ResourceManager.h>
+#include <InfernoEngine/IMainGame.h>
+#include <InfernoEngine/ResourceManager.h>
 #include "Light.h"
 #include "Box.h"
 #include <random>

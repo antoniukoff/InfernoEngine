@@ -1,7 +1,7 @@
 #include "Player.h"
 
 #include <SDL/SDL.h>
-#include <Vladgine/ResourceManager.h>
+#include <InfernoEngine/ResourceManager.h>
 
 #include "Gun.h"
 

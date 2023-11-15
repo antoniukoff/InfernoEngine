@@ -15,7 +15,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BallMadness", "BallMadness\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SamuraiPlatformer", "SamuraiPlatformer\SamuraiPlatformer.vcxproj", "{EDBFD8A1-35C8-4998-BB8F-270CFF4253ED}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Vladgine", "Vladgine\Vladgine.vcxproj", "{9EB4E76C-DEC1-4749-8A10-A43FEDFD44C8}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "InfernoEngine", "InfernoEngine\InfernoEngine.vcxproj", "{9EB4E76C-DEC1-4749-8A10-A43FEDFD44C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

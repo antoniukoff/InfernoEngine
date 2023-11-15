@@ -1,6 +1,6 @@
 #include "Zombie.h"
 #include "Human.h"
-#include <Vladgine/ResourceManager.h>
+#include <InfernoEngine/ResourceManager.h>
 Zombie::Zombie()
 {
 }

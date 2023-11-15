@@ -1,9 +1,9 @@
 #pragma once
 
-#include <Vladgine/InputManager.h>
-#include <Vladgine/SpriteBatch.h>
-#include <Vladgine/GLTexture.h>
-#include <Vladgine/TileSheet.h>
+#include <InfernoEngine/InputManager.h>
+#include <InfernoEngine/SpriteBatch.h>
+#include <InfernoEngine/GLTexture.h>
+#include <InfernoEngine/TileSheet.h>
 #include "Capsule.h"
 
 enum class MoveState { STANDING, RUNNING, PUNCHING, IN_AIR };

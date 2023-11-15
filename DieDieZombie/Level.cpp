@@ -1,8 +1,8 @@
 #include "Level.h"
 #include "fstream"
 #include <iostream>
-#include <Vladgine/ResourceManager.h>
-#include <Vladgine/VladgineErrors.h>
+#include <InfernoEngine/ResourceManager.h>
+#include <InfernoEngine/VladgineErrors.h>
 
 Level::Level(const std::string& fileName)
 {

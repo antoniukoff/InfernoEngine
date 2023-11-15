@@ -1,6 +1,6 @@
 
 #include <iostream>
-#include <Vladgine/IMainGame.h>
+#include <InfernoEngine/IMainGame.h>
 #include "App.h"
 
 int main(int argc, char** argv)

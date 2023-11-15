@@ -168,7 +168,7 @@
     <None Include="Shaders\defaultVert.glsl" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Vladgine\Vladgine.vcxproj">
+    <ProjectReference Include="..\InfernoEngine\InfernoEngine.vcxproj">
       <Project>{9eb4e76c-dec1-4749-8a10-a43fedfd44c8}</Project>
     </ProjectReference>
   </ItemGroup>

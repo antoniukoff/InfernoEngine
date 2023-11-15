@@ -1,5 +1,5 @@
 #include "Bullet.h"
-#include <Vladgine/ResourceManager.h>
+#include <InfernoEngine/ResourceManager.h>
 #include "Agent.h"
 #include "Human.h"
 #include "Zombie.h"

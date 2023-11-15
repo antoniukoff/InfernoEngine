@@ -1,7 +1,7 @@
 #pragma once
 #include "Human.h"
-#include <Vladgine/Camera2D.h>
-#include <Vladgine/InputManager.h>
+#include <InfernoEngine/Camera2D.h>
+#include <InfernoEngine/InputManager.h>
 #include <string>
 #include "Bullet.h"
 

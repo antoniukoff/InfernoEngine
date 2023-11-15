@@ -2,7 +2,7 @@
 #include <GLEW/glm/glm.hpp>
 #include <vector>
 #include <string>
-#include <Vladgine/SpriteBatch.h>
+#include <InfernoEngine/SpriteBatch.h>
 
 class Human;
 class Zombie;

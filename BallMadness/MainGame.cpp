@@ -1,11 +1,11 @@
 #define _CRT_SECURE_NO_WARNINGS // To shut up the compiler about sprintf...
 #include "MainGame.h"
-#include <Vladgine/Vladgine.h>
-#include <Vladgine/ResourceManager.h>
+#include <InfernoEngine/Vladgine.h>
+#include <InfernoEngine/ResourceManager.h>
 #include <random>
 #include <ctime>
 #include <iostream>
-#include <Vladgine/Core.h>
+#include <InfernoEngine/Core.h>
 
 // Some helpful constants.
 const float DESIRED_FPS = 60.0f; // FPS the game is designed to run at

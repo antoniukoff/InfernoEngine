@@ -1,16 +1,16 @@
 #pragma once
-#include <Vladgine/IGameScreen.h>
+#include <InfernoEngine/IGameScreen.h>
 #include <Box2D/Box2D.h>
 #include "Box.h"
 #include "Light.h"
 #include <vector>
-#include <Vladgine/SpriteBatch.h>
-#include <Vladgine/GLSLProgram.h>
-#include <Vladgine/Camera2D.h>
-#include <Vladgine/GLTexture.h>
-#include <Vladgine/Window.h>
-#include <Vladgine/DebugRenderer.h>
-#include <Vladgine/GUI.h>
+#include <InfernoEngine/SpriteBatch.h>
+#include <InfernoEngine/GLSLProgram.h>
+#include <InfernoEngine/Camera2D.h>
+#include <InfernoEngine/GLTexture.h>
+#include <InfernoEngine/Window.h>
+#include <InfernoEngine/DebugRenderer.h>
+#include <InfernoEngine/GUI.h>
 #include "Player.h"
 
 

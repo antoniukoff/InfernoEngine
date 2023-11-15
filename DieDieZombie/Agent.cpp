@@ -1,5 +1,5 @@
 #include "Agent.h"
-#include <Vladgine/ResourceManager.h>
+#include <InfernoEngine/ResourceManager.h>
 #include "Level.h"
 #include <algorithm>
 

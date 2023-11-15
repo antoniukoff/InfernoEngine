@@ -1,6 +1,6 @@
 #pragma once
 #include "Light.h"
-#include <Vladgine/GLTexture.h>
+#include <InfernoEngine/GLTexture.h>
 #include <vector>
 
 struct LevelData {

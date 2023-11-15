@@ -4,7 +4,7 @@
 #include <random>
 #include <ctime>
 #include  <GLEW/glm/gtx/rotate_vector.hpp>
-#include <Vladgine/ResourceManager.h>
+#include <InfernoEngine/ResourceManager.h>
 
 constexpr float DEG_TO_RAD = 3.14159265359f / 180.0f;
 constexpr float RAD_TO_DEG = 180.0f / 3.14159265359f;

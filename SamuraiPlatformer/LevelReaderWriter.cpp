@@ -1,6 +1,6 @@
 #include "LevelReaderWriter.h"
 
-#include <Vladgine/ResourceManager.h>
+#include <InfernoEngine/ResourceManager.h>
 #include <fstream>
 #include <iostream>
 

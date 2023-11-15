@@ -1,13 +1,13 @@
 #pragma once
 #pragma once
-#include <Vladgine/IGameScreen.h>
+#include <InfernoEngine/IGameScreen.h>
 #include "Box.h"
 #include <vector>
-#include <Vladgine/SpriteBatch.h>
-#include <Vladgine/GLSLProgram.h>
-#include <Vladgine/Camera2D.h>
-#include <Vladgine/Window.h>
-#include <Vladgine/GUI.h>
+#include <InfernoEngine/SpriteBatch.h>
+#include <InfernoEngine/GLSLProgram.h>
+#include <InfernoEngine/Camera2D.h>
+#include <InfernoEngine/Window.h>
+#include <InfernoEngine/GUI.h>
 #include "ScreenIndices.h"
 
 class MainMenuScreen : public Vladgine::IGameScreen

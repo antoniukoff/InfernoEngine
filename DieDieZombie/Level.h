@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
-#include <Vladgine/SpriteBatch.h>
+#include <InfernoEngine/SpriteBatch.h>
 
 const int TILE_WIDTH = 64;
 

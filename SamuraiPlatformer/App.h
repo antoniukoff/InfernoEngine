@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Vladgine/IMainGame.h>
+#include <InfernoEngine/IMainGame.h>
 #include "GameplayScreen.h"
 #include "MainMenuScreen.h"
 #include "EditorScreen.h"

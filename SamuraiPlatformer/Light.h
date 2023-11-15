@@ -1,6 +1,6 @@
 #pragma once
-#include <Vladgine/Vertex.h>
-#include <Vladgine/SpriteBatch.h>
+#include <InfernoEngine/Vertex.h>
+#include <InfernoEngine/SpriteBatch.h>
 #include <GLEW/glm/glm.hpp>
 
 class Light

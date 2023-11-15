@@ -1,8 +1,8 @@
 #include "EditorScreen.h"
 
 #include <iostream>
-#include <Vladgine/ResourceManager.h>
-#include <Vladgine/IOManager.h>
+#include <InfernoEngine/ResourceManager.h>
+#include <InfernoEngine/IOManager.h>
 #include "LevelReaderWriter.h"
 #include "LevelData.h"
 #include "LevelMediator.h"

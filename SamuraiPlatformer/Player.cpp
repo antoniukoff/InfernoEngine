@@ -1,5 +1,5 @@
 #include "Player.h"
-#include <Vladgine/ResourceManager.h>
+#include <InfernoEngine/ResourceManager.h>
 #include <SDL/SDL.h>
 #include <iostream>
 

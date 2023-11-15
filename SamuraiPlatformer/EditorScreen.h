@@ -4,19 +4,19 @@
 #include "Light.h"
 
 #include "Player.h"
-#include <Vladgine/Camera2D.h>
-#include <Vladgine/DebugRenderer.h>
-#include <Vladgine/GLSLProgram.h>
-#include <Vladgine/GLTexture.h>
-#include <Vladgine/IGameScreen.h>
-#include <Vladgine/InputManager.h>
-#include <Vladgine/SpriteBatch.h>
-#include <Vladgine/SpriteFont.h>
-#include <Vladgine/Window.h>
+#include <InfernoEngine/Camera2D.h>
+#include <InfernoEngine/DebugRenderer.h>
+#include <InfernoEngine/GLSLProgram.h>
+#include <InfernoEngine/GLTexture.h>
+#include <InfernoEngine/IGameScreen.h>
+#include <InfernoEngine/InputManager.h>
+#include <InfernoEngine/SpriteBatch.h>
+#include <InfernoEngine/SpriteFont.h>
+#include <InfernoEngine/Window.h>
 #include <vector>
 #include "LevelData.h"
 
-#include <Vladgine/GUI.h>
+#include <InfernoEngine/GUI.h>
 
 #include "ScreenIndices.h"
 #include "ScreenIndices.h"

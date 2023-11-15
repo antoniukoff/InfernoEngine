@@ -1,7 +1,7 @@
 #pragma once
 
 #include <GLEW/glm/glm.hpp>
-#include <Vladgine/Vertex.h>
+#include <InfernoEngine/Vertex.h>
 
 struct Cell;
 
