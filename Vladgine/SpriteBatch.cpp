@@ -146,95 +146,106 @@ namespace Vladgine {
 		glBindVertexArray(0);
 	}
 
-	void SpriteBatch::createRenderBatches()
-	{
+	void SpriteBatch::createRenderBatches() {
 
-		// here we create batches for rendering. now it only is going to create render batches based on the texture so it is crucial to sort by texture before creating render batches to avoid multiple render batches for the same texture
-		//TODO: implement depth batching. to properly organize the batches
+		// This method organizes the glyphs into render batches. 
+		// Render batches are grouped based on texture to minimize texture swapping during rendering.
+		// Note: Currently, it sorts only by texture.
 
-		//allocating the total amount of memory for vertices vector to hold an appropriate number of vertices per total amount of glyphs
-
+		// Allocate memory for a vertices vector to hold vertex data for all the glyphs.
+		// Each glyph requires 6 vertices (two triangles).
 		std::vector<Vertex> vertices;
-
 		vertices.resize(_glyphPointers.size() * 6);
-	
-		//return if no glyphs in the vector
+
+		// Return early if there are no glyphs to process.
 		if (_glyphPointers.empty()) return;
 
-		// offset used to specify the amount of verices between the render batches to minimize draw calls 
+		// The 'offset' tracks the number of vertices processed, used to determine where each batch starts.
 		int offset = 0;
-		int cv = 0;// current vertex
-		// puses back only the paramaters of the render batch constructor and sets up the first render batch
+		int cv = 0; // 'cv' is the current vertex index in the vertices vector.
+
+		// Initialize the first render batch based on the first glyph's texture.
 		_renderBatches.emplace_back(offset, 6, _glyphPointers[0]->texture);
-		// upload the vertices data of the first glyph into the vertex vector
+		// Load the vertex data of the first glyph into the vertices vector.
 		vertices[cv++] = _glyphPointers[0]->topLeft;
 		vertices[cv++] = _glyphPointers[0]->bottomLeft;
 		vertices[cv++] = _glyphPointers[0]->bottomRight;
 		vertices[cv++] = _glyphPointers[0]->bottomRight;
 		vertices[cv++] = _glyphPointers[0]->topRight;
 		vertices[cv++] = _glyphPointers[0]->topLeft;
-		//increment offset by 6 vertices(offset used inly for the new render batch)
-		offset += 6;
-		// loop through all the glyphs
+		offset += 6; // Increment the offset for the next batch.
+
+		// Process each glyph and organize them into batches.
 		for (uint32_t cg = 1; cg < _glyphs.size(); cg++) {
-			// if the texture of the previous glyph is not the same as of the current one - create new render batch
+			// Check if the current glyph has a different texture from the previous one. If so, start a new batch.
 			if (_glyphPointers[cg]->texture != _glyphPointers[cg - 1]->texture) {
 				_renderBatches.emplace_back(offset, 6, _glyphPointers[cg]->texture);
 			}
-			// else increase the number of vertecies of the render batch to render
 			else {
+				// Otherwise, continue adding to the current batch.
 				_renderBatches.back().numVertices += 6;
 			}
-			//store the vertecies of subsequent glyphs in the vector
+			// Load the current glyph's vertex data into the vertices vector.
 			vertices[cv++] = _glyphPointers[cg]->topLeft;
 			vertices[cv++] = _glyphPointers[cg]->bottomLeft;
 			vertices[cv++] = _glyphPointers[cg]->bottomRight;
 			vertices[cv++] = _glyphPointers[cg]->bottomRight;
 			vertices[cv++] = _glyphPointers[cg]->topRight;
 			vertices[cv++] = _glyphPointers[cg]->topLeft;
-			//increment offset by 6 vertices
-			offset += 6;
+			offset += 6; // Increment the offset for the next batch.
 		}
-		// upload the data the data to the gpu
+
+		// Upload the vertices data to the GPU for rendering.
 		glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-		//orphan the buffer
+		// 'Orphan' the buffer: Allocate new memory for the buffer to improve performance.
 		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), nullptr, GL_DYNAMIC_DRAW);
+		// Copy the vertices data into the buffer.
 		glBufferSubData(GL_ARRAY_BUFFER, 0, vertices.size() * sizeof(Vertex), vertices.data());
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-
 	}
+
 
 	void SpriteBatch::createVertexArray()
 	{
-		// creates a vertex array object - storing the configuration
-		//in the VAO that saves time for open gl to set up the settings 
-		//about the vertex data to  render
-
+		// This function sets up a Vertex Array Object (VAO) and a Vertex Buffer Object (VBO).
+		// The VAO stores the configuration of the vertex attributes, and the VBO stores the actual vertex data.
+		// This setup is necessary for efficient rendering in OpenGL.
+		
+		// Generate and bind a Vertex Array Object if it has not been created yet.
 		if (_vao == 0) {
 			glGenVertexArrays(1, &_vao);
 		}
-
 		glBindVertexArray(_vao);
 
+		// Generate and bind a Vertex Buffer Object if it has not been created yet.
+		// This buffer will store our vertex data.
 		if (_vbo == 0) {
 			glGenBuffers(1, &_vbo);
 		}
 		glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-		
-		glEnableVertexAttribArray(0);
-		glEnableVertexAttribArray(1);
-		glEnableVertexAttribArray(2);
 
+		// Enable the vertex attribute arrays. 
+		// Here, we are enabling three attributes: position, color, and UV coordinates.
+		glEnableVertexAttribArray(0); // Position attribute
+		glEnableVertexAttribArray(1); // Color attribute
+		glEnableVertexAttribArray(2); // UV attribute
+
+		// Specify the layout of the vertex data.
+		// The first argument corresponds to the attribute index (as enabled above).
+		// The next arguments specify the type, size, and offset of each attribute in the vertex data.
+
+		// Position attribute pointer: 2 floats (x, y)
 		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, position));
-		//this is a color attribute pointer
+
+		// Color attribute pointer: 4 bytes (RGBA), normalized to the range [0, 1]
 		glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(Vertex), (void*)offsetof(Vertex, color));
-		//uv attribute pointer
+
+		// UV attribute pointer: 2 floats (u, v)
 		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, uv));
 
+		// Unbind the VAO to prevent accidental modification.
 		glBindVertexArray(0);
-
 
 	}
 

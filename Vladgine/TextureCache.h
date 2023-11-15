@@ -8,7 +8,6 @@ namespace Vladgine {
 	public:
 		TextureCache();
 		~TextureCache();
-
 		GLTexture getTexture(std::string texturePath);
 
 	private:

@@ -139,7 +139,7 @@ bool Vladgine::IMainGame::init()
 
 bool Vladgine::IMainGame::initSystems()
 {
-	m_window.create("Default", 1920, 1080, 0);
+	m_window.create("Default", 1280, 720, 0);
 
 	return true;
 }

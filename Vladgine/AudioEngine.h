@@ -34,15 +34,13 @@ namespace Vladgine {
 		static void pause();
 		static void stop();
 		static void resume();
+
 	private:
 		Mix_Music* m_music = nullptr;
 	};
 
 	class AudioEngine
 	{
-
-		
-
 	public: 
 		AudioEngine();
 		~AudioEngine();
@@ -52,6 +50,7 @@ namespace Vladgine {
 
 		SoundEffect loadSoundEffect(const std::string& filePath);
 		Music loadMusic(const std::string& filePath);
+
 	private :
 		bool m_isInitialized = false;
 		std::map<std::string, Mix_Chunk*> m_effectMap;

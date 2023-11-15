@@ -2,78 +2,87 @@
 
 namespace Vladgine {
 
-	Camera2D::Camera2D() : _position(0.0f, 0.0f), _cameraMatrix(1.0f), _orthoMatrix(1.0f), _scale(1.0f), _needsMatrixUpdate(1),
-		_screenWidth(500), _screenHeight(500)
-	{
-	}
+    Camera2D::Camera2D()
+        : _position(0.0f, 0.0f),
+        _cameraMatrix(1.0f),
+        _orthoMatrix(1.0f),
+        _scale(1.0f),
+        _needsMatrixUpdate(true),
+        _screenWidth(500),
+        _screenHeight(500)
+    {
+    }
 
-	Camera2D::~Camera2D()
-	{
-	}
+    Camera2D::~Camera2D()
+    {
+    }
 
-	void Camera2D::init(int screenW, int screenH)
-	{
-		_screenWidth = screenW;
-		_screenHeight = screenH;
-		// set ortho matrix to be the size of my screen  coordinates
-		// ortho is going to map the ndc with these coordinates
-		_orthoMatrix = glm::ortho(0.0f, (float)_screenWidth, 0.0f, (float)_screenHeight);
-	}
+    void Camera2D::init(int screenW, int screenH)
+    {
+        _screenWidth = screenW;
+        _screenHeight = screenH;
 
-	void Camera2D::update()
-	{
-		if (_needsMatrixUpdate) {
+        // Set orthographic matrix to be the size of the screen coordinates
+        _orthoMatrix = glm::ortho(0.0f, static_cast<float>(_screenWidth), 0.0f, static_cast<float>(_screenHeight));
+    }
 
-			// sets to move everything to the opposite side and 
-			//sets the camera origin to the middle of the screen
-			glm::vec3 translate(-_position.x + _screenWidth / 2, -_position.y + _screenHeight / 2, 0.0f);
-			//here i set the translation to the camera matrix to be 
-			//orthomatrix multiplied by the translate vector
-			_cameraMatrix = glm::translate(_orthoMatrix, translate);
+    void Camera2D::update()
+    {
+        if (_needsMatrixUpdate)
+        {
+            // Calculate translation to move everything to the opposite side and set the camera origin to the middle of the screen
+            glm::vec3 translate(-_position.x + _screenWidth / 2, -_position.y + _screenHeight / 2, 0.0f);
+            _cameraMatrix = glm::translate(_orthoMatrix, translate);
 
-			glm::vec3 scale(_scale, _scale, 0.0f);
-			_cameraMatrix = glm::scale(glm::mat4(1.0f), scale) * _cameraMatrix;
-			_needsMatrixUpdate = false;
-		}
-	}
+            // Scale the camera matrix
+            glm::vec3 scale(_scale, _scale, 0.0f);
+            _cameraMatrix = glm::scale(glm::mat4(1.0f), scale) * _cameraMatrix;
 
-	glm::vec2 Camera2D::converScreenToWorld(glm::vec2 screenCoords)
-	{
-		// invert y dir
-		screenCoords.y = _screenHeight - screenCoords.y;
+            _needsMatrixUpdate = false;
+        }
+    }
 
-		screenCoords -= glm::vec2(_screenWidth/ 2, _screenHeight / 2);
-		screenCoords /= _scale;
-		screenCoords += _position;
-		return screenCoords;
-	}
+    // Converts screen coordinates to world coordinates
+    glm::vec2 Camera2D::converScreenToWorld(glm::vec2 screenCoords)
+    {
+        screenCoords.y = _screenHeight - screenCoords.y;
+        screenCoords -= glm::vec2(_screenWidth / 2, _screenHeight / 2);
+        screenCoords /= _scale;
+        screenCoords += _position;
 
+        return screenCoords;
+    }
 
-	//simple aabb test to see if the glyph is within the camera borders. used for camera culling
-	bool Camera2D::isBoxInView(const glm::vec2& position, const glm::vec2& domensions)
-	{
-		glm::vec2 scaledScreenedDimension = glm::vec2(_screenWidth, _screenHeight) / (_scale);
+    // Simple AABB test to see if a box is within the camera borders, used for camera culling
+    bool Camera2D::isBoxInView(const glm::vec2& position, const glm::vec2& dimensions)
+    {
+        glm::vec2 scaledScreenDimension = glm::vec2(_screenWidth, _screenHeight) / _scale;
 
-		const float MIN_DISTANCE_X = domensions.x / 2.0f + scaledScreenedDimension.x / 2.0f;
-		const float MIN_DISTANCE_Y = domensions.y / 2.0f + scaledScreenedDimension.y / 2.0f;
+        // calculate the minimum distance by adding the offset of the objects position and the dimensions
+        // to the half of the screen dimensions to add extra padding to the visible area of the camera
+        // this is because the objects position is in the center of the object and not the top left corner
+        // if the object is at the edge of the screen it will be culled before it is completely
+        // out of the screen so by adding the extra padding it will be culled when it is completely out of the screen
+        const float MIN_DISTANCE_X = dimensions.x / 2.0f + scaledScreenDimension.x / 2.0f;
+        const float MIN_DISTANCE_Y = dimensions.y / 2.0f + scaledScreenDimension.y / 2.0f;
 
-		//center position of the parameters
-		glm::vec2 centerPos = position + domensions / 2.0f;
-		// center position of the camera
-		glm::vec2 centerCameraPos = _position;
-		//vector from the input to the camera
-		glm::vec2 distVec = centerPos - centerCameraPos;
+        // Center position of the object in world space
+        glm::vec2 centerPos = position + dimensions / 2.0f;
+        // Center position of the camera
+        glm::vec2 centerCameraPos = _position;
+        // Distance between the object's center and the camera's center
+        glm::vec2 distVec = centerPos - centerCameraPos;
 
-		float xDepth = MIN_DISTANCE_X - abs(distVec.x);
-		float yDepth = MIN_DISTANCE_Y - abs(distVec.y);
+        float xDepth = MIN_DISTANCE_X - abs(distVec.x);
+        float yDepth = MIN_DISTANCE_Y - abs(distVec.y);
 
-
-		// there was a collision 
-		if (xDepth > 0 && yDepth > 0){
-			return true;
-		}
-		
-		return false;
-	}
+        // There was a collision 
+        if (xDepth > 0 && yDepth > 0) {
+            return true;
+        }
+        return false;
+    }
 
 }
+
+

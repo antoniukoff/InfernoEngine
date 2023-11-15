@@ -6,8 +6,6 @@ size_t memoryDeleted = 0;
 
 void* operator new(size_t memorySize){
 	memoryAllocated += memorySize;
-	
-
 	return std::malloc(memorySize);
 }
 

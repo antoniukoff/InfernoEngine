@@ -4,13 +4,9 @@
 
 namespace Vladgine {
 
-	TextureCache::TextureCache()
-	{
-	}
+	TextureCache::TextureCache(){}
 
-	TextureCache::~TextureCache()
-	{
-	}
+	TextureCache::~TextureCache(){}
 
 	GLTexture TextureCache::getTexture(std::string texturePath)
 	{
@@ -24,15 +20,8 @@ namespace Vladgine {
 
 			//insert the pair of string(key) and GLTexture(value) in the map
 			_textureMap.insert(make_pair(texturePath, newTexture));
-
-			
-
 			return newTexture;
 		}
-
-
 		return mit->second;
-
 	}
-
 }

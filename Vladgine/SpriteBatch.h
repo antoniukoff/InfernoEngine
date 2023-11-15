@@ -71,9 +71,5 @@ namespace Vladgine {
 		std::vector<Glyph*> _glyphPointers;//for sorting
 		std::vector<Glyph> _glyphs; // actual glyphs
 		std::vector<RenderBatch> _renderBatches;
-
-		
-
 	};
-
 }

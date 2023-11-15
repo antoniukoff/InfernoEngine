@@ -72,9 +72,8 @@ namespace Vladgine {
 			Mix_CloseAudio();
 			Mix_Quit();
 		}
-
-
 	}
+
 	SoundEffect AudioEngine::loadSoundEffect(const std::string& filePath)
 	{
 		//try to find the audio in the map

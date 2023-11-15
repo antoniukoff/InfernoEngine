@@ -21,7 +21,6 @@ namespace Vladgine {
 		// if we want to or on some more flags we are going to check if 
 		// the flag we pass is going to match the enum flags bitwise
 		// if yes we are going to or on that flag to open gl flag
-
 		if (currentFlags & INVISIBLE) {
 			flags |= SDL_WINDOW_HIDDEN;
 		}

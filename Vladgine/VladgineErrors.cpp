@@ -12,7 +12,6 @@ namespace Vladgine {
 		SDL_Quit();
 		exit(69);
 	}
-
 }
 
 

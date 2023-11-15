@@ -1,8 +1,6 @@
 #pragma once
 #include <vector>
 
-
-
 namespace Vladgine {
 
 	class ParticleBatch2D;
@@ -17,13 +15,9 @@ namespace Vladgine {
 		//After adding a particle batch , the ParticleEngine2D becomes 
 		//responsible for deallocation
 		void addParticleBatch(ParticleBatch2D* particleBatch);
-
 		void update(float deltaTime);
-
 		void draw(SpriteBatch* spriteBatch);
-
 	private:
 		std::vector<ParticleBatch2D*> m_partileBatches;
 	};
-
 }
