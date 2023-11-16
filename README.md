@@ -49,7 +49,7 @@ As the Inferno Engine continues to evolve, here are some of the exciting develop
 - **Networking Capabilities**
   
 ## Credits and Acknowledgements
-Vladgine makes use of the following open-source libraries:
+The engine makes use of the following open-source libraries:
 
 - **SDL (Simple DirectMedia Layer)**: [SDL GitHub](https://github.com/libsdl-org/SDL)
 - **GLEW (OpenGL Extension Wrangler Library)**: [GLEW GitHub](https://github.com/nigels-com/glew)
