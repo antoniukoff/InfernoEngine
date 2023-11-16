@@ -1,6 +1,7 @@
 # Inferno Engine
 
-Welcome to the Inferno Engine, an advanced, versatile game engine designed to empower developers to bring their creative visions to life. With a focus on performance and ease of use, the Inferno Engine includes a range of features tailored for building immersive game experiences.
+## Overview
+Inferno Engine is a homemade and versatile game engine developed with a focus on performance and ease of use. the Inferno Engine offers a range of features tailored to assist in building immersive (currently)2D game experiences. 
 
 ## Table of Contents
 1. [Installation](#installation)
@@ -34,6 +35,17 @@ Welcome to the Inferno Engine, an advanced, versatile game engine designed to em
 - **Particle System**: Robust particle system for creating stunning visual effects.
 - **Screen Management**: Screen management for seamless navigation between different game scenes or states.
 - **Debug Drawing**: Integrated debug drawing tools for troubleshooting and performance optimization.
+
+  ## Future Development Plans
+As the Inferno Engine continues to evolve, here are some of the exciting developments on the horizon:
+
+- **Transition to 3D**: Expanding the engine's capabilities to support 3D game development, offering more versatility and creative possibilities.
+- **Frustum Culling**: Implementing frustum culling to improve rendering performance by efficiently managing the visibility of objects.
+- **ECS (Entity Component System) Architecture**: Integrating an ECS framework for more efficient and flexible game object management and performance optimization.
+- **Advanced Physics and Collision Detection**: Enhancing the engine with more robust physics simulations and accurate collision detection mechanisms.
+- **AI Pathfinding Algorithms**: Incorporating sophisticated AI pathfinding to enable complex NPC behaviors and interactions within game environments.
+- **Custom Shader Support**: Adding support for custom shaders, allowing developers to create unique visual effects and further customize their games.
+- **Networking Capabilities**: Implementing networking features for multiplayer game development.
   
 ## Credits and Acknowledgements
 Vladgine makes use of the following open-source libraries:
