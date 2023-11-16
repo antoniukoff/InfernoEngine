@@ -12,23 +12,23 @@
 class BallRenderer {
 public:
 
-    virtual void renderBalls(Vladgine::SpriteBatch& spriteBatch, 
+    virtual void renderBalls(Inferno::SpriteBatch& spriteBatch, 
                              std::vector<Ball>& ball, const glm::mat4& pMatrix);
 
 protected:
-    std::unique_ptr<Vladgine::GLSLProgram> m_program = nullptr;
+    std::unique_ptr<Inferno::GLSLProgram> m_program = nullptr;
 };
 
 class MomentumBallRenderer : public BallRenderer {
 public: 
-    virtual void renderBalls(Vladgine::SpriteBatch& spriteBatch,
+    virtual void renderBalls(Inferno::SpriteBatch& spriteBatch,
                              std::vector<Ball>& ball, const glm::mat4& pMatrix) override;
 };
 
 class VelocityBallRenderer : public BallRenderer {
 public:
     VelocityBallRenderer(int screenWidth, int screenHeight);
-	virtual void renderBalls(Vladgine::SpriteBatch& spriteBatch,
+	virtual void renderBalls(Inferno::SpriteBatch& spriteBatch,
 		std::vector<Ball>& ball, const glm::mat4& pMatrix) override;
 
 private:
@@ -38,7 +38,7 @@ private:
 class ShadowBallRenderer : public BallRenderer {
 public:
   
-	virtual void renderBalls(Vladgine::SpriteBatch& spriteBatch,
+	virtual void renderBalls(Inferno::SpriteBatch& spriteBatch,
 		std::vector<Ball>& ball, const glm::mat4& pMatrix) override;
 
 private:
@@ -47,7 +47,7 @@ private:
 
 class TrailBallRenderer : public BallRenderer {
 public:
-	void renderBalls(Vladgine::SpriteBatch& spriteBatch, std::vector<Ball>& balls, const glm::mat4& pMatrix) override;
+	void renderBalls(Inferno::SpriteBatch& spriteBatch, std::vector<Ball>& balls, const glm::mat4& pMatrix) override;
 
 private:
 	struct TrailSegment {
@@ -63,7 +63,7 @@ private:
 class HaloBallRenderer : public BallRenderer {
 public:
 
-	virtual void renderBalls(Vladgine::SpriteBatch& spriteBatch,
+	virtual void renderBalls(Inferno::SpriteBatch& spriteBatch,
 		std::vector<Ball>& ball, const glm::mat4& pMatrix) override;
 
 private:

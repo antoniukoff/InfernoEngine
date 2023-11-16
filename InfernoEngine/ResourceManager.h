@@ -1,7 +1,7 @@
 #pragma once
 #include "TextureCache.h"
 
-namespace Vladgine {
+namespace Inferno {
 	class ResourceManager
 	{
 	public:

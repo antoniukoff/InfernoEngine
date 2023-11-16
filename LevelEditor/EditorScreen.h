@@ -48,17 +48,17 @@ public:
 		widget(w), text(text), scale(scale) {
 		// Empty
 	};
-	void draw(Vladgine::SpriteBatch& sb, Vladgine::SpriteFont& sf, Vladgine::Window* w);
+	void draw(Inferno::SpriteBatch& sb, Inferno::SpriteFont& sf, Inferno::Window* w);
 
 	CEGUI::Window* widget = nullptr;
 	std::string text = "";
-	Vladgine::ColorRGB8 color = Vladgine::ColorRGB8(255, 255, 255, 255);
+	Inferno::ColorRGB8 color = Inferno::ColorRGB8(255, 255, 255, 255);
 	float scale = 0.7;
 };
 
-class EditorScreen : public Vladgine::IGameScreen {
+class EditorScreen : public Inferno::IGameScreen {
 public:
-	EditorScreen(Vladgine::Window* window);
+	EditorScreen(Inferno::Window* window);
 	~EditorScreen();
 
 	/************************************************************************/
@@ -169,19 +169,19 @@ private:
 	CEGUI::PushButton* m_backButton = nullptr;
 	std::vector<WidgetLabel> m_widgetLabels;
 
-	Vladgine::SpriteBatch m_spriteBatch;
-	Vladgine::SpriteFont m_spriteFont;
-	Vladgine::GLSLProgram m_textureProgram;
-	Vladgine::GLSLProgram m_lightProgram;
-	Vladgine::DebugRenderer m_debugRenderer;
+	Inferno::SpriteBatch m_spriteBatch;
+	Inferno::SpriteFont m_spriteFont;
+	Inferno::GLSLProgram m_textureProgram;
+	Inferno::GLSLProgram m_lightProgram;
+	Inferno::DebugRenderer m_debugRenderer;
 
-	Vladgine::GLTexture m_blankTexture;
+	Inferno::GLTexture m_blankTexture;
 
 	PhysicsMode m_physicsMode = PhysicsMode::RIGID;
 	ObjectMode m_objectMode = ObjectMode::PLAYER;
 	SelectionMode m_selectMode = SelectionMode::SELECT;
 
-	Vladgine::InputManager m_inputManager;
+	Inferno::InputManager m_inputManager;
 
 	LevelData levelData;
 	bool m_hasPlayer = false;
@@ -193,10 +193,10 @@ private:
 	bool m_isDragging = false;
 	glm::vec2 m_selectOffset;
 
-	Vladgine::Camera2D m_camera;
-	Vladgine::Camera2D m_uiCamera;
-	Vladgine::Window* m_window;
-	Vladgine::GUI m_gui;
+	Inferno::Camera2D m_camera;
+	Inferno::Camera2D m_uiCamera;
+	Inferno::Window* m_window;
+	Inferno::GUI m_gui;
 	std::unique_ptr<b2World> m_world;
 
 };

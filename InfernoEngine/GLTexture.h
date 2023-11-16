@@ -1,7 +1,7 @@
 #pragma once
 #include <GLEW/glew.h>
 #include <string>
-namespace Vladgine {
+namespace Inferno {
 
 	struct GLTexture {
 		std::string filePath = "";

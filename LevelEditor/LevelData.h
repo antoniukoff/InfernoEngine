@@ -8,8 +8,8 @@ struct LevelData {
 	struct BoxData {
 		glm::vec2 position;
 		glm::vec2 dimensions;
-		Vladgine::GLTexture texture;
-		Vladgine::ColorRGB8 color;
+		Inferno::GLTexture texture;
+		Inferno::ColorRGB8 color;
 		bool fixedRotation;
 		bool isDynamic;
 		float angle;
@@ -24,7 +24,7 @@ struct LevelData {
 		glm::vec2 position;
 		glm::vec2 drawDims;
 		glm::vec2 collisionDims;
-		Vladgine::ColorRGB8 color;
+		Inferno::ColorRGB8 color;
 	};
 
 	PlayerData player;

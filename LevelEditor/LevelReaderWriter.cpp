@@ -73,7 +73,7 @@ bool LevelReaderWriter::saveAsBinary(const std::string& filePath, const Player& 
 	glm::vec2 playerPos = player.getPosition();
 	glm::vec2 playerDrawDims = player.getDrawDims();
 	glm::vec2 playerCollisionDims = player.getCollisionDims();
-	Vladgine::ColorRGB8 playerColor = player.getColor();
+	Inferno::ColorRGB8 playerColor = player.getColor();
 
 	file.write(reinterpret_cast<const char*>(&playerPos), sizeof(playerPos));
 	file.write(reinterpret_cast<const char*>(&playerDrawDims), sizeof(playerDrawDims));
@@ -87,7 +87,7 @@ bool LevelReaderWriter::saveAsBinary(const std::string& filePath, const Player& 
 	for (const Box& b : boxes) {
 		glm::vec2 pos = b.getPosition();
 		glm::vec2 dims = b.getDimensions();
-		Vladgine::ColorRGB8 color = b.getColor();
+		Inferno::ColorRGB8 color = b.getColor();
 		glm::vec4 uvRect = b.getUvRect();
 		float angle = b.getAngle();
 		bool isDynamic = b.getIsDynamic();
@@ -114,7 +114,7 @@ bool LevelReaderWriter::saveAsBinary(const std::string& filePath, const Player& 
 	for (const Light& l : lights) {
 		glm::vec2 position = l.position;
 		float size = l.size;
-		Vladgine::ColorRGB8 color = l.color;
+		Inferno::ColorRGB8 color = l.color;
 
 		file.write(reinterpret_cast<const char*>(&position), sizeof(position));
 		file.write(reinterpret_cast<const char*>(&size), sizeof(size));
@@ -170,7 +170,7 @@ bool LevelReaderWriter::loadAsBinary(const std::string& filePath, b2World* world
 	glm::vec2 pos;
 	glm::vec2 ddims;
 	glm::vec2 cdims;
-	Vladgine::ColorRGB8 color;
+	Inferno::ColorRGB8 color;
 	file.read(reinterpret_cast<char*>(&pos), sizeof(pos));
 	file.read(reinterpret_cast<char*>(&ddims), sizeof(ddims));
 	file.read(reinterpret_cast<char*>(&cdims), sizeof(cdims));
@@ -187,11 +187,11 @@ bool LevelReaderWriter::loadAsBinary(const std::string& filePath, b2World* world
 		glm::vec2 pos;
 		glm::vec2 dims;
 		glm::vec4 uvRect;
-		Vladgine::ColorRGB8 color;
+		Inferno::ColorRGB8 color;
 		bool fixedRotation;
 		bool isDynamic;
 		float angle;
-		Vladgine::GLTexture texture;
+		Inferno::GLTexture texture;
 		std::string texturePath;
 		uint32_t texturePathLength;
 
@@ -210,7 +210,7 @@ bool LevelReaderWriter::loadAsBinary(const std::string& filePath, b2World* world
 		texturePath.resize(texturePathLength);
 		file.read(&texturePath[0], texturePathLength);
 
-		texture = Vladgine::ResourceManager::getTexture(texturePath);
+		texture = Inferno::ResourceManager::getTexture(texturePath);
 		b.init(world, pos, dims, texture, color, fixedRotation, isDynamic, angle, uvRect);
 		boxes.push_back(b);
 	}
@@ -224,7 +224,7 @@ bool LevelReaderWriter::loadAsBinary(const std::string& filePath, b2World* world
 		Light l;
 		glm::vec2 pos;
 		float size;
-		Vladgine::ColorRGB8 color;
+		Inferno::ColorRGB8 color;
 
 		file.read(reinterpret_cast<char*>(&pos), sizeof(pos));
 		file.read(reinterpret_cast<char*>(&size), sizeof(size));
@@ -246,7 +246,7 @@ bool LevelReaderWriter::loadAsTextV0(std::ifstream& file, b2World* world, Player
         glm::vec2 pos;
         glm::vec2 ddims;
         glm::vec2 cdims;
-        Vladgine::ColorRGB8 color;
+        Inferno::ColorRGB8 color;
         file >> pos.x >> pos.y >> ddims.x >> ddims.y >> cdims.x >> cdims.y >> color.r >> color.g >> color.b >> color.a;
         player.init(world, pos, ddims, cdims, color);
     }
@@ -255,11 +255,11 @@ bool LevelReaderWriter::loadAsTextV0(std::ifstream& file, b2World* world, Player
         glm::vec2 pos;
         glm::vec2 dims;
         glm::vec4 uvRect;
-        Vladgine::ColorRGB8 color;
+        Inferno::ColorRGB8 color;
         bool fixedRotation;
         bool isDynamic;
         float angle;
-        Vladgine::GLTexture texture;
+        Inferno::GLTexture texture;
         std::string texturePath;
         size_t numBoxes;
         file >> numBoxes;
@@ -268,7 +268,7 @@ bool LevelReaderWriter::loadAsTextV0(std::ifstream& file, b2World* world, Player
                  >> uvRect.x >> uvRect.y >> uvRect.z >> uvRect.w
                  >> angle >> texturePath >> isDynamic >> fixedRotation;
 
-            texture = Vladgine::ResourceManager::getTexture(texturePath);
+            texture = Inferno::ResourceManager::getTexture(texturePath);
 
             boxes.emplace_back();
             boxes.back().init(world, pos, dims, texture, color, fixedRotation, isDynamic, angle, uvRect);
@@ -278,7 +278,7 @@ bool LevelReaderWriter::loadAsTextV0(std::ifstream& file, b2World* world, Player
     { // Read lights
         glm::vec2 pos;
         float size;
-        Vladgine::ColorRGB8 color;
+        Inferno::ColorRGB8 color;
         size_t numLights;
         file >> numLights;
         for (size_t i = 0; i < numLights; i++) {

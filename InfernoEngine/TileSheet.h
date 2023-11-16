@@ -2,7 +2,7 @@
 #include "GLTexture.h"
 #include <GLEW/glm/glm.hpp>
 
-namespace Vladgine {
+namespace Inferno {
 
 	class TileSheet {
 	public:

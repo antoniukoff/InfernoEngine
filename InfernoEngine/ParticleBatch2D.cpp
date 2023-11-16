@@ -1,16 +1,16 @@
 #include "ParticleBatch2D.h"
 
-Vladgine::ParticleBatch2D::ParticleBatch2D()
+Inferno::ParticleBatch2D::ParticleBatch2D()
 {
 	//empty
 }
 
-Vladgine::ParticleBatch2D::~ParticleBatch2D()
+Inferno::ParticleBatch2D::~ParticleBatch2D()
 {
 	delete[] m_particles;
 }
 
-void Vladgine::ParticleBatch2D::init(int maxParticles, float decayRate, 
+void Inferno::ParticleBatch2D::init(int maxParticles, float decayRate, 
 	GLTexture texture, std::function<void(Particle2D&, float)> updateFunc /* = defaultParticleUpdate*/)
 {
 	m_maxPArticles = maxParticles;
@@ -20,7 +20,7 @@ void Vladgine::ParticleBatch2D::init(int maxParticles, float decayRate,
 	m_updateFunc = updateFunc;
 }
 
-void Vladgine::ParticleBatch2D::update(float deltaTime)
+void Inferno::ParticleBatch2D::update(float deltaTime)
 {
 	for (int i = 0; i < m_maxPArticles; i++) {
 		if (m_particles[i].life > 0.0f) {
@@ -30,7 +30,7 @@ void Vladgine::ParticleBatch2D::update(float deltaTime)
 	}
 }
 
-void Vladgine::ParticleBatch2D::draw(SpriteBatch* spriteBatch)
+void Inferno::ParticleBatch2D::draw(SpriteBatch* spriteBatch)
 {
 	glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
 	for (int i = 0; i < m_maxPArticles; i++) {
@@ -42,7 +42,7 @@ void Vladgine::ParticleBatch2D::draw(SpriteBatch* spriteBatch)
 	}
 }
 
-void Vladgine::ParticleBatch2D::addParticle(const glm::vec2& position, 
+void Inferno::ParticleBatch2D::addParticle(const glm::vec2& position, 
 											const glm::vec2& velocity, 
 											const ColorRGB8& color, float width)
 {
@@ -55,7 +55,7 @@ void Vladgine::ParticleBatch2D::addParticle(const glm::vec2& position,
 	p.width = width;
 }
 
-int Vladgine::ParticleBatch2D::findFreeParticle()
+int Inferno::ParticleBatch2D::findFreeParticle()
 {
 	for (int i = m_lastFreeParticle; i < m_maxPArticles; i++) {
 		if (m_particles[i].life <= 0.0f) {

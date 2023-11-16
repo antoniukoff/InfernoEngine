@@ -2,7 +2,7 @@
 
 #include <GLEW/glew.h>
 
-namespace Vladgine {
+namespace Inferno {
 
 
     struct Position {

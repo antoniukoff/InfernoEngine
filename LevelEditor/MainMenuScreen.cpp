@@ -1,7 +1,7 @@
 #include "MainMenuScreen.h"
 #include "ScreenIndices.h"
 
-MainMenuScreen::MainMenuScreen(Vladgine::Window* window) : m_window(window)
+MainMenuScreen::MainMenuScreen(Inferno::Window* window) : m_window(window)
 {
 	m_screenIndex = SCREEN_INDEX_MAINMENU;
 }
@@ -106,7 +106,7 @@ void MainMenuScreen::checkInput()
 
 bool MainMenuScreen::onExitClicked(const CEGUI::EventArgs& e)
 {
-	m_currentState = Vladgine::Screen_State::EXIT_APPLICATION;
+	m_currentState = Inferno::Screen_State::EXIT_APPLICATION;
 
 	return true;
 }
@@ -114,13 +114,13 @@ bool MainMenuScreen::onExitClicked(const CEGUI::EventArgs& e)
 bool MainMenuScreen::onEditorEntry(const CEGUI::EventArgs& e)
 {
 	m_nextScreenIndex = SCREEN_INDEX_EDITOR;
-	m_currentState = Vladgine::Screen_State::CHANGE_NEXT;
+	m_currentState = Inferno::Screen_State::CHANGE_NEXT;
 	return true;
 }
 
 bool MainMenuScreen::onNewGameEntry(const CEGUI::EventArgs& e)
 {
 	m_nextScreenIndex = SCREEN_INDEX_GAMEPLAY;
-	m_currentState = Vladgine::Screen_State::CHANGE_NEXT;
+	m_currentState = Inferno::Screen_State::CHANGE_NEXT;
 	return true;
 }

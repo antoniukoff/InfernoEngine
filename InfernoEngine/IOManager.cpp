@@ -7,7 +7,7 @@
 
 namespace fs = std::experimental::filesystem;
 
-namespace Vladgine {
+namespace Inferno {
 
     bool IOManager::reafFileToBuffer(std::string filePath, std::vector<unsigned char>& buffer)
     {

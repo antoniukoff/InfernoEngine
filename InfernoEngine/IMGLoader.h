@@ -3,7 +3,7 @@
 #include <string>
 #include "picoPNG.h"
 
-namespace Vladgine {
+namespace Inferno {
 
 	class IMGLoader
 	{

@@ -11,13 +11,13 @@ public:
 	Box();
 	~Box();
 
-	void init(b2World* world, const glm::vec2& position, const glm::vec2& dimensions, Vladgine::GLTexture texture,
-		Vladgine::ColorRGB8 color, bool fixedRotation, bool isDynamic,
+	void init(b2World* world, const glm::vec2& position, const glm::vec2& dimensions, Inferno::GLTexture texture,
+		Inferno::ColorRGB8 color, bool fixedRotation, bool isDynamic,
 		float angle = 0.0f, glm::vec4 uvRrct = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
 
 	void destroy(b2World* world);
 
-	void draw(Vladgine::SpriteBatch& spriteBatch);
+	void draw(Inferno::SpriteBatch& spriteBatch);
 
 	bool isDynamic() const { return m_body->GetType() == b2_dynamicBody; }
 
@@ -29,9 +29,9 @@ public:
 	const glm::vec2&           getDimensions() const     { return m_dimensions; }
 	glm::vec2                  getPosition() const       { return glm::vec2(m_body->GetPosition().x, m_body->GetPosition().y); }
 	glm::vec4                  getUvRect() const         { return m_uvRect; }
-	const Vladgine::ColorRGB8& getColor() const       { return m_color; }
+	const Inferno::ColorRGB8& getColor() const       { return m_color; }
 	float                      getAngle() const          { return m_body->GetAngle(); }
-	const Vladgine::GLTexture& getTexture() const     { return m_texture; }
+	const Inferno::GLTexture& getTexture() const     { return m_texture; }
 	const bool&                getFixedRotation() const { return m_fixedRotation; }
 	const bool&                getIsDynamic() const { return m_isDynamic; }
 
@@ -42,8 +42,8 @@ private:
 	b2Body* m_body = nullptr;
 	b2Fixture* m_fixture = nullptr;
 	glm::vec2 m_dimensions;
-	Vladgine::ColorRGB8 m_color;
-	Vladgine::GLTexture m_texture;
+	Inferno::ColorRGB8 m_color;
+	Inferno::GLTexture m_texture;
 	bool m_fixedRotation;
 	bool m_isDynamic;
 };

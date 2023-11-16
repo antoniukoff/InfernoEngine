@@ -171,7 +171,7 @@
     <ClInclude Include="ScreenList.h" />
     <ClInclude Include="StackAllocator.h" />
     <ClInclude Include="TileSheet.h" />
-    <ClInclude Include="VladgineErrors.h" />
+    <ClInclude Include="InfernoErrors.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="GLSLProgram.h" />
     <ClInclude Include="GLTexture.h" />
@@ -185,7 +185,7 @@
     <ClInclude Include="TextureCache.h" />
     <ClInclude Include="Timing.h" />
     <ClInclude Include="Vertex.h" />
-    <ClInclude Include="Vladgine.h" />
+    <ClInclude Include="Inferno.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
@@ -197,7 +197,7 @@
     <ClCompile Include="ParticleBatch2D.cpp" />
     <ClCompile Include="ParticleEngine2D.cpp" />
     <ClCompile Include="ScreenList.cpp" />
-    <ClCompile Include="VladgineErrors.cpp" />
+    <ClCompile Include="InfernoErrors.cpp" />
     <ClCompile Include="GLSLProgram.cpp" />
     <ClCompile Include="IMGLoader.cpp" />
     <ClCompile Include="InputManager.cpp" />
@@ -208,7 +208,7 @@
     <ClCompile Include="SpriteFont.cpp" />
     <ClCompile Include="TextureCache.cpp" />
     <ClCompile Include="Timing.cpp" />
-    <ClCompile Include="Vladgine.cpp" />
+    <ClCompile Include="Inferno.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>

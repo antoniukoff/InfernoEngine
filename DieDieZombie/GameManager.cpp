@@ -1,7 +1,7 @@
 #include "GameManager.h"
-#include <InfernoEngine/Vladgine.h>
+#include <InfernoEngine/Inferno.h>
 #include <InfernoEngine/Timing.h>
-#include <InfernoEngine/VladgineErrors.h>
+#include <InfernoEngine/InfernoErrors.h>
 #include <InfernoEngine/ResourceManager.h>
 #include <GLEW/glm/gtx/rotate_vector.hpp>
 #include "Gun.h"
@@ -42,14 +42,14 @@ void GameManager::run()
 {
 	initSystems();
 	initLevel();
-	Vladgine::Music music = m_audioEngine.loadMusic("Sounds/Secunda.mp3");
+	Inferno::Music music = m_audioEngine.loadMusic("Sounds/Secunda.mp3");
 	music.play(-1);
 	gameLoop();
 }	
 
 void GameManager::initSystems()
 {	
-	Vladgine::init();
+	Inferno::init();
 
 	m_audioEngine.init();
 
@@ -63,7 +63,7 @@ void GameManager::initSystems()
 	m_hudSpriteBatch.init();
 
 	// init sprite font (initialize after sdl and opengl)
-	m_spriteFont = new Vladgine::SpriteFont("Fonts/cCaesarSalad.ttf", 32);
+	m_spriteFont = new Inferno::SpriteFont("Fonts/cCaesarSalad.ttf", 32);
 
 	m_camera.init(m_screenWidth, m_screenHeight);	
 	m_hudCamera.init(m_screenWidth, m_screenHeight);	
@@ -71,9 +71,9 @@ void GameManager::initSystems()
 
 
 	// init particles
-	m_bloodParticleBatch = new Vladgine::ParticleBatch2D;
-	m_bloodParticleBatch->init(1000, 0.05f, Vladgine::ResourceManager::getTexture("Textures/circle.png"),
-							   [](Vladgine::Particle2D& particle, float deltaTime) {
+	m_bloodParticleBatch = new Inferno::ParticleBatch2D;
+	m_bloodParticleBatch->init(1000, 0.05f, Inferno::ResourceManager::getTexture("Textures/circle.png"),
+							   [](Inferno::Particle2D& particle, float deltaTime) {
 			particle.position += particle.velocity * deltaTime;
 			particle.color.a = (GLubyte)(particle.life * 255.0f);
 		});
@@ -135,7 +135,7 @@ void GameManager::gameLoop()
 
 	const float MAX_DELTATIME = 1.0f;
 
-	Vladgine::FPSLimiter fpsLimiter;
+	Inferno::FPSLimiter fpsLimiter;
 	fpsLimiter.setMaxFPS(m_maxFPS);
 
 	const float CAMERA_SCALE = 2.0f / 4.0f;
@@ -233,7 +233,7 @@ void GameManager::updateAgents(float deltaTime)
 		//collide with player
 
 		if (m_zombies[i]->collideWithAgent(m_player)) {
-			Vladgine::fatalError("You Lose!");
+			Inferno::fatalError("You Lose!");
 		}
 
 	}
@@ -326,7 +326,7 @@ void GameManager::checkVictory()
 		std::printf("***You win***\n You killed %d humans and %d zombies. There are %d/%d humans remaining",
 			m_numHumansKilled, m_numZombiesKilled, m_humans.size() - 1, m_levels[m_currentLevel]->getNumHumans());
 
-		Vladgine::fatalError("You win!");
+		Inferno::fatalError("You win!");
 	}
 }
 
@@ -429,35 +429,35 @@ void GameManager::drawHUD()
 	// Scale it to be in the range [0, 1]
 	double scaledValue = (double)(memoryAllocated - memoryDeleted) / MAX_LEAK;
 
-	GLuint barTexture = Vladgine::ResourceManager::getTexture("Textures/circle.png").id;
+	GLuint barTexture = Inferno::ResourceManager::getTexture("Textures/circle.png").id;
 	m_hudSpriteBatch.begin();
 	glm::vec4 destRect(0, 96 , 64, 512 * scaledValue);
 	glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
-	Vladgine::ColorRGB8 color;
+	Inferno::ColorRGB8 color;
 
 	if (scaledValue < 0.58) {
-		color = Vladgine::ColorRGB8(0, 255, 0, 255);
+		color = Inferno::ColorRGB8(0, 255, 0, 255);
 	}
 	else if (scaledValue < 0.61) {
-		color = Vladgine::ColorRGB8(255, 255, 0, 255);
+		color = Inferno::ColorRGB8(255, 255, 0, 255);
 	}
 	else if (scaledValue < 0.62) {
-		color = Vladgine::ColorRGB8(255, 165, 0, 255);
+		color = Inferno::ColorRGB8(255, 165, 0, 255);
 	}
 	else if (scaledValue >= 0.62) {
-		color = Vladgine::ColorRGB8(255, 0, 0, 255);
+		color = Inferno::ColorRGB8(255, 0, 0, 255);
 	}
 
 	m_hudSpriteBatch.draw(destRect, uvRect, 0 , 0, color);
 	sprintf_s(buffer, "Num Humans %d", m_humans.size());
 
 	m_spriteFont->draw(m_hudSpriteBatch, buffer, glm::vec2(0, 0),
-		glm::vec2(1.0f), 0.0f, Vladgine::ColorRGB8(255, 255, 255, 255));
+		glm::vec2(1.0f), 0.0f, Inferno::ColorRGB8(255, 255, 255, 255));
 
 	sprintf_s(buffer, "Num Zombies %d", m_zombies.size());
 
 	m_spriteFont->draw(m_hudSpriteBatch, buffer, glm::vec2(0, 36),
-		glm::vec2(1.0f), 0.0f, Vladgine::ColorRGB8(255, 255, 255, 255));
+		glm::vec2(1.0f), 0.0f, Inferno::ColorRGB8(255, 255, 255, 255));
 	
 	m_hudSpriteBatch.end();
 	m_hudSpriteBatch.renderBatch();
@@ -470,7 +470,7 @@ void GameManager::addBlood(const glm::vec2& position, int numParticles)
 
 	glm::vec2 vel(2.0f, 0.0f);
 
-	Vladgine::ColorRGB8 col(255, 0, 0, 255);
+	Inferno::ColorRGB8 col(255, 0, 0, 255);
 
 	for (int i = 0; i < numParticles; i++) {
 		m_bloodParticleBatch->addParticle(position, glm::rotate(vel, randAngle(randEngine) * DEG_TO_RAD) , col, 5.0f);

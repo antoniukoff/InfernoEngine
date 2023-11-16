@@ -45,15 +45,15 @@ void Capsule::init(b2World* world,
 	m_fixtures[2] = m_body->CreateFixture(&circleDef);
 }
 
-void Capsule::drawDebug(Vladgine::DebugRenderer& debugRenderer)
+void Capsule::drawDebug(Inferno::DebugRenderer& debugRenderer)
 {
-	Vladgine::ColorRGB8 color(255, 255, 255, 255);
+	Inferno::ColorRGB8 color(255, 255, 255, 255);
 	glm::vec4 destRect;
 	destRect.x = m_body->GetPosition().x -m_dimensions.x / 2;
 	destRect.y = m_body->GetPosition().y - (m_dimensions.y - m_dimensions.x) / 2;
 	destRect.z = m_dimensions.x;
 	destRect.w = m_dimensions.y - m_dimensions.x;
-	debugRenderer.drawBox(destRect, Vladgine::ColorRGB8(255, 255, 255, 255), m_body->GetAngle());
+	debugRenderer.drawBox(destRect, Inferno::ColorRGB8(255, 255, 255, 255), m_body->GetAngle());
 
 	// draw circle
 	debugRenderer.drawCircle(glm::vec2(destRect.x + m_dimensions.x / 2.0f, destRect.y), color, m_dimensions.x / 2.0f);

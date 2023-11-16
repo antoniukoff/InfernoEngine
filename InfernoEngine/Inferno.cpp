@@ -1,9 +1,8 @@
 #include "framework.h"
-#include "Vladgine.h"
+#include "Inferno.h"
 #include <SDL/SDL.h>
-#include <GLEW/glew.h>
 
-namespace Vladgine {
+namespace Inferno {
 
 	int init()
 	{

@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Vladgine.h"
+#include "Inferno.h"
 #include "Window.h"
 #include "InputManager.h"
 #include <memory>
 
-namespace Vladgine {
+namespace Inferno {
 
     class ScreenList;
     class IGameScreen;

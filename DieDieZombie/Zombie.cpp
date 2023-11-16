@@ -15,8 +15,8 @@ void Zombie::init(float speed, glm::vec2 position)
 	m_position = position;
 
 	m_health = 150.0f;
-	m_color = Vladgine::ColorRGB8(255, 255, 255, 255);
-	m_textureID = Vladgine::ResourceManager::getTexture("Textures/zombie.png").id;
+	m_color = Inferno::ColorRGB8(255, 255, 255, 255);
+	m_textureID = Inferno::ResourceManager::getTexture("Textures/zombie.png").id;
 
 }
 

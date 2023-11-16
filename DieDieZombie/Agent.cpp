@@ -58,9 +58,9 @@ bool Agent::collideWithAgent(Agent* agent)
 
 }
 
-void Agent::draw(Vladgine::SpriteBatch& _spriteBatch)
+void Agent::draw(Inferno::SpriteBatch& _spriteBatch)
 {
-	//static int textureID = Vladgine::ResourceManager::getTexture("Textures/PNG/CharacterLeft_Jump.png").id;
+	//static int textureID = Inferno::ResourceManager::getTexture("Textures/PNG/CharacterLeft_Jump.png").id;
 
 	const glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
 

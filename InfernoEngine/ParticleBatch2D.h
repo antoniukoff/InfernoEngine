@@ -5,7 +5,7 @@
 #include "SpriteBatch.h"
 #include "GLTexture.h"
 
-namespace Vladgine {
+namespace Inferno {
 
 	class Particle2D {
 	public:

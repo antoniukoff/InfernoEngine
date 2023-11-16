@@ -1,20 +1,20 @@
 #include "IMainGame.h"
 #include "Timing.h"
-#include "Vladgine.h"
+#include "Inferno.h"
 #include "IGameScreen.h"
 #include "ScreenList.h"
 
-Vladgine::IMainGame::IMainGame()
+Inferno::IMainGame::IMainGame()
 {
 	m_screenList = std::make_unique<ScreenList>(this);
 }
 
-Vladgine::IMainGame::~IMainGame()
+Inferno::IMainGame::~IMainGame()
 {
 	//empty
 }
 
-void Vladgine::IMainGame::run()
+void Inferno::IMainGame::run()
 {
 
 	if (!init()) return;
@@ -39,7 +39,7 @@ void Vladgine::IMainGame::run()
 	}
 }
 
-void Vladgine::IMainGame::exitGame()
+void Inferno::IMainGame::exitGame()
 {
 	m_currentScreen->onExit();
 	if (m_screenList) {
@@ -49,7 +49,7 @@ void Vladgine::IMainGame::exitGame()
 	m_isRunning = false;
 }
 
-void Vladgine::IMainGame::update()
+void Inferno::IMainGame::update()
 {
 	if (m_currentScreen) {
 		switch (m_currentScreen->getState())
@@ -85,7 +85,7 @@ void Vladgine::IMainGame::update()
 	}
 }
 
-void Vladgine::IMainGame::draw()
+void Inferno::IMainGame::draw()
 {
 	glViewport(0, 0, m_window.getScreenWidth(), m_window.getScreenHeight());
 
@@ -94,7 +94,7 @@ void Vladgine::IMainGame::draw()
 	}
 }
 
-void Vladgine::IMainGame::onSDLEvent(SDL_Event& event)
+void Inferno::IMainGame::onSDLEvent(SDL_Event& event)
 {
 
 	switch (event.type) {
@@ -119,9 +119,9 @@ void Vladgine::IMainGame::onSDLEvent(SDL_Event& event)
 	
 }
 
-bool Vladgine::IMainGame::init()
+bool Inferno::IMainGame::init()
 {
-	Vladgine::init();
+	Inferno::init();
 
 	SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
 
@@ -137,7 +137,7 @@ bool Vladgine::IMainGame::init()
 	return true;
 }
 
-bool Vladgine::IMainGame::initSystems()
+bool Inferno::IMainGame::initSystems()
 {
 	m_window.create("Default", 1280, 720, 0);
 

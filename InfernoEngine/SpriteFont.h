@@ -31,7 +31,7 @@ Modified By: Benjamin Arnold
 
 #include "Vertex.h"
 
-namespace Vladgine {
+namespace Inferno {
 
 	struct GLTexture;
 	class SpriteBatch;

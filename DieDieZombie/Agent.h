@@ -26,7 +26,7 @@ public:
 
 	bool collideWithAgent(Agent* agent);
 
-	void draw(Vladgine::SpriteBatch& _spriteBatch);
+	void draw(Inferno::SpriteBatch& _spriteBatch);
 
 	bool applyDamage(float Damage);
 
@@ -41,7 +41,7 @@ protected:
 
 	glm::vec2 m_position;
 	float m_speed;
-	Vladgine::ColorRGB8 m_color;
+	Inferno::ColorRGB8 m_color;
 	GLuint m_textureID;
 	glm::vec2 m_direction = glm::vec2(1.0f, 0.0f);
 	float m_health;

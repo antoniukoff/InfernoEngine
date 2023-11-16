@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Vladgine {
+namespace Inferno {
 
 	class FPSLimiter {
 	public:

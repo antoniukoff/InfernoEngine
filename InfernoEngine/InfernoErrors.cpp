@@ -1,8 +1,8 @@
-#include "VladgineErrors.h"
+#include "InfernoErrors.h"
 #include <iostream>
 #include <SDL/SDL.h>
 
-namespace Vladgine {
+namespace Inferno {
 
 	void fatalError(std::string errorString) {
 		std::cout << errorString << std::endl;

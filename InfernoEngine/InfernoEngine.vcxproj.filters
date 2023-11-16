@@ -18,7 +18,7 @@
     <ClInclude Include="framework.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="VladgineErrors.h">
+    <ClInclude Include="InfernoErrors.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GLSLProgram.h">
@@ -48,7 +48,7 @@
     <ClInclude Include="Window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Vladgine.h">
+    <ClInclude Include="Inferno.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Camera2D.h">
@@ -101,10 +101,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Vladgine.cpp">
+    <ClCompile Include="Inferno.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VladgineErrors.cpp">
+    <ClCompile Include="InfernoErrors.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GLSLProgram.cpp">

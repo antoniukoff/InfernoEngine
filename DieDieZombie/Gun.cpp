@@ -7,7 +7,7 @@ const float DEG_TO_RAD = 3.14159265359f / 180.0f;
 const float RAD_TO_DEG = 180.0f / 3.14159265359f;
 
 Gun::Gun(std::string name, int firerate, int bulletspershot,
-	float spread, float bulletDamage, float bulletSpeed, Vladgine::SoundEffect fireEffect)
+	float spread, float bulletDamage, float bulletSpeed, Inferno::SoundEffect fireEffect)
 {
 	_name = name;
 	_fireRate = firerate;

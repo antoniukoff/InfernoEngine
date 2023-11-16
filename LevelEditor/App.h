@@ -7,7 +7,7 @@
 
 class GameplayScreen;
 
-class App : public Vladgine::IMainGame
+class App : public Inferno::IMainGame
 {
 public:
 	App();

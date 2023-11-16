@@ -2,7 +2,7 @@
 #include <map>
 #include <string>
 #include "GLTexture.h"
-namespace Vladgine {
+namespace Inferno {
 	class TextureCache
 	{
 	public:

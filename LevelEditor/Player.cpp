@@ -3,9 +3,9 @@
 #include <SDL/SDL.h>
 #include <iostream>
 
-void Player::init(b2World* world, const glm::vec2& position, const glm::vec2& drawDims, const glm::vec2& collisionDims, Vladgine::ColorRGB8 color)
+void Player::init(b2World* world, const glm::vec2& position, const glm::vec2& drawDims, const glm::vec2& collisionDims, Inferno::ColorRGB8 color)
 {
-	Vladgine::GLTexture texture = Vladgine::ResourceManager::getTexture("Textures/blue_ninja.png");
+	Inferno::GLTexture texture = Inferno::ResourceManager::getTexture("Textures/blue_ninja.png");
 	m_color = color;
 	m_drawDims = drawDims;
 	m_capsule.init(world, position, collisionDims, 1.0f, 0.1f, true);
@@ -18,7 +18,7 @@ void Player::destroy(b2World* world)
 	m_capsule.destroy(world);
 }
 
-void Player::draw(Vladgine::SpriteBatch& spriteBatch)
+void Player::draw(Inferno::SpriteBatch& spriteBatch)
 {
 
 	glm::vec4 destRect;
@@ -114,12 +114,12 @@ void Player::draw(Vladgine::SpriteBatch& spriteBatch)
 	spriteBatch.draw(destRect, uvRect, m_texture.texture.id, 0.0f, m_color, body->GetAngle());
 }
 
-void Player::drawDebug(Vladgine::DebugRenderer& debugRenderer)
+void Player::drawDebug(Inferno::DebugRenderer& debugRenderer)
 {
 	m_capsule.drawDebug(debugRenderer);	  
 }
 
-void Player::update(Vladgine::InputManager& inputManager)
+void Player::update(Inferno::InputManager& inputManager)
 {
 	b2Body* body = m_capsule.getBody();
 	if (inputManager.isKeyDown(SDLK_a)) {

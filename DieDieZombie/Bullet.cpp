@@ -26,18 +26,18 @@ bool Bullet::update(const std::vector<std::string>& levelData, float deltaTime)
 
 }
 
-void Bullet::draw(Vladgine::SpriteBatch& spriteBatch)
+void Bullet::draw(Inferno::SpriteBatch& spriteBatch)
 {
 	glm::vec4 destRect(m_position.x + BULLET_RADIUS, m_position.y + BULLET_RADIUS, BULLET_RADIUS * 2, BULLET_RADIUS * 2);
 	
 	const glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
-	Vladgine::ColorRGB8 color;
+	Inferno::ColorRGB8 color;
 	color.r = 255;
 	color.g = 255;
 	color.b = 255;
 	color.a = 255;
 
-	spriteBatch.draw(destRect, uvRect, Vladgine::ResourceManager::getTexture("Textures/PNG/Bullet.png").id, 0.0f, color); 
+	spriteBatch.draw(destRect, uvRect, Inferno::ResourceManager::getTexture("Textures/PNG/Bullet.png").id, 0.0f, color); 
 }
 
 bool Bullet::collideWithAgent(Agent* agent)

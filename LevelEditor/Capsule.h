@@ -13,7 +13,7 @@ public:
 		float friction,
 		bool fixedRotation);
 
-	void drawDebug(Vladgine::DebugRenderer& debugRenderer);
+	void drawDebug(Inferno::DebugRenderer& debugRenderer);
 
 	void destroy(b2World* world);
 

@@ -8,8 +8,8 @@ Box::Box()
 Box::~Box()
 {
 }
-void Box::init(b2World* world, const glm::vec2& position, const glm::vec2& dimensions, Vladgine::GLTexture texture,
-	Vladgine::ColorRGB8 color, bool fixedRotation, bool isDynamic,
+void Box::init(b2World* world, const glm::vec2& position, const glm::vec2& dimensions, Inferno::GLTexture texture,
+	Inferno::ColorRGB8 color, bool fixedRotation, bool isDynamic,
 	float angle, /* = 0.0f */ glm::vec4 uvRect /*= glm::vec4(0.0f, 0.0f, 1.0f, 1.0f)*/)
 {
 	m_color = color;
@@ -47,7 +47,7 @@ void Box::destroy(b2World* world) {
 	world->DestroyBody(m_body);
 }
 
-void Box::draw(Vladgine::SpriteBatch& spriteBatch)
+void Box::draw(Inferno::SpriteBatch& spriteBatch)
 {
 		glm::vec4 destRect;
 		destRect.x = m_body->GetPosition().x - m_dimensions.x / 2.0f;

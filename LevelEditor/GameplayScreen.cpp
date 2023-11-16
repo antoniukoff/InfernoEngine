@@ -10,7 +10,7 @@
 
 
 
-GameplayScreen::GameplayScreen(Vladgine::Window* window) : m_window(window) {
+GameplayScreen::GameplayScreen(Inferno::Window* window) : m_window(window) {
 
 	m_screenIndex = SCREEN_INDEX_GAMEPLAY;
 
@@ -43,7 +43,7 @@ void GameplayScreen::onEntry()
 	LevelData levelToLoad = LevelMediator::getInstance()->getLevelData();
 	b2Vec2 gravity(0.0f, -25.0f);
 	m_world = std::make_unique<b2World>(gravity);
-	m_texture = Vladgine::ResourceManager::getTexture("Textures/brick_wall.png");
+	m_texture = Inferno::ResourceManager::getTexture("Textures/brick_wall.png");
 
 	const int numBoxes = levelToLoad.boxes.size();;
 	for (int i = 0; i < numBoxes; i++) {
@@ -147,12 +147,12 @@ void GameplayScreen::draw()
 			destRect.y = b.getBody()->GetPosition().y - b.getDimensions().y / 2;
 			destRect.z = b.getDimensions().x;
 			destRect.w = b.getDimensions().y;
-			m_debugRenderer.drawBox(destRect, Vladgine::ColorRGB8(255, 255, 255, 255), b.getBody()->GetAngle());
+			m_debugRenderer.drawBox(destRect, Inferno::ColorRGB8(255, 255, 255, 255), b.getBody()->GetAngle());
 
 			//
 		}
 		for (auto& l : LevelMediator::getInstance()->getLevelData().light) {
-			m_debugRenderer.drawCircle(glm::vec2(l.position.x, l.position.y), Vladgine::ColorRGB8(255, 255, 255, 255), l.size / 2.0f);
+			m_debugRenderer.drawCircle(glm::vec2(l.position.x, l.position.y), Inferno::ColorRGB8(255, 255, 255, 255), l.size / 2.0f);
 		}
 
 		m_player.drawDebug(m_debugRenderer);
@@ -162,12 +162,12 @@ void GameplayScreen::draw()
 	}
 	//render some test lights
 	Light playerLight;
-	playerLight.color = Vladgine::ColorRGB8(255, 255, 255, 128);
+	playerLight.color = Inferno::ColorRGB8(255, 255, 255, 128);
 	playerLight.position = m_player.getPosition();
 	playerLight.size = 30.0f;
 
 	Light mouseLight;
-	mouseLight.color = Vladgine::ColorRGB8(255, 0, 255, 150);
+	mouseLight.color = Inferno::ColorRGB8(255, 0, 255, 150);
 	glm::vec2 mousePos = m_camera.converScreenToWorld(m_game->m_inputManager.getMouseCoords());
 	mouseLight.position = mousePos;
 	mouseLight.size = 15.0f;
@@ -236,7 +236,7 @@ void GameplayScreen::checkInput()
 
 bool GameplayScreen::onExitClicked(const CEGUI::EventArgs& e)
 {
-	m_currentState = Vladgine::Screen_State::CHANGE_PREVIOUS;
+	m_currentState = Inferno::Screen_State::CHANGE_PREVIOUS;
 
 	return true;
 }

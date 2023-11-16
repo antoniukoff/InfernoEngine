@@ -4,7 +4,7 @@
 #include <GLEW/glm/glm.hpp>
 #include <vector>
 
-namespace Vladgine {
+namespace Inferno {
 	
 	enum class GlyphSortType{ NONE, FRONT_TO_BACK, BACK_TO_FRONT, TEXTURE};
 

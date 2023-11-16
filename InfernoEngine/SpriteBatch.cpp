@@ -2,7 +2,7 @@
 #include <algorithm>
 
 
-namespace Vladgine {
+namespace Inferno {
 
 
 	Glyph::Glyph(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint Texture, float Depth, ColorRGB8 color) :

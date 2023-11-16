@@ -38,20 +38,20 @@ private:
 	void addBlood(const glm::vec2& position, int numParticles);
 	
 
-	Vladgine::Window m_window;
-	Vladgine::GLSLProgram m_textureProgram;
-	Vladgine::InputManager m_inputManager;
-	Vladgine::Camera2D m_camera;
-	Vladgine::Camera2D m_hudCamera;
+	Inferno::Window m_window;
+	Inferno::GLSLProgram m_textureProgram;
+	Inferno::InputManager m_inputManager;
+	Inferno::Camera2D m_camera;
+	Inferno::Camera2D m_hudCamera;
 	std::vector<Level*> m_levels;
 	std::vector<Human*> m_humans;
 	std::vector<Zombie*> m_zombies;
 	std::vector<Bullet> m_bullets;
 
-	Vladgine::SpriteBatch m_agentSpriteBatch;
-	Vladgine::SpriteBatch m_hudSpriteBatch;
-	Vladgine::ParticleEngine2D m_particleEngine;
-	Vladgine::ParticleBatch2D* m_bloodParticleBatch;
+	Inferno::SpriteBatch m_agentSpriteBatch;
+	Inferno::SpriteBatch m_hudSpriteBatch;
+	Inferno::ParticleEngine2D m_particleEngine;
+	Inferno::ParticleBatch2D* m_bloodParticleBatch;
 
 	int m_screenWidth, m_screenHeight;
 	float m_fps;
@@ -64,8 +64,8 @@ private:
 	int m_numHumansKilled;
 	int m_numZombiesKilled;
 
-	Vladgine::SpriteFont* m_spriteFont;
-	Vladgine::AudioEngine m_audioEngine;
+	Inferno::SpriteFont* m_spriteFont;
+	Inferno::AudioEngine m_audioEngine;
 
 	GameState m_gameState;
 };

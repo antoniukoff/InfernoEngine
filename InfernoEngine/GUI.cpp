@@ -1,8 +1,8 @@
 #include "GUI.h"
 
-CEGUI::OpenGL3Renderer* Vladgine::GUI::m_render = nullptr;
+CEGUI::OpenGL3Renderer* Inferno::GUI::m_render = nullptr;
 
-void Vladgine::GUI::init(const std::string& resourceDir)
+void Inferno::GUI::init(const std::string& resourceDir)
 {
 	if (m_render == nullptr) {
 		m_render = &CEGUI::OpenGL3Renderer::bootstrapSystem();
@@ -29,12 +29,12 @@ void Vladgine::GUI::init(const std::string& resourceDir)
 	m_context->setRootWindow(m_root);
 }
 
-void Vladgine::GUI::destroy()
+void Inferno::GUI::destroy()
 {
 	CEGUI::System::getSingleton().destroyGUIContext(*m_context);
 }
 
-void Vladgine::GUI::draw()
+void Inferno::GUI::draw()
 {
 	m_render->beginRendering();
 	m_context->draw();
@@ -43,7 +43,7 @@ void Vladgine::GUI::draw()
 	glDisable(GL_SCISSOR_TEST);
 }
 
-void Vladgine::GUI::update()
+void Inferno::GUI::update()
 {
 	unsigned int elapsed;
 
@@ -61,17 +61,17 @@ void Vladgine::GUI::update()
 	m_context->injectTimePulse((float)elapsed / 1000.0f);
 }
 
-void Vladgine::GUI::setMouseCursor(const std::string& imageFile)
+void Inferno::GUI::setMouseCursor(const std::string& imageFile)
 {
 	m_context->getMouseCursor().setDefaultImage(imageFile);
 }
 
-void Vladgine::GUI::showMouseCursor()
+void Inferno::GUI::showMouseCursor()
 {
 	m_context->getMouseCursor().show();
 }
 
-void Vladgine::GUI::hideMouseCursor()
+void Inferno::GUI::hideMouseCursor()
 {
 	m_context->getMouseCursor().hide();
 }
@@ -189,7 +189,7 @@ CEGUI::MouseButton SDLButtonToCEGUIButton(Uint8 sdlButton) {
 	return CEGUI::MouseButton::NoButton;
 }
 
-void Vladgine::GUI::onSDLEvent(SDL_Event& event)
+void Inferno::GUI::onSDLEvent(SDL_Event& event)
 {
 	CEGUI::String cs;
 
@@ -218,18 +218,18 @@ void Vladgine::GUI::onSDLEvent(SDL_Event& event)
 	}
 }
 
-void Vladgine::GUI::loadScheme(const std::string& schemeFile)
+void Inferno::GUI::loadScheme(const std::string& schemeFile)
 {
 	CEGUI::SchemeManager::getSingleton().createFromFile(schemeFile);
 }
 
-void Vladgine::GUI::setFont(const std::string& fontFile)
+void Inferno::GUI::setFont(const std::string& fontFile)
 {
 	CEGUI::FontManager::getSingleton().createFromFile(fontFile + ".font");
 	m_context->setDefaultFont(fontFile);
 }
 
-CEGUI::Window* Vladgine::GUI::createWidget(const std::string& type,
+CEGUI::Window* Inferno::GUI::createWidget(const std::string& type,
 	const glm::vec4& destRectPerc,
 	const glm::vec4& destRectPix,
 	const std::string& name)
@@ -240,7 +240,7 @@ CEGUI::Window* Vladgine::GUI::createWidget(const std::string& type,
 	return newWindow;
 }
 
-CEGUI::Window* Vladgine::GUI::createWidget(CEGUI::Window* parent, const std::string& type, const glm::vec4& destRectPerc, const glm::vec4& destRectPix, const std::string& name)
+CEGUI::Window* Inferno::GUI::createWidget(CEGUI::Window* parent, const std::string& type, const glm::vec4& destRectPerc, const glm::vec4& destRectPix, const std::string& name)
 {
 	CEGUI::Window* newWindow = CEGUI::WindowManager::getSingleton().createWindow(type, name);
 	parent->addChild(newWindow);
@@ -248,7 +248,7 @@ CEGUI::Window* Vladgine::GUI::createWidget(CEGUI::Window* parent, const std::str
 	return newWindow;
 }
 
-void Vladgine::GUI::setWidgetDestRect(CEGUI::Window* widget, const glm::vec4& destRectPerc, const glm::vec4& destRectPix)
+void Inferno::GUI::setWidgetDestRect(CEGUI::Window* widget, const glm::vec4& destRectPerc, const glm::vec4& destRectPix)
 {
 	widget->setPosition(CEGUI::UVector2(CEGUI::UDim(destRectPerc.x, destRectPix.x), CEGUI::UDim(destRectPerc.y, destRectPix.y)));
 	widget->setSize(CEGUI::USize(CEGUI::UDim(destRectPerc.z, destRectPix.z), CEGUI::UDim(destRectPerc.w, destRectPix.w)));

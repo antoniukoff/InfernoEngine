@@ -1,6 +1,6 @@
 #include "Camera2D.h"
 
-namespace Vladgine {
+namespace Inferno {
 
     Camera2D::Camera2D()
         : _position(0.0f, 0.0f),

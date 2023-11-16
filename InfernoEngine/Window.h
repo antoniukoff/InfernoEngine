@@ -3,7 +3,7 @@
 #include <GLEW/glew.h>
 #include <string>
 
-namespace Vladgine {
+namespace Inferno {
 
 	enum WindowFlags
 	{

@@ -49,14 +49,14 @@ private:
 
     BallController m_ballController; ///< Controls balls
 
-    Vladgine::Window m_window; ///< The main window
-    Vladgine::SpriteBatch m_spriteBatch; ///< Renders all the balls
-    std::unique_ptr<Vladgine::SpriteFont> m_spriteFont; ///< For font rendering
-    Vladgine::Camera2D m_camera; ///< Renders the scene
-    Vladgine::InputManager m_inputManager; ///< Handles input
-    Vladgine::GLSLProgram m_textureProgram; ///< Shader for textures]
+    Inferno::Window m_window; ///< The main window
+    Inferno::SpriteBatch m_spriteBatch; ///< Renders all the balls
+    std::unique_ptr<Inferno::SpriteFont> m_spriteFont; ///< For font rendering
+    Inferno::Camera2D m_camera; ///< Renders the scene
+    Inferno::InputManager m_inputManager; ///< Handles input
+    Inferno::GLSLProgram m_textureProgram; ///< Shader for textures]
 
-    Vladgine::FPSLimiter m_fpsLimiter; ///< Limits and calculates fps
+    Inferno::FPSLimiter m_fpsLimiter; ///< Limits and calculates fps
     float m_fps = 0.0f;
 
     GameState m_gameState = GameState::RUNNING; ///< The state of the game

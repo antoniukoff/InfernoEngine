@@ -1,11 +1,11 @@
 #include "BallRenderer.h"
 
 
-void BallRenderer::renderBalls(Vladgine::SpriteBatch& spriteBatch,
+void BallRenderer::renderBalls(Inferno::SpriteBatch& spriteBatch,
 							   std::vector<Ball>& balls, const glm::mat4& pMatrix) {
 	//Lazy init program
 	if (m_program == nullptr) {
-		m_program = std::make_unique<Vladgine::GLSLProgram>();
+		m_program = std::make_unique<Inferno::GLSLProgram>();
 		m_program->compileShaders("Shaders/defaultVert.glsl", "Shaders/defaultFrag.glsl");
 		m_program->addAttribure("vertexPosition");
 		m_program->addAttribure("vertexColor");
@@ -38,10 +38,10 @@ void BallRenderer::renderBalls(Vladgine::SpriteBatch& spriteBatch,
 	m_program->unuse();
 }
 
-void MomentumBallRenderer::renderBalls(Vladgine::SpriteBatch& spriteBatch, std::vector<Ball>& balls, const glm::mat4& pMatrix)
+void MomentumBallRenderer::renderBalls(Inferno::SpriteBatch& spriteBatch, std::vector<Ball>& balls, const glm::mat4& pMatrix)
 {
 	if (m_program == nullptr) {
-		m_program = std::make_unique<Vladgine::GLSLProgram>();
+		m_program = std::make_unique<Inferno::GLSLProgram>();
 		m_program->compileShaders("Shaders/defaultVert.glsl", "Shaders/defaultFrag.glsl");
 		m_program->addAttribure("vertexPosition");
 		m_program->addAttribure("vertexColor");
@@ -65,7 +65,7 @@ void MomentumBallRenderer::renderBalls(Vladgine::SpriteBatch& spriteBatch, std::
 		const glm::vec4 destRect(ball.position.x - ball.radius, ball.position.y - ball.radius,
 			ball.radius * 2.0f, ball.radius * 2.0f);
 
-		Vladgine::ColorRGB8 color;
+		Inferno::ColorRGB8 color;
 		GLubyte colorVal = (GLubyte)(glm::clamp(glm::length(ball.velocity) * ball.mass * 12.0f, 0.0f, 255.0f));
 		color.r = colorVal;
 		color.g = colorVal;
@@ -84,10 +84,10 @@ VelocityBallRenderer::VelocityBallRenderer(int screenWidth, int screenHeight): m
 {
 }
 
-void VelocityBallRenderer::renderBalls(Vladgine::SpriteBatch& spriteBatch, std::vector<Ball>& balls, const glm::mat4& pMatrix)
+void VelocityBallRenderer::renderBalls(Inferno::SpriteBatch& spriteBatch, std::vector<Ball>& balls, const glm::mat4& pMatrix)
 {
 	if (m_program == nullptr) {
-		m_program = std::make_unique<Vladgine::GLSLProgram>();
+		m_program = std::make_unique<Inferno::GLSLProgram>();
 		m_program->compileShaders("Shaders/defaultVert.glsl", "Shaders/defaultFrag.glsl");
 		m_program->addAttribure("vertexPosition");
 		m_program->addAttribure("vertexColor");
@@ -111,7 +111,7 @@ void VelocityBallRenderer::renderBalls(Vladgine::SpriteBatch& spriteBatch, std::
 		const glm::vec4 destRect(ball.position.x - ball.radius, ball.position.y - ball.radius,
 			ball.radius * 2.0f, ball.radius * 2.0f);
 
-		Vladgine::ColorRGB8 color;
+		Inferno::ColorRGB8 color;
 
 		float mult = 100.0f;
 		GLubyte colorVal = (GLubyte)(glm::clamp(ball.velocity.x * mult, 0.0f, 255.0f));
@@ -128,10 +128,10 @@ void VelocityBallRenderer::renderBalls(Vladgine::SpriteBatch& spriteBatch, std::
 	m_program->unuse();
 }
 
-void ShadowBallRenderer::renderBalls(Vladgine::SpriteBatch& spriteBatch, std::vector<Ball>& balls, const glm::mat4& pMatrix) {
+void ShadowBallRenderer::renderBalls(Inferno::SpriteBatch& spriteBatch, std::vector<Ball>& balls, const glm::mat4& pMatrix) {
 
 	if (m_program == nullptr) {
-		m_program = std::make_unique<Vladgine::GLSLProgram>();
+		m_program = std::make_unique<Inferno::GLSLProgram>();
 		m_program->compileShaders("Shaders/defaultVert.glsl", "Shaders/defaultFrag.glsl");
 		m_program->addAttribure("vertexPosition");
 		m_program->addAttribure("vertexColor");
@@ -163,7 +163,7 @@ void ShadowBallRenderer::renderBalls(Vladgine::SpriteBatch& spriteBatch, std::ve
 			ball.radius * 2.0f * shadowScale, ball.radius * 2.0f * shadowScale);
 
 		// Render shadow with a dark and transparent color
-		Vladgine::ColorRGB8 shadowColor;
+		Inferno::ColorRGB8 shadowColor;
 		shadowColor.r = 50;
 		shadowColor.g = 50;
 		shadowColor.b = 50;
@@ -175,7 +175,7 @@ void ShadowBallRenderer::renderBalls(Vladgine::SpriteBatch& spriteBatch, std::ve
 			ball.position.y - ball.radius,
 			ball.radius * 2.0f, ball.radius * 2.0f);
 
-		Vladgine::ColorRGB8 ballColor;
+		Inferno::ColorRGB8 ballColor;
 		ballColor.r = 128;
 		ballColor.g = (GLubyte)((ball.position.x / m_screenWidth) * 255.0f);
 		ballColor.b = (GLubyte)((ball.position.y / m_screenHeight) * 255.0f);
@@ -192,10 +192,10 @@ void ShadowBallRenderer::renderBalls(Vladgine::SpriteBatch& spriteBatch, std::ve
 const float TrailBallRenderer::TRAIL_SEGMENT_LIFETIME = 0.5f; // 0.5 seconds for trail fading
 
 
-void TrailBallRenderer::renderBalls(Vladgine::SpriteBatch& spriteBatch, std::vector<Ball>& balls, const glm::mat4& pMatrix)
+void TrailBallRenderer::renderBalls(Inferno::SpriteBatch& spriteBatch, std::vector<Ball>& balls, const glm::mat4& pMatrix)
 {
 	if (m_program == nullptr) {
-		m_program = std::make_unique<Vladgine::GLSLProgram>();
+		m_program = std::make_unique<Inferno::GLSLProgram>();
 		m_program->compileShaders("Shaders/defaultVert.glsl", "Shaders/defaultFrag.glsl");
 		m_program->addAttribure("vertexPosition");
 		m_program->addAttribure("vertexColor");
@@ -224,7 +224,7 @@ void TrailBallRenderer::renderBalls(Vladgine::SpriteBatch& spriteBatch, std::vec
 		}
 
 		// Render the trail
-		Vladgine::ColorRGB8 trailColor = ball.color; // Assuming ball has a 'color' member
+		Inferno::ColorRGB8 trailColor = ball.color; // Assuming ball has a 'color' member
 		for (auto& segment : ballTrails[ballIndex]) {
 			segment.age += 0.01f; // Increment age for every segment. Adjust this value according to your frame rate.
 
@@ -254,10 +254,10 @@ void TrailBallRenderer::renderBalls(Vladgine::SpriteBatch& spriteBatch, std::vec
 	m_program->unuse();
 }
 
-void HaloBallRenderer::renderBalls(Vladgine::SpriteBatch& spriteBatch, std::vector<Ball>& balls, const glm::mat4& pMatrix)
+void HaloBallRenderer::renderBalls(Inferno::SpriteBatch& spriteBatch, std::vector<Ball>& balls, const glm::mat4& pMatrix)
 {
 	if (m_program == nullptr) {
-		m_program = std::make_unique<Vladgine::GLSLProgram>();
+		m_program = std::make_unique<Inferno::GLSLProgram>();
 		m_program->compileShaders("Shaders/defaultVert.glsl", "Shaders/defaultFrag.glsl");
 		m_program->addAttribure("vertexPosition");
 		m_program->addAttribure("vertexColor");

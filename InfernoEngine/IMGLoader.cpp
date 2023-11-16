@@ -1,8 +1,8 @@
 #include "IMGLoader.h"
 #include "IOManager.h"
-#include "VladgineErrors.h"
+#include "InfernoErrors.h"
 
-namespace Vladgine {
+namespace Inferno {
 
     GLTexture IMGLoader::loadPNG(std::string filePath)
     {

@@ -1,7 +1,7 @@
 #include "ScreenList.h"
 #include "IGameScreen.h"
 
-namespace Vladgine {
+namespace Inferno {
 
     ScreenList::ScreenList(IMainGame* game) : m_game(game) {}
 
@@ -10,7 +10,7 @@ namespace Vladgine {
         destroy();
     }
 
-    IGameScreen* Vladgine::ScreenList::moveNext()
+    IGameScreen* Inferno::ScreenList::moveNext()
     {
         IGameScreen* currenScreen = getCurrent();
         if (currenScreen->getNextScreenIndex() != SCREEN_INDEX_NO_SCREEN) {
@@ -19,7 +19,7 @@ namespace Vladgine {
         return getCurrent();
     }
 
-    IGameScreen* Vladgine::ScreenList::movePrevious()
+    IGameScreen* Inferno::ScreenList::movePrevious()
     {
 		IGameScreen* currenScreen = getCurrent();
 		if (currenScreen->getPreviousScreenIndex() != SCREEN_INDEX_NO_SCREEN) {

@@ -4,7 +4,7 @@
 #include <GLEW/glm/glm.hpp>
 #include <SDL/SDL.h>
 
-namespace Vladgine {
+namespace Inferno {
 
 	class GUI
 	{

@@ -1,6 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS // To shut up the compiler about sprintf...
 #include "MainGame.h"
-#include <InfernoEngine/Vladgine.h>
+#include <InfernoEngine/Inferno.h>
 #include <InfernoEngine/ResourceManager.h>
 #include <random>
 #include <ctime>
@@ -71,7 +71,7 @@ void MainGame::run() {
 }
 
 void MainGame::init() {
-    Vladgine::init();
+    Inferno::init();
 
     m_screenWidth = 1280;
     m_screenHeight = 720;
@@ -84,7 +84,7 @@ void MainGame::init() {
     
     m_spriteBatch.init();
     // Initialize sprite font
-    m_spriteFont = std::make_unique<Vladgine::SpriteFont>("Fonts/chintzy.ttf", 40);
+    m_spriteFont = std::make_unique<Inferno::SpriteFont>("Fonts/chintzy.ttf", 40);
 
     // Compile our texture shader
     m_textureProgram.compileShaders("Shaders/defaultVert.glsl", "Shaders/defaultFrag.glsl");
@@ -111,7 +111,7 @@ void MainGame::initRenderers()
 }
 
 struct BallSpawn {
-    BallSpawn(const Vladgine::ColorRGB8& colr,
+    BallSpawn(const Inferno::ColorRGB8& colr,
               float rad, float m, float minSpeed,
               float maxSpeed, float prob) :
               color(colr),
@@ -121,7 +121,7 @@ struct BallSpawn {
               probability(prob) {
         // Empty
     }
-    Vladgine::ColorRGB8 color;
+    Inferno::ColorRGB8 color;
     float radius;
     float mass;
     float probability;
@@ -153,15 +153,15 @@ void MainGame::initBalls() {
 	std::uniform_real_distribution<float> r1(2.0f, 6.0f);
 	std::uniform_int_distribution<int> r2(0, 255);
 
-    ADD_BALL(1.0, Vladgine::ColorRGB8(255, 255, 255, 255), 1.0f,
+    ADD_BALL(1.0, Inferno::ColorRGB8(255, 255, 255, 255), 1.0f,
         1.0f, 0.1f, 7.0f, totalProbability);
-	ADD_BALL(10.0, Vladgine::ColorRGB8(0, 0, 255, 255), 2.0f,
+	ADD_BALL(10.0, Inferno::ColorRGB8(0, 0, 255, 255), 2.0f,
 		2.0f, 0.1f, 3.0f, totalProbability);
-	ADD_BALL(1.0f, Vladgine::ColorRGB8(255, 0, 0, 255), 3.0f,
+	ADD_BALL(1.0f, Inferno::ColorRGB8(255, 0, 0, 255), 3.0f,
 		4.0f, 0.0f, 0.0f, totalProbability);
    
     for (int i = 0; i < NUM_BALLS; i++) {
-		ADD_BALL(1.0f, Vladgine::ColorRGB8(r2(randomEngine), r2(randomEngine), r2(randomEngine), 255), r1(randomEngine),
+		ADD_BALL(1.0f, Inferno::ColorRGB8(r2(randomEngine), r2(randomEngine), r2(randomEngine), 255), r1(randomEngine),
             r1(randomEngine), 0.0f, 0.0f, totalProbability);
     }
 
@@ -198,7 +198,7 @@ void MainGame::initBalls() {
 
         // Add ball
         m_balls.emplace_back(ballToSpawn->radius, ballToSpawn->mass, pos, direction * ballToSpawn->randSpeed(randomEngine),
-                             Vladgine::ResourceManager::getTexture("Textures/circle.png").id,
+                             Inferno::ResourceManager::getTexture("Textures/circle.png").id,
                              ballToSpawn->color);
         // Add the ball do the grid. IF YOU EVER CALL EMPLACE BACK AFTER INIT BALLS, m_grid will have DANGLING POINTERS!
            
@@ -245,7 +245,7 @@ void MainGame::draw() {
 }
 
 void MainGame::drawHud() {
-    const Vladgine::ColorRGB8 fontColor(255, 0, 0, 255);
+    const Inferno::ColorRGB8 fontColor(255, 0, 0, 255);
     // Convert float to char *
     char buffer[64];
     sprintf(buffer, "%.1f", m_fps);

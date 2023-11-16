@@ -31,7 +31,7 @@ public:
 private:
 	std::vector<std::string> _levelData;
 	int _numHumans;
-	Vladgine::SpriteBatch _spriteBatch;
+	Inferno::SpriteBatch _spriteBatch;
 
 	glm::vec2 _playerStartPos;
 	std::vector<glm::vec2> _zombieStartPos;

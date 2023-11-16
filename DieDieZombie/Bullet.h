@@ -18,7 +18,7 @@ public:
 
 	//when update returns true, delete bullet
 	bool update(const std::vector<std::string>& levelData, float deltaTime);
-	void draw(Vladgine::SpriteBatch& spriteBatch);
+	void draw(Inferno::SpriteBatch& spriteBatch);
 	bool collideWithAgent(Agent* agent);
 	float getDamage() { return m_damage; }
 	glm::vec2 getPosition() const { return m_position; }

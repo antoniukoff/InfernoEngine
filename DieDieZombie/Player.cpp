@@ -14,16 +14,16 @@ Player::~Player()
 {
 }
 
-void Player::init(float speed, glm::vec2 position, Vladgine::InputManager* inputManager, Vladgine::Camera2D* camera, std::vector<Bullet>* bullets)
+void Player::init(float speed, glm::vec2 position, Inferno::InputManager* inputManager, Inferno::Camera2D* camera, std::vector<Bullet>* bullets)
 {
 	m_speed = speed;
 	m_position = position;
-	m_color = Vladgine::ColorRGB8(255, 255, 255, 255);
+	m_color = Inferno::ColorRGB8(255, 255, 255, 255);
 	_inputManager = inputManager;
 	_camera = camera;
 	_bullets = bullets;
 
-	m_textureID = Vladgine::ResourceManager::getTexture("Textures/player.png").id;
+	m_textureID = Inferno::ResourceManager::getTexture("Textures/player.png").id;
 }
 
 void Player::addGun(Gun* gun)

@@ -2,7 +2,7 @@
 #include <unordered_map>
 #include <GLEW/glm/glm.hpp>
 
-namespace Vladgine {
+namespace Inferno {
 
 	class InputManager
 	{

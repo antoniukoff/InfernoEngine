@@ -14,7 +14,7 @@ public:
 		float spread,
 		float _bulletDamage, 
 		float bulleSpeed,
-		Vladgine::SoundEffect fireEffect);
+		Inferno::SoundEffect fireEffect);
 	~Gun();
 	void update(bool isMouseDown,
 		const glm::vec2& position,
@@ -24,7 +24,7 @@ public:
 private:
 	void fire(glm::vec2 direction, const glm::vec2& position, std::vector<Bullet>& bullets);
 
-	Vladgine::SoundEffect m_fireEffect;
+	Inferno::SoundEffect m_fireEffect;
 	std::string _name;
 	/// <summary>
 	/// Gun Attributes

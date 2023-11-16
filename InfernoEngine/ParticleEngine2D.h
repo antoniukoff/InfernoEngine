@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 
-namespace Vladgine {
+namespace Inferno {
 
 	class ParticleBatch2D;
 	class SpriteBatch;

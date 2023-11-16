@@ -45,17 +45,17 @@ void main() {
 })";
 }
 
-Vladgine::DebugRenderer::DebugRenderer()
+Inferno::DebugRenderer::DebugRenderer()
 {
 	//empty 
 }
 
-Vladgine::DebugRenderer::~DebugRenderer()
+Inferno::DebugRenderer::~DebugRenderer()
 {
 	dispose();
 }
 
-void Vladgine::DebugRenderer::init()
+void Inferno::DebugRenderer::init()
 {
 	// shader init
 	m_program.compileShadersFromSource(VERT_SOURCE, FRAG_SOURCE);
@@ -86,7 +86,7 @@ void Vladgine::DebugRenderer::init()
 	glBindVertexArray(0);
 }
 
-void Vladgine::DebugRenderer::end()
+void Inferno::DebugRenderer::end()
 {
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
 
@@ -108,7 +108,7 @@ void Vladgine::DebugRenderer::end()
 	m_verts.clear();
 }
 
-void Vladgine::DebugRenderer::drawLine(const glm::vec2& a, const glm::vec2& b, const ColorRGB8& color)
+void Inferno::DebugRenderer::drawLine(const glm::vec2& a, const glm::vec2& b, const ColorRGB8& color)
 {
 	int i = m_verts.size();
 	m_verts.resize(m_verts.size() + 2);
@@ -131,7 +131,7 @@ glm::vec2 rotatePoint(glm::vec2 pos, float angle)
 	return newv;
 }
 
-void Vladgine::DebugRenderer::drawBox(const glm::vec4& destRect, const ColorRGB8& color, float angle)
+void Inferno::DebugRenderer::drawBox(const glm::vec4& destRect, const ColorRGB8& color, float angle)
 {
 	int i = m_verts.size();
 	m_verts.resize(m_verts.size() + 4);
@@ -171,7 +171,7 @@ void Vladgine::DebugRenderer::drawBox(const glm::vec4& destRect, const ColorRGB8
 	m_indeces.push_back(i);
 }
 
-void Vladgine::DebugRenderer::drawCircle(const glm::vec2& center, const ColorRGB8& color, float radius)
+void Inferno::DebugRenderer::drawCircle(const glm::vec2& center, const ColorRGB8& color, float radius)
 {
 	//set up vertices
 	static const int NUM_VERTICES = 100;
@@ -195,7 +195,7 @@ void Vladgine::DebugRenderer::drawCircle(const glm::vec2& center, const ColorRGB
 	m_indeces.push_back(start);
 }
 
-void Vladgine::DebugRenderer::render(const glm::mat4& projectionMatrix, float lineWidth)
+void Inferno::DebugRenderer::render(const glm::mat4& projectionMatrix, float lineWidth)
 {
 	m_program.use();
 
@@ -212,7 +212,7 @@ void Vladgine::DebugRenderer::render(const glm::mat4& projectionMatrix, float li
 	m_program.unuse();
 }
 
-void Vladgine::DebugRenderer::dispose()
+void Inferno::DebugRenderer::dispose()
 {
 	if (m_vao) {
 		glDeleteVertexArrays(1, &m_vao);

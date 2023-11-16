@@ -3,7 +3,7 @@
 #include <GLEW/glew.h>
 
 using namespace std;
-namespace Vladgine {
+namespace Inferno {
 
 	class GLSLProgram
 	{

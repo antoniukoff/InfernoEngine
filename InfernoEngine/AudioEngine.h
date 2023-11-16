@@ -3,7 +3,7 @@
 #include <string>
 #include <map>
 
-namespace Vladgine {
+namespace Inferno {
 
 	class SoundEffect {
 	public:

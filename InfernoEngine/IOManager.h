@@ -2,7 +2,7 @@
 #include <vector>
 #include <string>
 
-namespace Vladgine {
+namespace Inferno {
 
 
 	struct DirEntry{

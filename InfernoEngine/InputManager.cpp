@@ -1,6 +1,6 @@
 #include "InputManager.h"
 
-namespace Vladgine {
+namespace Inferno {
 
 	InputManager::InputManager() : _mouseCoords(0.0f, 0.0f)
 	{

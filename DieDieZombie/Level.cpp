@@ -2,7 +2,7 @@
 #include "fstream"
 #include <iostream>
 #include <InfernoEngine/ResourceManager.h>
-#include <InfernoEngine/VladgineErrors.h>
+#include <InfernoEngine/InfernoErrors.h>
 
 Level::Level(const std::string& fileName)
 {
@@ -11,7 +11,7 @@ Level::Level(const std::string& fileName)
 
 	//error checking
 	if (file.fail()) {
-		Vladgine::fatalError("failed to open " + fileName);
+		Inferno::fatalError("failed to open " + fileName);
 	}
 
 	std::string temp;
@@ -26,7 +26,7 @@ Level::Level(const std::string& fileName)
 
 	glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
 
-	Vladgine::ColorRGB8 whiteColor;
+	Inferno::ColorRGB8 whiteColor;
 	whiteColor.r = 255;
 	whiteColor.g = 255;
 	whiteColor.b = 255;
@@ -48,20 +48,20 @@ Level::Level(const std::string& fileName)
 			case 'R':
 				_spriteBatch.draw(destRect,
 					uvRect,
-					Vladgine::ResourceManager::getTexture("Textures/Walls/brick_wall.png").id,
+					Inferno::ResourceManager::getTexture("Textures/Walls/brick_wall.png").id,
 					0.0f, whiteColor);
 				break;
 			case 'G':
 				_spriteBatch.draw(destRect,
 					uvRect,
-					Vladgine::ResourceManager::getTexture("Textures/Walls/brick_wall_night.png").id,
+					Inferno::ResourceManager::getTexture("Textures/Walls/brick_wall_night.png").id,
 					0.0f, whiteColor);
 				break;
 			case 'B':
 			case 'L':
 				_spriteBatch.draw(destRect,
 					uvRect,
-					Vladgine::ResourceManager::getTexture("Textures/Walls/brick_wall_sunny.png").id,
+					Inferno::ResourceManager::getTexture("Textures/Walls/brick_wall_sunny.png").id,
 					0.0f, whiteColor);
 				break;
 			case '@':
@@ -70,22 +70,22 @@ Level::Level(const std::string& fileName)
 				_playerStartPos.y = y * TILE_WIDTH;
 				_spriteBatch.draw(destRect,
 					uvRect,
-					Vladgine::ResourceManager::getTexture("Textures/background.png").id,
-					0.0f, Vladgine::ColorRGB8(255, 180, 180, 255));
+					Inferno::ResourceManager::getTexture("Textures/background.png").id,
+					0.0f, Inferno::ColorRGB8(255, 180, 180, 255));
 				break;
 			case 'Z':
 				_levelData[y][x] = '.';
 				_zombieStartPos.emplace_back(x * TILE_WIDTH, y * TILE_WIDTH);
 				_spriteBatch.draw(destRect,
 					uvRect,
-					Vladgine::ResourceManager::getTexture("Textures/background.png").id,
-					0.0f, Vladgine::ColorRGB8(255, 180, 180, 255));
+					Inferno::ResourceManager::getTexture("Textures/background.png").id,
+					0.0f, Inferno::ColorRGB8(255, 180, 180, 255));
 				break;
 			case '.':
 				_spriteBatch.draw(destRect,
 					uvRect,
-					Vladgine::ResourceManager::getTexture("Textures/background.png").id,
-					0.0f, Vladgine::ColorRGB8(255,180,180,255));
+					Inferno::ResourceManager::getTexture("Textures/background.png").id,
+					0.0f, Inferno::ColorRGB8(255,180,180,255));
 				break;
 			default:
 				printf("Unexpected symbol %c at (%d, %d)", tile, x, y);

@@ -4,7 +4,7 @@
 #include <GLEW/glm/gtc/matrix_transform.hpp>
 
 
-namespace Vladgine {
+namespace Inferno {
 
 	class Camera2D
 	{

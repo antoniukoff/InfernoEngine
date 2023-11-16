@@ -4,7 +4,7 @@
 #include <vector>
 #include "GLSLProgram.h"
 
-namespace Vladgine {
+namespace Inferno {
 	class DebugRenderer
 	{
 	public:
@@ -22,11 +22,11 @@ namespace Vladgine {
 		struct  DebugVertex
 		{	
 			glm::vec2 position;
-			Vladgine::ColorRGB8 color;
+			Inferno::ColorRGB8 color;
 		};
 
 	private:
-		Vladgine::GLSLProgram m_program;
+		Inferno::GLSLProgram m_program;
 		std::vector<DebugVertex> m_verts;
 		GLuint m_vbo = 0, m_vao = 0, m_ibo = 0;
 		std::vector <GLuint> m_indeces;

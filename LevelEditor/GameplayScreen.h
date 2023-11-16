@@ -14,10 +14,10 @@
 #include "Player.h"
 
 
-class GameplayScreen : public Vladgine::IGameScreen
+class GameplayScreen : public Inferno::IGameScreen
 {
 public:
-	GameplayScreen(Vladgine::Window* window);
+	GameplayScreen(Inferno::Window* window);
 	~GameplayScreen();
 
 
@@ -44,14 +44,14 @@ private:
 
 	bool onExitClicked(const CEGUI::EventArgs& e);
 
-	Vladgine::SpriteBatch m_spriteBatch;
-	Vladgine::GLSLProgram m_textureProgram;
-	Vladgine::GLSLProgram m_lightProgram;
-	Vladgine::Camera2D m_camera;
-	Vladgine::GLTexture m_texture;
-	Vladgine::Window* m_window;
-	Vladgine::DebugRenderer m_debugRenderer;
-	Vladgine::GUI m_gui;
+	Inferno::SpriteBatch m_spriteBatch;
+	Inferno::GLSLProgram m_textureProgram;
+	Inferno::GLSLProgram m_lightProgram;
+	Inferno::Camera2D m_camera;
+	Inferno::GLTexture m_texture;
+	Inferno::Window* m_window;
+	Inferno::DebugRenderer m_debugRenderer;
+	Inferno::GUI m_gui;
 	
 	bool m_renderDebug = false;
 

@@ -1,6 +1,6 @@
 #include "ResourceManager.h"
 
-namespace Vladgine {
+namespace Inferno {
 
 	TextureCache ResourceManager::_textureCache;
 

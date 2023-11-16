@@ -1,10 +1,10 @@
 #include "GLSLProgram.h"
 #include <fstream>
-#include "VladgineErrors.h"
+#include "InfernoErrors.h"
 #include <vector>
 #include "IOManager.h"
 
-namespace Vladgine {
+namespace Inferno {
 
 	GLSLProgram::GLSLProgram() : _numAttributes(0), _programID(0), _vertexShaderID(0), _fragmentShaderID(0)
 	{

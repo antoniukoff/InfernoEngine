@@ -2,7 +2,7 @@
 
 #include <string>
 
-namespace Vladgine 
+namespace Inferno 
 {
 	extern void fatalError(std::string errorString);
 }

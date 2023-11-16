@@ -1,7 +1,7 @@
 #include "Window.h"
-#include "VladgineErrors.h"
+#include "InfernoErrors.h"
 
-namespace Vladgine {
+namespace Inferno {
 
 	Window::Window()
 	{

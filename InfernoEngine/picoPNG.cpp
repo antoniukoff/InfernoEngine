@@ -1,6 +1,6 @@
 #include <vector>
 
-namespace Vladgine {
+namespace Inferno {
 
     /*
     decodePNG: The picoPNG function, decodes a PNG file buffer in memory, into a raw pixel buffer.

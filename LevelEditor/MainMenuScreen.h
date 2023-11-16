@@ -10,10 +10,10 @@
 #include <InfernoEngine/GUI.h>
 #include "ScreenIndices.h"
 
-class MainMenuScreen : public Vladgine::IGameScreen
+class MainMenuScreen : public Inferno::IGameScreen
 {
 public:
-	MainMenuScreen(Vladgine::Window* window);
+	MainMenuScreen(Inferno::Window* window);
 	~MainMenuScreen();
 
 
@@ -43,7 +43,7 @@ private:
 	bool onNewGameEntry(const CEGUI::EventArgs& e);
 
 	int m_nextScreenIndex = SCREEN_INDEX_GAMEPLAY;
-	Vladgine::Camera2D m_camera;
-	Vladgine::Window* m_window;
-	Vladgine::GUI m_gui;
+	Inferno::Camera2D m_camera;
+	Inferno::Window* m_window;
+	Inferno::GUI m_gui;
 };

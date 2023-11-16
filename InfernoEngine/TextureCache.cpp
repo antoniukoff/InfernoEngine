@@ -2,7 +2,7 @@
 #include "IMGLoader.h"
 #include <iostream>
 
-namespace Vladgine {
+namespace Inferno {
 
 	TextureCache::TextureCache(){}
 

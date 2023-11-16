@@ -11,14 +11,14 @@ enum class MoveState { STANDING, RUNNING, PUNCHING, IN_AIR };
 class Player {
 public:
 
-	void init(b2World* world, const glm::vec2& position, const glm::vec2& drawDims, const glm::vec2& collisionDims, Vladgine::ColorRGB8 color);
+	void init(b2World* world, const glm::vec2& position, const glm::vec2& drawDims, const glm::vec2& collisionDims, Inferno::ColorRGB8 color);
 
 	void destroy(b2World* world);
 
-	void draw(Vladgine::SpriteBatch& spriteBatch);
-	void drawDebug(Vladgine::DebugRenderer& debugRenderer);
+	void draw(Inferno::SpriteBatch& spriteBatch);
+	void drawDebug(Inferno::DebugRenderer& debugRenderer);
 
-	void update(Vladgine::InputManager& inputManager);
+	void update(Inferno::InputManager& inputManager);
 
 	const Capsule& getCapsule() const { return m_capsule; }
 
@@ -33,12 +33,12 @@ public:
 
 	const glm::vec2& getDrawDims() const { return m_drawDims; }
 	const glm::vec2& getCollisionDims() const { return m_collisionDims; }
-	const Vladgine::ColorRGB8& getColor() const { return m_color; }
+	const Inferno::ColorRGB8& getColor() const { return m_color; }
 
 private:
 	MoveState m_moveState = MoveState::STANDING;
-	Vladgine::TileSheet m_texture;
-	Vladgine::ColorRGB8 m_color;
+	Inferno::TileSheet m_texture;
+	Inferno::ColorRGB8 m_color;
 	glm::vec2 m_collisionDims;
 	Capsule m_capsule;
 	float m_animTime = 0;

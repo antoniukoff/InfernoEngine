@@ -1,7 +1,7 @@
 #include "AudioEngine.h"
-#include "VladgineErrors.h"
+#include "InfernoErrors.h"
 
-namespace Vladgine {
+namespace Inferno {
 
 	void SoundEffect::play(int loops)
 	{

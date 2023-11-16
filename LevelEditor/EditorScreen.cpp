@@ -14,18 +14,18 @@ const int MOUSE_LEFT = 0;
 const int MOUSE_RIGHT = 1;
 const float LIGHT_SELECT_RADIUS = 0.5f;
 
-void WidgetLabel::draw(Vladgine::SpriteBatch& sb, Vladgine::SpriteFont& sf, Vladgine::Window* w) {
+void WidgetLabel::draw(Inferno::SpriteBatch& sb, Inferno::SpriteFont& sf, Inferno::Window* w) {
 	if (!widget->isVisible()) return;
 	glm::vec2 pos;
 	pos.x = widget->getXPosition().d_scale * w->getScreenWidth() - w->getScreenWidth() / 2.0f +
 		widget->getWidth().d_offset / 2.0f;
 	pos.y = w->getScreenHeight() / 2.0f - widget->getYPosition().d_scale * w->getScreenHeight();
-	sf.draw(sb, text.c_str(), pos, glm::vec2(scale), 0.0f, color, Vladgine::Justification::MIDDLE);
+	sf.draw(sb, text.c_str(), pos, glm::vec2(scale), 0.0f, color, Inferno::Justification::MIDDLE);
 }
 
-EditorScreen::EditorScreen(Vladgine::Window* window) :
-	m_window(window),
-	m_spriteFont("Fonts/chintzy.ttf", 32) {
+EditorScreen::EditorScreen(Inferno::Window* window) :
+	m_window(window)
+	 {
 	m_screenIndex = SCREEN_INDEX_EDITOR;
 }
 
@@ -57,11 +57,11 @@ void EditorScreen::onEntry() {
 	// UI camera has scale 1.0f
 	m_uiCamera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
 	m_uiCamera.setScale(1.0f);
-
 	m_debugRenderer.init();
 
 	initUI();
 	m_spriteBatch.init();
+	m_spriteFont.init("Fonts/chintzy.ttf", 32);
 
 	// Set up box2D stuff
 	b2Vec2 gravity(0.0f, -25.0);
@@ -81,7 +81,7 @@ void EditorScreen::onEntry() {
 	m_lightProgram.addAttribure("vertexUV");
 	m_lightProgram.linkShaders();
 
-	m_blankTexture = Vladgine::ResourceManager::getTexture("Textures/blank.png");
+	m_blankTexture = Inferno::ResourceManager::getTexture("Textures/blank.png");
 }
 
 void EditorScreen::onExit() {
@@ -197,9 +197,10 @@ void EditorScreen::drawUI() {
 		int x, y;
 		SDL_GetMouseState(&x, &y);
 		glm::vec2 pos = m_camera.converScreenToWorld(glm::vec2(x, y));
+		std::cout << x << " " << y << std::endl;
 		// Draw the object placement outlines
 		if (m_objectMode == ObjectMode::PLATFORM) {
-			m_debugRenderer.drawBox(glm::vec4(pos - m_boxDims * 0.5f, m_boxDims), Vladgine::ColorRGB8(255, 255, 255, 200), m_rotation);
+			m_debugRenderer.drawBox(glm::vec4(pos - m_boxDims * 0.5f, m_boxDims), Inferno::ColorRGB8(255, 255, 255, 200), m_rotation);
 			m_debugRenderer.end();
 			m_debugRenderer.render(m_camera.getCameraMatrix(), 2.0f);
 		}
@@ -207,7 +208,7 @@ void EditorScreen::drawUI() {
 			// Make temporary light to render
 			Light tmpLight;
 			tmpLight.position = pos;
-			tmpLight.color = Vladgine::ColorRGB8((GLubyte)m_colorPickerRed, (GLubyte)m_colorPickerGreen, (GLubyte)m_colorPickerBlue, (GLubyte)m_colorPickerAlpha);
+			tmpLight.color = Inferno::ColorRGB8((GLubyte)m_colorPickerRed, (GLubyte)m_colorPickerGreen, (GLubyte)m_colorPickerBlue, (GLubyte)m_colorPickerAlpha);
 			tmpLight.size = m_lightSize;
 
 			// Draw light
@@ -225,7 +226,7 @@ void EditorScreen::drawUI() {
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 			// Selection radius
-			m_debugRenderer.drawCircle(pos, Vladgine::ColorRGB8(255, 255, 255, 255), LIGHT_SELECT_RADIUS);
+			m_debugRenderer.drawCircle(pos, Inferno::ColorRGB8(255, 255, 255, 255), LIGHT_SELECT_RADIUS);
 			// Outer radius
 			m_debugRenderer.drawCircle(pos, tmpLight.color, tmpLight.size);
 			m_debugRenderer.end();
@@ -236,7 +237,7 @@ void EditorScreen::drawUI() {
 		// Draw selected light
 		if (m_selectedLight != NO_LIGHT) {
 			// Selection radius
-			m_debugRenderer.drawCircle(m_lights[m_selectedLight].position, Vladgine::ColorRGB8(255, 255, 0, 255), LIGHT_SELECT_RADIUS);
+			m_debugRenderer.drawCircle(m_lights[m_selectedLight].position, Inferno::ColorRGB8(255, 255, 0, 255), LIGHT_SELECT_RADIUS);
 			// Outer radius
 			m_debugRenderer.drawCircle(m_lights[m_selectedLight].position, m_lights[m_selectedLight].color, m_lights[m_selectedLight].size);
 			m_debugRenderer.end();
@@ -251,7 +252,7 @@ void EditorScreen::drawUI() {
 			destRect.z = b.getDimensions().x;
 			destRect.w = b.getDimensions().y;
 
-			m_debugRenderer.drawBox(destRect, Vladgine::ColorRGB8(255, 255, 0, 255), b.getBody()->GetAngle());
+			m_debugRenderer.drawBox(destRect, Inferno::ColorRGB8(255, 255, 0, 255), b.getBody()->GetAngle());
 			m_debugRenderer.end();
 			m_debugRenderer.render(m_camera.getCameraMatrix(), 2.0f);
 		}
@@ -276,7 +277,7 @@ void EditorScreen::drawUI() {
 			m_aSlider->getHeight().d_scale * m_window->getScreenHeight() * 0.5f - QUAD_SIZE / 4.0f;
 		destRect.z = QUAD_SIZE;
 		destRect.w = QUAD_SIZE;
-		m_spriteBatch.draw(destRect, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), m_blankTexture.id, 0.0f, Vladgine::ColorRGB8((GLubyte)m_colorPickerRed, (GLubyte)m_colorPickerGreen, (GLubyte)m_colorPickerBlue, 255));
+		m_spriteBatch.draw(destRect, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), m_blankTexture.id, 0.0f, Inferno::ColorRGB8((GLubyte)m_colorPickerRed, (GLubyte)m_colorPickerGreen, (GLubyte)m_colorPickerBlue, 255));
 
 		// Draw color text
 		std::string colorText;
@@ -286,7 +287,7 @@ void EditorScreen::drawUI() {
 		else {
 			colorText = "RGB[" + std::to_string((int)m_colorPickerRed) + "," + std::to_string((int)m_colorPickerGreen) + "," + std::to_string((int)m_colorPickerBlue) + "]";
 		}
-		m_spriteFont.draw(m_spriteBatch, colorText.c_str(), glm::vec2(destRect.x + destRect.z * 0.5, destRect.y + destRect.w), glm::vec2(0.55), 0.0f, Vladgine::ColorRGB8(255, 255, 255, 255), Vladgine::Justification::MIDDLE);
+		m_spriteFont.draw(m_spriteBatch, colorText.c_str(), glm::vec2(destRect.x + destRect.z * 0.5, destRect.y + destRect.w), glm::vec2(0.55), 0.0f, Inferno::ColorRGB8(255, 255, 255, 255), Inferno::Justification::MIDDLE);
 	}
 
 	// Draw custon labels for widgets
@@ -361,25 +362,25 @@ void EditorScreen::drawWorld() {
 			destRect.w = b.getDimensions().y;
 			// Dynamic is green, static is red.
 			if (b.isDynamic()) {
-				m_debugRenderer.drawBox(destRect, Vladgine::ColorRGB8(0, 255, 0, 255), b.getBody()->GetAngle());
+				m_debugRenderer.drawBox(destRect, Inferno::ColorRGB8(0, 255, 0, 255), b.getBody()->GetAngle());
 			}
 			else {
-				m_debugRenderer.drawBox(destRect, Vladgine::ColorRGB8(255, 0, 0, 255), b.getBody()->GetAngle());
+				m_debugRenderer.drawBox(destRect, Inferno::ColorRGB8(255, 0, 0, 255), b.getBody()->GetAngle());
 			}
 		}
 		// Render magenta light selection radius
 		for (auto& l : m_lights) {
-			m_debugRenderer.drawCircle(l.position, Vladgine::ColorRGB8(255, 0, 255, 255), LIGHT_SELECT_RADIUS);
+			m_debugRenderer.drawCircle(l.position, Inferno::ColorRGB8(255, 0, 255, 255), LIGHT_SELECT_RADIUS);
 		}
 		// Draw axis
 		// +X axis
-		m_debugRenderer.drawLine(glm::vec2(0.0f), glm::vec2(100000.0f, 0.0f), Vladgine::ColorRGB8(255, 0, 0, 200));
+		m_debugRenderer.drawLine(glm::vec2(0.0f), glm::vec2(100000.0f, 0.0f), Inferno::ColorRGB8(255, 0, 0, 200));
 		// -X axis
-		m_debugRenderer.drawLine(glm::vec2(0.0f), glm::vec2(-100000.0f, 0.0f), Vladgine::ColorRGB8(255, 0, 0, 100));
+		m_debugRenderer.drawLine(glm::vec2(0.0f), glm::vec2(-100000.0f, 0.0f), Inferno::ColorRGB8(255, 0, 0, 100));
 		// +Y axis
-		m_debugRenderer.drawLine(glm::vec2(0.0f), glm::vec2(0.0f, 100000.0f), Vladgine::ColorRGB8(0, 255, 0, 200));
+		m_debugRenderer.drawLine(glm::vec2(0.0f), glm::vec2(0.0f, 100000.0f), Inferno::ColorRGB8(0, 255, 0, 200));
 		// -Y axis
-		m_debugRenderer.drawLine(glm::vec2(0.0f), glm::vec2(0.0f, -100000.0f), Vladgine::ColorRGB8(0, 255, 0, 100));
+		m_debugRenderer.drawLine(glm::vec2(0.0f), glm::vec2(0.0f, -100000.0f), Inferno::ColorRGB8(0, 255, 0, 100));
 
 		m_debugRenderer.end();
 		m_debugRenderer.render(m_camera.getCameraMatrix(), 2.0f);
@@ -677,7 +678,7 @@ bool inLightSelect(const Light& l, const glm::vec2& pos) {
 
 void EditorScreen::updateMouseDown(const SDL_Event& evnt) {
 	// Texture for boxes. Its here because lazy.
-	static Vladgine::GLTexture texture = Vladgine::ResourceManager::getTexture("Textures/brick_wall.png");
+	static Inferno::GLTexture texture = Inferno::ResourceManager::getTexture("Textures/brick_wall.png");
 	glm::vec2 pos;
 	glm::vec4 uvRect;
 
@@ -784,7 +785,7 @@ void EditorScreen::updateMouseDown(const SDL_Event& evnt) {
 				uvRect.y = pos.y;
 				uvRect.z = m_boxDims.x;
 				uvRect.w = m_boxDims.y;
-				newBox.init(m_world.get(), pos, m_boxDims, texture, Vladgine::ColorRGB8(m_colorPickerRed, m_colorPickerGreen, m_colorPickerBlue, 255),
+				newBox.init(m_world.get(), pos, m_boxDims, texture, Inferno::ColorRGB8(m_colorPickerRed, m_colorPickerGreen, m_colorPickerBlue, 255),
 					false, m_physicsMode == PhysicsMode::DYNAMIC, m_rotation, uvRect);
 
 				m_boxes.push_back(newBox);
@@ -794,14 +795,14 @@ void EditorScreen::updateMouseDown(const SDL_Event& evnt) {
 				m_player.destroy(m_world.get());
 				// Re-init the player
 				pos = m_camera.converScreenToWorld(glm::vec2(evnt.button.x, evnt.button.y));
-				m_player.init(m_world.get(), pos, glm::vec2(2.0f), glm::vec2(1.0f, 1.8f), Vladgine::ColorRGB8(m_colorPickerRed, m_colorPickerGreen, m_colorPickerBlue, 255));
+				m_player.init(m_world.get(), pos, glm::vec2(2.0f), glm::vec2(1.0f, 1.8f), Inferno::ColorRGB8(m_colorPickerRed, m_colorPickerGreen, m_colorPickerBlue, 255));
 				m_hasPlayer = true;
 				std::cout << "After Setting Position in Editor - X: " << m_player.getPosition().x << " Y: " << m_player.getPosition().y << std::endl;
 				break;
 			case ObjectMode::LIGHT:
 				newLight.position = m_camera.converScreenToWorld(glm::vec2(evnt.button.x, evnt.button.y));
 				newLight.size = m_lightSize;
-				newLight.color = Vladgine::ColorRGB8(m_colorPickerRed, m_colorPickerGreen, m_colorPickerBlue, m_colorPickerAlpha);
+				newLight.color = Inferno::ColorRGB8(m_colorPickerRed, m_colorPickerGreen, m_colorPickerBlue, m_colorPickerAlpha);
 				m_lights.push_back(newLight);
 				break;
 			case ObjectMode::FINISH:
@@ -858,7 +859,7 @@ void EditorScreen::refreshSelectedBox() {
 void EditorScreen::refreshSelectedBox(const glm::vec2& newPosition) {
 	if (m_selectedBox == NO_BOX) return;
 	// Texture for boxes. Its here because lazy.
-	static Vladgine::GLTexture texture = Vladgine::ResourceManager::getTexture("Textures/brick_wall.png");
+	static Inferno::GLTexture texture = Inferno::ResourceManager::getTexture("Textures/brick_wall.png");
 	glm::vec4 uvRect;
 	uvRect.x = newPosition.x;
 	uvRect.y = newPosition.y;
@@ -866,7 +867,7 @@ void EditorScreen::refreshSelectedBox(const glm::vec2& newPosition) {
 	uvRect.w = m_boxDims.y;
 	Box newBox;
 
-	newBox.init(m_world.get(), newPosition, m_boxDims, texture, Vladgine::ColorRGB8(m_colorPickerRed, m_colorPickerGreen, m_colorPickerBlue, 255),
+	newBox.init(m_world.get(), newPosition, m_boxDims, texture, Inferno::ColorRGB8(m_colorPickerRed, m_colorPickerGreen, m_colorPickerBlue, 255),
 		false, m_physicsMode == PhysicsMode::DYNAMIC, m_rotation, uvRect);
 	// Destroy old box and replace with new one
 	m_boxes[m_selectedBox].destroy(m_world.get());
@@ -883,7 +884,7 @@ void EditorScreen::refreshSelectedLight(const glm::vec2& newPosition) {
 	Light newLight;
 	newLight.position = newPosition;
 	newLight.size = m_lightSize;
-	newLight.color = Vladgine::ColorRGB8(m_colorPickerRed, m_colorPickerGreen, m_colorPickerBlue, m_colorPickerAlpha);
+	newLight.color = Inferno::ColorRGB8(m_colorPickerRed, m_colorPickerGreen, m_colorPickerBlue, m_colorPickerAlpha);
 	m_lights[m_selectedLight] = newLight;
 }
 
@@ -920,16 +921,23 @@ void EditorScreen::populateLevelData()
 	for (int i = 0; i < m_lights.size(); i++) {
 		levelData.light.push_back(m_lights[i]);
 	}
-
-	levelData.player.position.x = m_player.getPosition().x; // Replace with the actual method or member
-	levelData.player.position.y = m_player.getPosition().y; 
-	// After user input updates the player's position
-	std::cout << "After User Input in Editor - X: " << m_player.getPosition().x << " Y: " << m_player.getPosition().y << std::endl;
-	std::cout << "After User Input in Editor - X2: " << levelData.player.position.x << " Y: " << levelData.player.position.y << std::endl;
-	// Replace with the actual method or member
-	levelData.player.drawDims = m_player.getDrawDims(); // ... and so on for other attributes
-	levelData.player.collisionDims = m_player.getCollisionDims();
-	levelData.player.color = m_player.getColor();
+	if (m_player.getCapsule().getBody()) {
+		levelData.player.position.x = m_player.getPosition().x; // Replace with the actual method or member
+		levelData.player.position.y = m_player.getPosition().y;
+		levelData.player.drawDims = m_player.getDrawDims(); // ... and so on for other attributes
+		levelData.player.collisionDims = m_player.getCollisionDims();
+		levelData.player.color = m_player.getColor();
+		// After user input updates the player's position
+		std::cout << "After User Input in Editor - X: " << m_player.getPosition().x << " Y: " << m_player.getPosition().y << std::endl;
+		std::cout << "After User Input in Editor - X2: " << levelData.player.position.x << " Y: " << levelData.player.position.y << std::endl;
+	}
+	else {
+		levelData.player.position = m_camera.converScreenToWorld(glm::vec2((m_window->getScreenWidth(), m_window->getScreenHeight()) / 2.0f));
+		std::cout << "After Setting Position in Editor - X: " << levelData.player.position.x << " Y: " << levelData.player.position.y << std::endl;
+		levelData.player.drawDims = glm::vec2(2.0f);
+		levelData.player.collisionDims = glm::vec2(1.0f, 1.8f);
+		levelData.player.color = Inferno::ColorRGB8(255, 255, 255, 255);
+	}	
 }
 
 void EditorScreen::setPlatformWidgetVisibility(bool visible) {
@@ -946,7 +954,7 @@ void EditorScreen::setLightWidgetVisibility(bool visible) {
 }
 
 bool EditorScreen::onExitClicked(const CEGUI::EventArgs& e) {
-	m_currentState = Vladgine::Screen_State::EXIT_APPLICATION;
+	m_currentState = Inferno::Screen_State::EXIT_APPLICATION;
 	return true;
 }
 
@@ -1038,7 +1046,7 @@ bool EditorScreen::onPlaceMouseClick(const CEGUI::EventArgs& e) {
 
 bool EditorScreen::onSaveMouseClick(const CEGUI::EventArgs& e) {
 	// Make sure levels dir exists
-	Vladgine::IOManager::makeDiretory("Levels");
+	Inferno::IOManager::makeDiretory("Levels");
 
 	m_saveWindowCombobox->clearAllSelections();
 
@@ -1050,8 +1058,8 @@ bool EditorScreen::onSaveMouseClick(const CEGUI::EventArgs& e) {
 	m_saveListBoxItems.clear();
 
 	// Get all directory entries
-	std::vector<Vladgine::DirEntry> entries;
-	Vladgine::IOManager::getDirectoryEntries("Levels", entries);
+	std::vector<Inferno::DirEntry> entries;
+	Inferno::IOManager::getDirectoryEntries("Levels", entries);
 
 
 	// Add all files to list box
@@ -1084,8 +1092,8 @@ bool EditorScreen::onLoadMouseClick(const CEGUI::EventArgs& e) {
 	m_loadListBoxItems.clear();
 
 	// Get all directory entries
-	std::vector<Vladgine::DirEntry> entries;
-	Vladgine::IOManager::getDirectoryEntries("Levels", entries);
+	std::vector<Inferno::DirEntry> entries;
+	Inferno::IOManager::getDirectoryEntries("Levels", entries);
 
 
 	// Add all files to list box
@@ -1107,7 +1115,7 @@ bool EditorScreen::onLoadMouseClick(const CEGUI::EventArgs& e) {
 }
 
 bool EditorScreen::onBackMouseClick(const CEGUI::EventArgs& e) {
-	m_currentState = Vladgine::Screen_State::CHANGE_PREVIOUS;
+	m_currentState = Inferno::Screen_State::CHANGE_PREVIOUS;
 	return true;
 }
 
@@ -1154,7 +1162,7 @@ bool EditorScreen::onSave(const CEGUI::EventArgs& e) {
 
 	puts("Saving game...");
 	// Make sure levels dir exists again, for good measure.
-	Vladgine::IOManager::makeDiretory("Levels");
+	Inferno::IOManager::makeDiretory("Levels");
 
 	// Save in text mode
 	std::string text = "Levels/" + std::string(m_saveWindowCombobox->getText().c_str());
@@ -1180,7 +1188,7 @@ bool EditorScreen::onTestLevelClick(const CEGUI::EventArgs& e)
 {
 	populateLevelData();
 	LevelMediator::getInstance()->setLevelData(levelData);
-	m_currentState = Vladgine::Screen_State::CHANGE_NEXT;
+	m_currentState = Inferno::Screen_State::CHANGE_NEXT;
 
 	return true;
 }
