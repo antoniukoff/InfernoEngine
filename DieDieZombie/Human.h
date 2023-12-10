@@ -25,8 +25,6 @@ public:
 	}
 		
 private:
-
-	
 	int _frames;
 };
 

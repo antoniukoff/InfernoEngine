@@ -1,85 +1,88 @@
-#include "GameManager.h"
-#include <InfernoEngine/Inferno.h>
-#include <InfernoEngine/Timing.h>
-#include <InfernoEngine/InfernoErrors.h>
-#include <InfernoEngine/ResourceManager.h>
-#include <GLEW/glm/gtx/rotate_vector.hpp>
-#include "Gun.h"
 #include <iostream>
-#include "Zombie.h"
 #include <random>
 #include <ctime>
 #include <algorithm>
-#include <InfernoEngine/Core.h>
 #include <mutex>
 #include <thread>
+#include <GLEW/glm/gtx/rotate_vector.hpp>
+
+#include "GameManager.h"
+#include "Gun.h"
+#include "Zombie.h"
+
+#include <InfernoEngine/Inferno.h>
+#include <InfernoEngine/InfernoErrors.h>
+#include <InfernoEngine/ResourceManager.h>
+#include <InfernoEngine/Core.h>
+
+constexpr float DEG_TO_RAD = 3.14159265359f / 180.0f;
+constexpr float RAD_TO_DEG = 180.0f / 3.14159265359f;
 
 std::mutex agentMutex;
 std::mutex bulletMutex;
-std::mutex renderMutex;	
 
-
-const float DEG_TO_RAD = 3.14159265359f / 180.0f;
-const float RAD_TO_DEG = 180.0f / 3.14159265359f;
-
-const float HUMAN_SPEED = 1.0f;
-const float ZOMBIE_SPEED = 1.3f;
-const float PLAYER_SPEED = 10.0f;
-
+// PoolAllocator Initialization
 InfernoEngine::PoolAllocator Human::allocator{ 10 };
 
-GameManager::GameManager(): m_screenWidth(1920), m_screenHeight(1080), m_gameState(GameState::PLAY), m_maxFPS(2500.0f),
-m_player(nullptr), m_numZombiesKilled(0), m_numHumansKilled(0)
-{
+// GameManager Constructor
+GameManager::GameManager() : m_screenWidth(1920), m_screenHeight(1080), m_gameState(GameState::PLAY), m_maxFPS(2500.0f),
+m_player(nullptr), m_numZombiesKilled(0), m_numHumansKilled(0) {
 }
 
-GameManager::~GameManager()
-{
+// GameManager Destructor
+GameManager::~GameManager() {
+	for (int i = 0; i < m_humans.size(); i++) {
+		delete m_humans[i];
+	}
+	for (int i = 0; i < m_zombies.size(); i++) {
+		delete m_zombies[i];
+	}
 	for (int i = 0; i < m_levels.size(); i++) {
 		delete m_levels[i];
 	}
+	delete m_spriteFont;
+	printMemory();
 }
 
-void GameManager::run()
-{
+// GameManager Methods
+void GameManager::run() {
 	initSystems();
 	initLevel();
 	Inferno::Music music = m_audioEngine.loadMusic("Sounds/Secunda.mp3");
 	music.play(-1);
 	gameLoop();
-}	
+}
 
-void GameManager::initSystems()
-{	
+void GameManager::initSystems() {
+	const float CAMERA_SCALE = 2.0f / 4.0f;
+
 	Inferno::init();
-
 	m_audioEngine.init();
-
 	m_window.create("DieDieZombie", m_screenWidth, m_screenHeight, 0);
-	glClearColor(0.6f, 0.6f, 0.6f, 1.0f);
-
-	initShaders();
 	
-
-	m_agentSpriteBatch.init();
-	m_hudSpriteBatch.init();
-
-	// init sprite font (initialize after sdl and opengl)
+	initShaders();
+	m_spriteBatch.init();
+	m_hudBatch.init();
 	m_spriteFont = new Inferno::SpriteFont("Fonts/cCaesarSalad.ttf", 32);
 
-	m_camera.init(m_screenWidth, m_screenHeight);	
-	m_hudCamera.init(m_screenWidth, m_screenHeight);	
+	// Initialize camera
+	m_camera.init(m_screenWidth, m_screenHeight);
+	m_camera.setScale(CAMERA_SCALE);
+
+	// Only need to initialize the HUD camera once
+	m_hudCamera.init(m_screenWidth, m_screenHeight);
 	m_hudCamera.setPos(glm::vec2(m_screenWidth / 2, m_screenHeight / 2));
+	m_hudCamera.update();
 
-
-	// init particles
 	m_bloodParticleBatch = new Inferno::ParticleBatch2D;
 	m_bloodParticleBatch->init(1000, 0.05f, Inferno::ResourceManager::getTexture("Textures/circle.png"),
-							   [](Inferno::Particle2D& particle, float deltaTime) {
+		[](Inferno::Particle2D& particle, float deltaTime) {
 			particle.position += particle.velocity * deltaTime;
 			particle.color.a = (GLubyte)(particle.life * 255.0f);
 		});
 	m_particleEngine.addParticleBatch(m_bloodParticleBatch);
+
+	fpsLimiter.setMaxFPS(m_maxFPS);
 }
 
 void GameManager::initShaders()
@@ -93,83 +96,77 @@ void GameManager::initShaders()
 
 void GameManager::initLevel()
 {
+	const float HUMAN_SPEED = 1.0f;
+	const float ZOMBIE_SPEED = 1.3f;
+	const float PLAYER_SPEED = 10.0f;
+	const float BULLET_SPEED = 20.0f;
+
+	// Load the level
 	m_levels.push_back(new Level("Levels/Level2.txt"));
 	m_currentLevel = 0;
 
+	// Initialize the player
 	m_player = new Player();
 	m_player->init(PLAYER_SPEED, m_levels[m_currentLevel]->getStartPlayerPos(), &m_inputManager, &m_camera, &m_bullets);
-
 	m_humans.push_back(m_player);
-	
-	static std::mt19937 randomEngine;
-	randomEngine.seed(time(nullptr));
+
+	// Seed the random engine for NPC positioning
+	static std::mt19937 randomEngine(time(nullptr));
 	std::uniform_int_distribution<int> randX(1, m_levels[m_currentLevel]->getWidth() - 1);
 	std::uniform_int_distribution<int> randY(1, m_levels[m_currentLevel]->getHeight() - 1);
 
+	// Initialize non-player humans
 	for (int i = 0; i < m_levels[m_currentLevel]->getNumHumans(); i++) {
-		m_humans.push_back(new Human());
 		glm::vec2 pos(randX(randomEngine) * TILE_WIDTH, randY(randomEngine) * TILE_WIDTH);
-		m_humans.back()->init(HUMAN_SPEED, pos);
+		Human* human = new Human();
+		human->init(HUMAN_SPEED, pos);
+		m_humans.push_back(human);
 	}
 
+	// Initialize zombies
 	const std::vector<glm::vec2>& zombiePositions = m_levels[m_currentLevel]->getZombieStartPos();
-	for (int i = 0; i < zombiePositions.size(); i++) {
-		m_zombies.push_back(new Zombie());
-		m_zombies.back()->init(ZOMBIE_SPEED, zombiePositions[i]);
+	for (const auto& pos : zombiePositions) {
+		Zombie* zombie = new Zombie();
+		zombie->init(ZOMBIE_SPEED, pos);
+		m_zombies.push_back(zombie);
 	}
-	const float BULLET_SPEED = 20.0f;
 
+	// Set up player guns
 	m_player->addGun(new Gun("Magnum", 10, 1, 5.0f, 30, BULLET_SPEED, m_audioEngine.loadSoundEffect("Sounds/Shots/powerup_02.wav")));
 	m_player->addGun(new Gun("Shotgun", 60, 12, 20.0f, 150, BULLET_SPEED, m_audioEngine.loadSoundEffect("Sounds/Shots/gun_shot_01.wav")));
 	m_player->addGun(new Gun("MP5", 1, 1, 10.0f, 20, BULLET_SPEED, m_audioEngine.loadSoundEffect("Sounds/Shots/gun_machine_01.wav")));
-
-	glm::vec2 cameraPos = glm::vec2(m_levels[m_currentLevel]->getWidth() * TILE_WIDTH / 2.0f,
-		m_levels[m_currentLevel]->getHeight() * TILE_WIDTH / 2.0f);
-	m_camera.setPos(cameraPos);
-
 }
+
 
 void GameManager::gameLoop()
 {
-	const float DESIRED_FPS = 60.0f;
-
+	// Constants
 	const int MAX_PHYSICS_STEPS = 6;
-
+	const float DESIRED_FPS = 60.0f;
 	const float MAX_DELTATIME = 1.0f;
-
-	Inferno::FPSLimiter fpsLimiter;
-	fpsLimiter.setMaxFPS(m_maxFPS);
-
-	const float CAMERA_SCALE = 2.0f / 4.0f;
-	m_camera.setScale(CAMERA_SCALE);
-
 	const float MS_PER_SECOND = 1000.0f;
-
 	const float DESIRED_FRAMETIME = MS_PER_SECOND / DESIRED_FPS;
 
-	float  prevTicks = SDL_GetTicks();
+	float prevTicks = SDL_GetTicks();
 
+	// Game loop
 	while (m_gameState == GameState::PLAY) {
 		fpsLimiter.begin();
-
 		float newTicks = SDL_GetTicks();
-
 		float frameTime = newTicks - prevTicks;
-
 		prevTicks = newTicks;
-
 		float totalDeltaTime = frameTime / DESIRED_FRAMETIME;
 
 		checkVictory();
-
 		m_inputManager.update();
-
 		processInput();
 
 		int i = 0;
 
+		// Update the game until the physics is caught up
 		while (totalDeltaTime > 0.0f && i < MAX_PHYSICS_STEPS) {
 			float deltaTime = std::min(totalDeltaTime, MAX_DELTATIME);
+
 			std::thread updateAgentsThread(&GameManager::updateAgents, this, deltaTime);
 			std::thread updateBulletsThread(&GameManager::updateBullets, this, deltaTime);
 
@@ -183,74 +180,74 @@ void GameManager::gameLoop()
 			i++;
 		}
 
-
-
 		m_camera.setPos(m_player->getPosition());
-		m_camera.update();
-		m_hudCamera.update();
+		isPlayerWithinCameraLevelBounds();
+        m_camera.update();
 
-		drawGame();
+        drawGame();
+        m_fps = fpsLimiter.calculate();
 
-		m_fps = fpsLimiter.calculate();
-
-		static int framesCount = 0;
-		if (framesCount == 200) {
-			//std::cout << m_fps << std::endl;
-			printMemory();
-			framesCount = 0;
-		}
-		else
-		{
-			framesCount++;
-		}
+        static int framesCount = 0;
+        if (framesCount++ == 200) {
+            
+            framesCount = 0;
+        }
 	}
 }
 
-void GameManager::updateAgents(float deltaTime)
-{
+void GameManager::updateAgents(float deltaTime) {
+	// Lock to ensure thread safety as agents are updated
 	std::lock_guard<std::mutex> lock(agentMutex);
+
+	// Update all humans in the game
 	for (int i = 0; i < m_humans.size(); i++) {
 		m_humans[i]->update(m_levels[m_currentLevel]->getLevelData(), m_humans, m_zombies, deltaTime);
 	}
 
+	// Update all zombies in the game
 	for (int i = 0; i < m_zombies.size(); i++) {
 		m_zombies[i]->update(m_levels[m_currentLevel]->getLevelData(), m_humans, m_zombies, deltaTime);
 	}
-	//update Zombie collision
+
+	// Check and handle collisions between zombies and other agents
 	for (int i = 0; i < m_zombies.size(); i++) {
-		//collide with other zombies
+		// Check for collisions with other zombies
 		for (int j = i + 1; j < m_zombies.size(); j++) {
 			m_zombies[i]->collideWithAgent(m_zombies[j]);
 		}
-		//collide with humans
+
+		// Check for collisions with humans and turn them into zombies if collided
 		for (int j = 1; j < m_humans.size(); j++) {
 			if (m_zombies[i]->collideWithAgent(m_humans[j])) {
+				// Create new zombie at the human's position
 				m_zombies.push_back(new Zombie());
-				m_zombies.back()->init(ZOMBIE_SPEED, m_humans[j]->getPosition());
+				m_zombies.back()->init(1.3f, m_humans[j]->getPosition());
+				// Remove the human from the game
 				delete m_humans[j];
 				m_humans[j] = m_humans.back();
 				m_humans.pop_back();
 			}
 		}
-		//collide with player
 
+		// Check collision with the player
 		if (m_zombies[i]->collideWithAgent(m_player)) {
 			Inferno::fatalError("You Lose!");
 		}
-
 	}
-	// update human collision
+
+	// Check for collisions between humans
 	for (int i = 0; i < m_humans.size(); i++) {
-		for (int j = i+1; j < m_humans.size(); j++) {
+		for (int j = i + 1; j < m_humans.size(); j++) {
 			m_humans[i]->collideWithAgent(m_humans[j]);
 		}
 	}
-
 }
 
-void GameManager::updateBullets(float deltaTime)
-{
+void GameManager::updateBullets(float deltaTime) {
+
 	std::lock_guard<std::mutex> lock(bulletMutex);
+
+	// Update all bullets and remove them if they are no longer active
 	for (int i = 0; i < m_bullets.size();) {
 		if (m_bullets[i].update(m_levels[m_currentLevel]->getLevelData(), deltaTime)) {
 			m_bullets[i] = m_bullets.back();
@@ -263,13 +260,15 @@ void GameManager::updateBullets(float deltaTime)
 
 	bool isBulletRemoved;
 
+	// Check collisions for each bullet
 	for (int i = 0; i < m_bullets.size(); i++) {
 		isBulletRemoved = false;
-		for (int j = 0; j < m_zombies.size(); ) {
+		for (int j = 0; j < m_zombies.size();) {
 			if (m_bullets[i].collideWithAgent(m_zombies[j])) {
-				//add blood
+				// Add blood effect
 				addBlood(m_bullets[i].getPosition(), 50);
 
+				// Apply damage to zombie and remove if necessary
 				if (m_zombies[j]->applyDamage(m_bullets[i].getDamage())) {
 					delete m_zombies[j];
 					m_zombies[j] = m_zombies.back();
@@ -279,36 +278,41 @@ void GameManager::updateBullets(float deltaTime)
 				else {
 					j++;
 				}
+
+				// Remove the bullet as it hit a zombie
 				m_bullets[i] = m_bullets.back();
 				m_bullets.pop_back();
 				isBulletRemoved = true;
-				i--;// make sure we don't skip the bullets
-				//since the bullet died no need to loop through any more zombies
+				i--; // Decrement to ensure no bullet is skipped
 				break;
 			}
 			else {
 				j++;
 			}
 		}
-		if (isBulletRemoved == false) {
-			for (int j = 1; j < m_humans.size(); ) {
-				if (m_bullets[i].collideWithAgent(m_humans[j])) {
 
+		// Check collisions with humans if the bullet hasn't been removed
+		if (!isBulletRemoved) {
+			for (int j = 1; j < m_humans.size();) {
+				if (m_bullets[i].collideWithAgent(m_humans[j])) {
+					// Add blood effect
 					addBlood(m_bullets[i].getPosition(), 50);
 
+					// Apply damage to human and remove if necessary
 					if (m_humans[j]->applyDamage(m_bullets[i].getDamage())) {
 						delete m_humans[j];
 						m_humans[j] = m_humans.back();
 						m_humans.pop_back();
+						m_numHumansKilled++;
 					}
 					else {
 						j++;
 					}
+
+					// Remove the bullet as it hit a human
 					m_bullets[i] = m_bullets.back();
 					m_bullets.pop_back();
-					m_numHumansKilled++;
-					i--;// make sure we don't skip the bullets
-					//since the bullet died no need to loop through any more zombies
+					i--; // Decrement to ensure no bullet is skipped
 					break;
 				}
 				else {
@@ -317,8 +321,8 @@ void GameManager::updateBullets(float deltaTime)
 			}
 		}
 	}
-	
 }
+
 
 void GameManager::checkVictory()
 {
@@ -334,15 +338,11 @@ void GameManager::checkVictory()
 
 void GameManager::processInput()
 {
-	const float CAMERA_SPEED = 10.0f;
-	const float SCALE_SPEED = 0.1f;
-
 	SDL_Event event;
 	while (SDL_PollEvent(&event)) {
 		switch (event.type) {
 		case SDL_QUIT:
 			m_gameState = GameState::EXIT;
-			
 			break;
 		case SDL_KEYDOWN:
 			m_inputManager.pressKey(event.key.keysym.sym);
@@ -359,84 +359,84 @@ void GameManager::processInput()
 			break;
 		case SDL_MOUSEMOTION:
 			m_inputManager.setMouseCoords(event.motion.x, event.motion.y);
-		}
-
+			break;
+		case SDL_MOUSEWHEEL:
+			if(event.wheel.y > 0)
+				m_camera.setScale(m_camera.getScale() + 0.01f);
+			else if(event.wheel.y < 0)
+				m_camera.setScale(m_camera.getScale() - 0.01f);
+		} 
+		
+		
 	}
-
 }
 
-void GameManager::drawGame()
-{
+void GameManager::drawGame() {
 	glClearDepth(1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	m_textureProgram.use();
 
+	// Upload texture uniform
 	glActiveTexture(GL_TEXTURE0);
 	GLint textureUniform = m_textureProgram.getUniformLocation("mySampler");
 	glUniform1i(textureUniform, 0);
 
+	// Upload camera matrix
 	glm::mat4 projectionMatrix = m_camera.getCameraMatrix();
 	GLint pUniform = m_textureProgram.getUniformLocation("P");
 	glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
 	m_levels[m_currentLevel]->draw();
 
-	m_agentSpriteBatch.begin();
+	m_spriteBatch.begin();
+	glm::vec2 agentDims(AGENT_RADIUS * 2.0f);
 
-
-	const glm::vec2 agentDims(AGENT_RADIUS * 2.0f);
-
-	// draw humans
+	// Draw humans
 	for (int i = 0; i < m_humans.size(); i++) {
 		if (m_camera.isBoxInView(m_humans[i]->getPosition(), agentDims))
-		m_humans[i]->draw(m_agentSpriteBatch);
+			m_humans[i]->draw(m_spriteBatch);
 	}
 
+	// Draw zombies
 	for (int i = 0; i < m_zombies.size(); i++) {
 		if (m_camera.isBoxInView(m_zombies[i]->getPosition(), agentDims))
-		m_zombies[i]->draw(m_agentSpriteBatch);
-	}	
-
-	for (int i = 0; i < m_bullets.size(); i++) {
-		m_bullets[i].draw(m_agentSpriteBatch);
-		
+			m_zombies[i]->draw(m_spriteBatch);
 	}
 
-	m_agentSpriteBatch.end();
+	// Draw bullets
+	for (int i = 0; i < m_bullets.size(); i++) {
+		m_bullets[i].draw(m_spriteBatch);
+	}
 
-	m_agentSpriteBatch.renderBatch();
-	
-	//render particles
+	m_spriteBatch.end();
+	m_spriteBatch.renderBatch();
 
-	m_particleEngine.draw(&m_agentSpriteBatch);
+	// Render particles
+	m_particleEngine.draw(&m_spriteBatch);
 
 	drawHUD();
 
 	m_textureProgram.unuse();
-
 	m_window.swapBuffer();
 }
 
-void GameManager::drawHUD()
-{
+void GameManager::drawHUD() {
 	char buffer[256];
-
 	glm::mat4 projectionMatrix = m_hudCamera.getCameraMatrix();
 	GLint pUniform = m_textureProgram.getUniformLocation("P");
 	glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
-	const double MAX_LEAK = 1500000; // Set this to the maximum leak size you expect
-
-	// Scale it to be in the range [0, 1]
-	double scaledValue = (double)(memoryAllocated - memoryDeleted) / MAX_LEAK;
+	const double MAX_LEAK = 1500000;
+	double scaledValue = static_cast<double>(memoryAllocated - memoryDeleted) / MAX_LEAK;
 
 	GLuint barTexture = Inferno::ResourceManager::getTexture("Textures/circle.png").id;
-	m_hudSpriteBatch.begin();
-	glm::vec4 destRect(0, 96 , 64, 512 * scaledValue);
+	m_hudBatch.begin();
+	glm::vec4 destRect(0, 96, 64, 512 * scaledValue);
 	glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
 	Inferno::ColorRGB8 color;
 
+	// Set color based on scaled value
 	if (scaledValue < 0.58) {
 		color = Inferno::ColorRGB8(0, 255, 0, 255);
 	}
@@ -446,24 +446,21 @@ void GameManager::drawHUD()
 	else if (scaledValue < 0.62) {
 		color = Inferno::ColorRGB8(255, 165, 0, 255);
 	}
-	else if (scaledValue >= 0.62) {
+	else {
 		color = Inferno::ColorRGB8(255, 0, 0, 255);
 	}
 
-	m_hudSpriteBatch.draw(destRect, uvRect, 0 , 0, color);
+	m_hudBatch.draw(destRect, uvRect, 0, 0, color);
 	sprintf_s(buffer, "Num Humans %d", m_humans.size());
-
-	m_spriteFont->draw(m_hudSpriteBatch, buffer, glm::vec2(0, 0),
-		glm::vec2(1.0f), 0.0f, Inferno::ColorRGB8(255, 255, 255, 255));
+	m_spriteFont->draw(m_hudBatch, buffer, glm::vec2(0, 0), glm::vec2(1.0f), 0.0f, Inferno::ColorRGB8(255, 255, 255, 255));
 
 	sprintf_s(buffer, "Num Zombies %d", m_zombies.size());
+	m_spriteFont->draw(m_hudBatch, buffer, glm::vec2(0, 36), glm::vec2(1.0f), 0.0f, Inferno::ColorRGB8(255, 255, 255, 255));
 
-	m_spriteFont->draw(m_hudSpriteBatch, buffer, glm::vec2(0, 36),
-		glm::vec2(1.0f), 0.0f, Inferno::ColorRGB8(255, 255, 255, 255));
-	
-	m_hudSpriteBatch.end();
-	m_hudSpriteBatch.renderBatch();
+	m_hudBatch.end();
+	m_hudBatch.renderBatch();
 }
+
 
 void GameManager::addBlood(const glm::vec2& position, int numParticles)
 {
@@ -478,3 +475,21 @@ void GameManager::addBlood(const glm::vec2& position, int numParticles)
 		m_bloodParticleBatch->addParticle(position, glm::rotate(vel, randAngle(randEngine) * DEG_TO_RAD) , col, 5.0f);
 	}
 }
+
+void GameManager::isPlayerWithinCameraLevelBounds() {
+	if (m_camera.getPos().x - m_window.getScreenWidth() / 2 / m_camera.getScale() < 0) {
+		m_camera.setPos(glm::vec2(m_window.getScreenWidth() / 2 / m_camera.getScale(), m_camera.getPos().y));
+	}
+	if (m_camera.getPos().x + m_window.getScreenWidth() / 2 / m_camera.getScale() > m_levels[m_currentLevel]->getWidth() * TILE_WIDTH) {
+		m_camera.setPos(glm::vec2(m_levels[m_currentLevel]->getWidth() * TILE_WIDTH - m_window.getScreenWidth() / 2 / m_camera.getScale(), m_camera.getPos().y));
+	}
+	if (m_camera.getPos().y - m_window.getScreenHeight() / 2 / m_camera.getScale() < 0) {
+		m_camera.setPos(glm::vec2(m_camera.getPos().x, m_window.getScreenHeight() / 2 / m_camera.getScale()));
+	}
+	if (m_camera.getPos().y + m_window.getScreenHeight() / 2 / m_camera.getScale() > m_levels[m_currentLevel]->getHeight() * TILE_WIDTH) {
+		m_camera.setPos(glm::vec2(m_camera.getPos().x, m_levels[m_currentLevel]->getHeight() * TILE_WIDTH - m_window.getScreenHeight() / 2 / m_camera.getScale()));
+	}
+	if(m_camera.getScale() < 0.5f)
+		m_camera.setScale(0.5f);
+}
+

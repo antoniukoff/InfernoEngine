@@ -54,7 +54,7 @@ namespace Inferno {
 		SDL_GL_SetSwapInterval(0);
 
 		// set background color
-		glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
+		glClearColor(0.2f, 0.3f, 0.5f, 1.0f);
 
 		//enable alpha blending
 		glEnable(GL_BLEND);

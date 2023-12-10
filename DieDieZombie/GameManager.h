@@ -8,6 +8,7 @@
 #include <InfernoEngine/AudioEngine.h>
 #include <InfernoEngine/ParticleEngine2D.h>
 #include <InfernoEngine/ParticleBatch2D.h>
+#include <InfernoEngine/Timing.h>
 #include "Bullet.h"
 #include "Level.h"
 #include "Player.h"
@@ -36,6 +37,7 @@ private:
 	void drawGame();
 	void drawHUD();
 	void addBlood(const glm::vec2& position, int numParticles);
+	void isPlayerWithinCameraLevelBounds();
 	
 
 	Inferno::Window m_window;
@@ -43,13 +45,14 @@ private:
 	Inferno::InputManager m_inputManager;
 	Inferno::Camera2D m_camera;
 	Inferno::Camera2D m_hudCamera;
+	Inferno::FPSLimiter fpsLimiter;
 	std::vector<Level*> m_levels;
 	std::vector<Human*> m_humans;
 	std::vector<Zombie*> m_zombies;
 	std::vector<Bullet> m_bullets;
 
-	Inferno::SpriteBatch m_agentSpriteBatch;
-	Inferno::SpriteBatch m_hudSpriteBatch;
+	Inferno::SpriteBatch m_spriteBatch;
+	Inferno::SpriteBatch m_hudBatch;
 	Inferno::ParticleEngine2D m_particleEngine;
 	Inferno::ParticleBatch2D* m_bloodParticleBatch;
 
