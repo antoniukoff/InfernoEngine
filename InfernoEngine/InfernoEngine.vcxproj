@@ -168,6 +168,7 @@
     <ClInclude Include="IMainGame.h" />
     <ClInclude Include="ParticleBatch2D.h" />
     <ClInclude Include="ParticleEngine2D.h" />
+    <ClInclude Include="PoolAllocator.h" />
     <ClInclude Include="ScreenList.h" />
     <ClInclude Include="StackAllocator.h" />
     <ClInclude Include="TileSheet.h" />
@@ -196,6 +197,7 @@
     <ClCompile Include="IMainGame.cpp" />
     <ClCompile Include="ParticleBatch2D.cpp" />
     <ClCompile Include="ParticleEngine2D.cpp" />
+    <ClCompile Include="PoolAllocator.cpp" />
     <ClCompile Include="ScreenList.cpp" />
     <ClCompile Include="InfernoErrors.cpp" />
     <ClCompile Include="GLSLProgram.cpp" />

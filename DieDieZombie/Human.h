@@ -1,6 +1,6 @@
 #pragma once
 #include "Agent.h"
-
+#include <InfernoEngine/PoolAllocator.h>
 class Human :public Agent
 {
 public:
@@ -13,6 +13,16 @@ public:
 		std::vector<Human*>& humans,
 		std::vector<Zombie*>& zombie,
 		float deltaTime) override;
+
+	static InfernoEngine::PoolAllocator allocator;
+
+	static void* operator new (size_t size) {
+		return allocator.allocate(size);
+	}
+
+	static void operator delete(void* ptr, size_t size) {
+		return allocator.deallocate(ptr, size);
+	}
 		
 private:
 

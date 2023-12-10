@@ -26,6 +26,8 @@ const float HUMAN_SPEED = 1.0f;
 const float ZOMBIE_SPEED = 1.3f;
 const float PLAYER_SPEED = 10.0f;
 
+InfernoEngine::PoolAllocator Human::allocator{ 10 };
+
 GameManager::GameManager(): m_screenWidth(1920), m_screenHeight(1080), m_gameState(GameState::PLAY), m_maxFPS(2500.0f),
 m_player(nullptr), m_numZombiesKilled(0), m_numHumansKilled(0)
 {

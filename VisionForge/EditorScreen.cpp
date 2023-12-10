@@ -1,6 +1,5 @@
-#include "EditorScreen.h"
-
 #include <iostream>
+#include "EditorScreen.h"
 #include <InfernoEngine/ResourceManager.h>
 #include <InfernoEngine/IOManager.h>
 #include "LevelReaderWriter.h"
@@ -184,7 +183,7 @@ void EditorScreen::update() {
 
 void EditorScreen::draw() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(0.0f, 0.0f, 0.2f, 1.0f);
+	glClearColor(0.212f, 0.502f, 0.431f, 1.0f);
 
 	drawWorld();
 	drawUI();
