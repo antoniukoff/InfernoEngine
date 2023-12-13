@@ -17,11 +17,9 @@ namespace InfernoEngine {
             chunk->next = reinterpret_cast<Chunk*>(reinterpret_cast<char*>(chunk) + chunkSize);
             chunk = chunk->next;
         }
-
         // last element in the pool points to the nullptr
         // if calls new again will create another block
         chunk->next = nullptr;
-
         return blockBegin;
     }
 
@@ -37,10 +35,11 @@ namespace InfernoEngine {
 
         Chunk* freeChunk = mAlloc;
 
-        // Advance (bump) the allocation pointer to the next chunk.
+        // increase the allocation pointer to the next chunk.
         
         // When no chunks left, the `mAlloc` will be set to `nullptr`, and
-        // this will cause allocation of a new block on the next request:
+        // this will cause allocation of a new block on the next call
+        // to `allocate()`.
 
         mAlloc = mAlloc->next;
 

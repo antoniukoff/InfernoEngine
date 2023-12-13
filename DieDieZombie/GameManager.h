@@ -37,7 +37,7 @@ private:
 	void drawGame();
 	void drawHUD();
 	void addBlood(const glm::vec2& position, int numParticles);
-	void isPlayerWithinCameraLevelBounds();
+	void isCameraWithinLevelBounds();
 	
 
 	Inferno::Window m_window;

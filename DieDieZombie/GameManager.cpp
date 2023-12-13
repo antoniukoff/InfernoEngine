@@ -181,7 +181,7 @@ void GameManager::gameLoop()
 		}
 
 		m_camera.setPos(m_player->getPosition());
-		isPlayerWithinCameraLevelBounds();
+		isCameraWithinLevelBounds();
         m_camera.update();
 
         drawGame();
@@ -366,8 +366,6 @@ void GameManager::processInput()
 			else if(event.wheel.y < 0)
 				m_camera.setScale(m_camera.getScale() - 0.01f);
 		} 
-		
-		
 	}
 }
 
@@ -472,11 +470,11 @@ void GameManager::addBlood(const glm::vec2& position, int numParticles)
 	Inferno::ColorRGB8 col(255, 0, 0, 255);
 
 	for (int i = 0; i < numParticles; i++) {
-		m_bloodParticleBatch->addParticle(position, glm::rotate(vel, randAngle(randEngine) * DEG_TO_RAD) , col, 5.0f);
+		m_bloodParticleBatch->addParticle(position, glm::rotate(vel, randAngle(randEngine) * DEG_TO_RAD) , col, 15.0f);
 	}
 }
 
-void GameManager::isPlayerWithinCameraLevelBounds() {
+void GameManager::isCameraWithinLevelBounds() {
 	if (m_camera.getPos().x - m_window.getScreenWidth() / 2 / m_camera.getScale() < 0) {
 		m_camera.setPos(glm::vec2(m_window.getScreenWidth() / 2 / m_camera.getScale(), m_camera.getPos().y));
 	}
