@@ -60,7 +60,7 @@ void EditorScreen::onEntry() {
 
 	initUI();
 	m_spriteBatch.init();
-	m_spriteFont.init("Fonts/chintzy.ttf", 32);
+	m_spriteFont.init("assets/fonts/chintzy.ttf", 32);
 
 	// Set up box2D stuff
 	b2Vec2 gravity(0.0f, -25.0);
@@ -68,19 +68,19 @@ void EditorScreen::onEntry() {
 
 	// Shader init
 	// Compile our texture shader
-	m_textureProgram.compileShaders("Shaders/defaultVert.glsl", "Shaders/defaultFrag.glsl");
+	m_textureProgram.compileShaders("shaders/defaultVert.glsl", "shaders/defaultFrag.glsl");
 	m_textureProgram.addAttribure("vertexPosition");
 	m_textureProgram.addAttribure("vertexColor");
 	m_textureProgram.addAttribure("vertexUV");
 	m_textureProgram.linkShaders();
 	// Compile our light shader
-	m_lightProgram.compileShaders("Shaders/lightVert.glsl", "Shaders/lightFrag.glsl");
+	m_lightProgram.compileShaders("shaders/lightVert.glsl", "shaders/lightFrag.glsl");
 	m_lightProgram.addAttribure("vertexPosition");
 	m_lightProgram.addAttribure("vertexColor");
 	m_lightProgram.addAttribure("vertexUV");
 	m_lightProgram.linkShaders();
 
-	m_blankTexture = Inferno::ResourceManager::getTexture("Textures/blank.png");
+	m_blankTexture = Inferno::ResourceManager::getTexture("assets/textures/blank.png");
 }
 
 void EditorScreen::onExit() {
@@ -399,7 +399,7 @@ void EditorScreen::clearLevel()
 
 void EditorScreen::initUI() {
 	// Init the UI
-	m_gui.init("GUI");
+	m_gui.init("assets/gui");
 	m_gui.loadScheme("TaharezLook.scheme");
 	m_gui.setFont("DejaVuSans-10");
 
@@ -677,7 +677,7 @@ bool inLightSelect(const Light& l, const glm::vec2& pos) {
 
 void EditorScreen::updateMouseDown(const SDL_Event& evnt) {
 	// Texture for boxes. Its here because lazy.
-	static Inferno::GLTexture texture = Inferno::ResourceManager::getTexture("Textures/brick_wall.png");
+	static Inferno::GLTexture texture = Inferno::ResourceManager::getTexture("assets/textures/brick_wall.png");
 	glm::vec2 pos;
 	glm::vec4 uvRect;
 
@@ -858,7 +858,7 @@ void EditorScreen::refreshSelectedBox() {
 void EditorScreen::refreshSelectedBox(const glm::vec2& newPosition) {
 	if (m_selectedBox == NO_BOX) return;
 	// Texture for boxes. Its here because lazy.
-	static Inferno::GLTexture texture = Inferno::ResourceManager::getTexture("Textures/brick_wall.png");
+	static Inferno::GLTexture texture = Inferno::ResourceManager::getTexture("assets/textures/brick_wall.png");
 	glm::vec4 uvRect;
 	uvRect.x = newPosition.x;
 	uvRect.y = newPosition.y;
@@ -1045,7 +1045,7 @@ bool EditorScreen::onPlaceMouseClick(const CEGUI::EventArgs& e) {
 
 bool EditorScreen::onSaveMouseClick(const CEGUI::EventArgs& e) {
 	// Make sure levels dir exists
-	Inferno::IOManager::makeDiretory("Levels");
+	Inferno::IOManager::makeDiretory("assets/levels");
 
 	m_saveWindowCombobox->clearAllSelections();
 
@@ -1058,7 +1058,7 @@ bool EditorScreen::onSaveMouseClick(const CEGUI::EventArgs& e) {
 
 	// Get all directory entries
 	std::vector<Inferno::DirEntry> entries;
-	Inferno::IOManager::getDirectoryEntries("Levels", entries);
+	Inferno::IOManager::getDirectoryEntries("assets/levels", entries);
 
 
 	// Add all files to list box
@@ -1066,7 +1066,7 @@ bool EditorScreen::onSaveMouseClick(const CEGUI::EventArgs& e) {
 		// Don't add directories
 		if (!e.isDirectory) {
 			// Remove "Levels/" substring
-			e.path.erase(0, std::string("Levels/").size());
+			e.path.erase(0, std::string("assets/levels/").size());
 			m_saveListBoxItems.push_back(new CEGUI::ListboxTextItem(e.path));
 			m_saveWindowCombobox->addItem(m_saveListBoxItems.back());
 		}
@@ -1092,7 +1092,7 @@ bool EditorScreen::onLoadMouseClick(const CEGUI::EventArgs& e) {
 
 	// Get all directory entries
 	std::vector<Inferno::DirEntry> entries;
-	Inferno::IOManager::getDirectoryEntries("Levels", entries);
+	Inferno::IOManager::getDirectoryEntries("assets/levels", entries);
 
 
 	// Add all files to list box
@@ -1100,7 +1100,7 @@ bool EditorScreen::onLoadMouseClick(const CEGUI::EventArgs& e) {
 		// Don't add directories
 		if (!e.isDirectory) {
 			// Remove "Levels/" substring
-			e.path.erase(0, std::string("Levels/").size());
+			e.path.erase(0, std::string("assets/levels/").size());
 			m_loadListBoxItems.push_back(new CEGUI::ListboxTextItem(e.path));
 			m_loadWindowCombobox->addItem(m_loadListBoxItems.back());
 		}
@@ -1161,10 +1161,10 @@ bool EditorScreen::onSave(const CEGUI::EventArgs& e) {
 
 	puts("Saving game...");
 	// Make sure levels dir exists again, for good measure.
-	Inferno::IOManager::makeDiretory("Levels");
+	Inferno::IOManager::makeDiretory("assets/levels");
 
 	// Save in text mode
-	std::string text = "Levels/" + std::string(m_saveWindowCombobox->getText().c_str());
+	std::string text = "assets/levels/" + std::string(m_saveWindowCombobox->getText().c_str());
 	if (LevelReaderWriter::saveAsBinary(text, m_player, m_boxes, m_lights)) {
 		m_saveWindow->disable();
 		m_saveWindow->setAlpha(0.0f);
@@ -1194,7 +1194,7 @@ bool EditorScreen::onTestLevelClick(const CEGUI::EventArgs& e)
  
 bool EditorScreen::onLoad(const CEGUI::EventArgs& e) {
 	puts("Loading game...");
-	std::string path = "Levels/" + std::string(m_loadWindowCombobox->getText().c_str());
+	std::string path = "assets/levels/" + std::string(m_loadWindowCombobox->getText().c_str());
 
 	clearLevel();
 

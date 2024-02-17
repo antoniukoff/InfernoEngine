@@ -5,7 +5,7 @@
 
 void Player::init(b2World* world, const glm::vec2& position, const glm::vec2& drawDims, const glm::vec2& collisionDims, Inferno::ColorRGB8 color)
 {
-	Inferno::GLTexture texture = Inferno::ResourceManager::getTexture("Textures/blue_ninja.png");
+	Inferno::GLTexture texture = Inferno::ResourceManager::getTexture("assets/Textures/blue_ninja.png");
 	m_color = color;
 	m_drawDims = drawDims;
 	m_capsule.init(world, position, collisionDims, 1.0f, 0.1f, true);

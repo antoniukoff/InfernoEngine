@@ -60,7 +60,7 @@ void MainMenuScreen::draw()
 void MainMenuScreen::initUI()
 {
 	//init GUI
-	m_gui.init("GUI");
+	m_gui.init("assets/GUI");
 	m_gui.loadScheme("TaharezLook.scheme");
 	m_gui.setFont("DejaVuSans-10");
 

@@ -43,7 +43,7 @@ void GameplayScreen::onEntry()
 	LevelData levelToLoad = LevelMediator::getInstance()->getLevelData();
 	b2Vec2 gravity(0.0f, -25.0f);
 	m_world = std::make_unique<b2World>(gravity);
-	m_texture = Inferno::ResourceManager::getTexture("Textures/brick_wall.png");
+	m_texture = Inferno::ResourceManager::getTexture("assets/Textures/brick_wall.png");
 
 	const int numBoxes = levelToLoad.boxes.size();;
 	for (int i = 0; i < numBoxes; i++) {

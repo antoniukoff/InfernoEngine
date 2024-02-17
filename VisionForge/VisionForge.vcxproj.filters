@@ -18,80 +18,80 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="App.cpp">
+    <ClCompile Include="src\App.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameplayScreen.cpp">
+    <ClCompile Include="src\GameplayScreen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Box.cpp">
+    <ClCompile Include="src\Box.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
+    <ClCompile Include="src\Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Capsule.cpp">
+    <ClCompile Include="src\Capsule.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MainMenuScreen.cpp">
+    <ClCompile Include="src\MainMenuScreen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="EditorScreen.cpp">
+    <ClCompile Include="src\EditorScreen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LevelReaderWriter.cpp">
+    <ClCompile Include="src\LevelReaderWriter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LevelMediator.cpp">
+    <ClCompile Include="src\LevelMediator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="App.h">
+    <ClInclude Include="src\App.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameplayScreen.h">
+    <ClInclude Include="src\GameplayScreen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Box.h">
+    <ClInclude Include="src\Box.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
+    <ClInclude Include="src\Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Capsule.h">
+    <ClInclude Include="src\Capsule.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Light.h">
+    <ClInclude Include="src\Light.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MainMenuScreen.h">
+    <ClInclude Include="src\MainMenuScreen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ScreenIndices.h">
+    <ClInclude Include="src\ScreenIndices.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="EditorScreen.h">
+    <ClInclude Include="src\EditorScreen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="LevelReaderWriter.h">
+    <ClInclude Include="src\LevelReaderWriter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="LevelMediator.h">
+    <ClInclude Include="src\LevelMediator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="LevelData.h">
+    <ClInclude Include="src\LevelData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\lightVert.glsl">
+    <None Include="shaders\lightVert.glsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="Shaders\lightFrag.glsl">
+    <None Include="shaders\lightFrag.glsl">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

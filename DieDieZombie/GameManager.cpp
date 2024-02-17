@@ -75,7 +75,7 @@ void GameManager::initSystems() {
 	m_hudCamera.update();
 
 	m_bloodParticleBatch = new Inferno::ParticleBatch2D;
-	m_bloodParticleBatch->init(1000, 0.05f, Inferno::ResourceManager::getTexture("Textures/circle.png"),
+	m_bloodParticleBatch->init(1000, 0.05f, Inferno::ResourceManager::getTexture("assets/Textures/circle.png"),
 		[](Inferno::Particle2D& particle, float deltaTime) {
 			particle.position += particle.velocity * deltaTime;
 			particle.color.a = (GLubyte)(particle.life * 255.0f);
@@ -429,7 +429,7 @@ void GameManager::drawHUD() {
 	const double MAX_LEAK = 1500000;
 	double scaledValue = static_cast<double>(memoryAllocated - memoryDeleted) / MAX_LEAK;
 
-	GLuint barTexture = Inferno::ResourceManager::getTexture("Textures/circle.png").id;
+	GLuint barTexture = Inferno::ResourceManager::getTexture("assets/Textures/circle.png").id;
 	m_hudBatch.begin();
 	glm::vec4 destRect(0, 96, 64, 512 * scaledValue);
 	glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);

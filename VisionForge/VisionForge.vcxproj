@@ -143,34 +143,34 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="App.cpp" />
-    <ClCompile Include="Box.cpp" />
-    <ClCompile Include="Capsule.cpp" />
-    <ClCompile Include="EditorScreen.cpp" />
-    <ClCompile Include="GameplayScreen.cpp" />
-    <ClCompile Include="LevelMediator.cpp" />
-    <ClCompile Include="LevelReaderWriter.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="MainMenuScreen.cpp" />
-    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="src\App.cpp" />
+    <ClCompile Include="src\Box.cpp" />
+    <ClCompile Include="src\Capsule.cpp" />
+    <ClCompile Include="src\EditorScreen.cpp" />
+    <ClCompile Include="src\GameplayScreen.cpp" />
+    <ClCompile Include="src\LevelMediator.cpp" />
+    <ClCompile Include="src\LevelReaderWriter.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\MainMenuScreen.cpp" />
+    <ClCompile Include="src\Player.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="App.h" />
-    <ClInclude Include="Box.h" />
-    <ClInclude Include="Capsule.h" />
-    <ClInclude Include="EditorScreen.h" />
-    <ClInclude Include="GameplayScreen.h" />
-    <ClInclude Include="LevelData.h" />
-    <ClInclude Include="LevelMediator.h" />
-    <ClInclude Include="LevelReaderWriter.h" />
-    <ClInclude Include="Light.h" />
-    <ClInclude Include="MainMenuScreen.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="ScreenIndices.h" />
+    <ClInclude Include="src\App.h" />
+    <ClInclude Include="src\Box.h" />
+    <ClInclude Include="src\Capsule.h" />
+    <ClInclude Include="src\EditorScreen.h" />
+    <ClInclude Include="src\GameplayScreen.h" />
+    <ClInclude Include="src\LevelData.h" />
+    <ClInclude Include="src\LevelMediator.h" />
+    <ClInclude Include="src\LevelReaderWriter.h" />
+    <ClInclude Include="src\Light.h" />
+    <ClInclude Include="src\MainMenuScreen.h" />
+    <ClInclude Include="src\Player.h" />
+    <ClInclude Include="src\ScreenIndices.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\lightFrag.glsl" />
-    <None Include="Shaders\lightVert.glsl" />
+    <None Include="shaders\lightFrag.glsl" />
+    <None Include="shaders\lightVert.glsl" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\InfernoEngine\InfernoEngine.vcxproj">
