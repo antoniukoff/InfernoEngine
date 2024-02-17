@@ -1,5 +1,10 @@
 # Vision Forge
 
+<p align="left">
+  <img src="/VisionForge/assets/branding/VisionForge.gif" alt="Vision Forge" width="60%">
+</p>
+
+
 ## Introduction
 Vision Forge is a sophisticated level editor designed for creating levels in 2D. It has a wide range of GUI-based design tools to streamline the level design, making the process faster for designers. Designers can immediately test and refine levels using the sandbox built into the project, ensuring they are engaging and gameplay-ready.
 
@@ -52,6 +57,10 @@ To get started with Vision Forge, follow these steps:
   - Use the **Up Arrow Key** to increase the height of the selected object.
   - Use the **Down Arrow Key** to decrease the height of the selected object.
 
+<p align="left">
+  <img src="/VisionForge/assets/branding/transform.gif" alt="Vision Forge" width="50%">
+</p>
+
 ### Editor Modes
 
 - **Select Mode**: Select existing objects in the scene and change their properties.
@@ -59,6 +68,10 @@ To get started with Vision Forge, follow these steps:
 - **Place Mode**: You can add new objects to the scene; choose the type of object you want and click on the scene to position it.
 
 - **Debug Mode**: Visualizes the collision boxes around objects.
+
+<p align="left">
+  <img src="/VisionForge/assets/branding/modes.gif" alt="Vision Forge" width="50%">
+</p>
 
 ### Adjusting Object Properties
 
