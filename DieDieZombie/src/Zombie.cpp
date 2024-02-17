@@ -16,7 +16,7 @@ void Zombie::init(float speed, glm::vec2 position)
 
 	m_health = 150.0f;
 	m_color = Inferno::ColorRGB8(255, 255, 255, 255);
-	m_textureID = Inferno::ResourceManager::getTexture("Textures/zombie.png").id;
+	m_textureID = Inferno::ResourceManager::getTexture("assets/textures/zombie.png").id;
 
 }
 

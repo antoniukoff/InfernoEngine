@@ -23,7 +23,7 @@ void Player::init(float speed, glm::vec2 position, Inferno::InputManager* inputM
 	_camera = camera;
 	_bullets = bullets;
 
-	m_textureID = Inferno::ResourceManager::getTexture("Textures/player.png").id;
+	m_textureID = Inferno::ResourceManager::getTexture("assets/textures/player.png").id;
 }
 
 void Player::addGun(Gun* gun)

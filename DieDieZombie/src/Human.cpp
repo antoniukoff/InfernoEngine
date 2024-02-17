@@ -21,7 +21,7 @@ void Human::init(float speed, glm::vec2 position)
 {
 	static std::mt19937 randoEngine(time(nullptr));
 	static std::uniform_real_distribution<float> randDir(-1.0f, 1.0f);
-	m_textureID = Inferno::ResourceManager::getTexture("Textures/human.png").id;
+	m_textureID = Inferno::ResourceManager::getTexture("assets/textures/human.png").id;
 	m_health = 20.0f;
 	m_color = Inferno::ColorRGB8(255, 255, 255, 255);
 	m_speed = speed;

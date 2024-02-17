@@ -36,7 +36,7 @@ void Bullet::draw(Inferno::SpriteBatch& spriteBatch)
 	color.b = 255;
 	color.a = 255;
 
-	spriteBatch.draw(destRect, uvRect, Inferno::ResourceManager::getTexture("Textures/PNG/Bullet.png").id, 0.0f, color); 
+	spriteBatch.draw(destRect, uvRect, Inferno::ResourceManager::getTexture("assets/textures/PNG/Bullet.png").id, 0.0f, color); 
 }
 
 bool Bullet::collideWithAgent(Agent* agent)

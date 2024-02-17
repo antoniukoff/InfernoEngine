@@ -48,20 +48,20 @@ Level::Level(const std::string& fileName)
 			case 'R':
 				_spriteBatch.draw(destRect,
 					uvRect,
-					Inferno::ResourceManager::getTexture("Textures/Walls/brick_wall.png").id,
+					Inferno::ResourceManager::getTexture("assets/textures/Walls/brick_wall.png").id,
 					0.0f, whiteColor);
 				break;
 			case 'G':
 				_spriteBatch.draw(destRect,
 					uvRect,
-					Inferno::ResourceManager::getTexture("Textures/Walls/brick_wall_night.png").id,
+					Inferno::ResourceManager::getTexture("assets/textures/Walls/brick_wall_night.png").id,
 					0.0f, whiteColor);
 				break;
 			case 'B':
 			case 'L':
 				_spriteBatch.draw(destRect,
 					uvRect,
-					Inferno::ResourceManager::getTexture("Textures/Walls/brick_wall_sunny.png").id,
+					Inferno::ResourceManager::getTexture("assets/textures/Walls/brick_wall_sunny.png").id,
 					0.0f, whiteColor);
 				break;
 			case '@':
@@ -70,7 +70,7 @@ Level::Level(const std::string& fileName)
 				_playerStartPos.y = y * TILE_WIDTH;
 				_spriteBatch.draw(destRect,
 					uvRect,
-					Inferno::ResourceManager::getTexture("Textures/background.png").id,
+					Inferno::ResourceManager::getTexture("assets/textures/background.png").id,
 					0.0f, Inferno::ColorRGB8(255, 180, 180, 255));
 				break;
 			case 'Z':
@@ -78,13 +78,13 @@ Level::Level(const std::string& fileName)
 				_zombieStartPos.emplace_back(x * TILE_WIDTH, y * TILE_WIDTH);
 				_spriteBatch.draw(destRect,
 					uvRect,
-					Inferno::ResourceManager::getTexture("Textures/background.png").id,
+					Inferno::ResourceManager::getTexture("assets/textures/background.png").id,
 					0.0f, Inferno::ColorRGB8(255, 180, 180, 255));
 				break;
 			case '.':
 				_spriteBatch.draw(destRect,
 					uvRect,
-					Inferno::ResourceManager::getTexture("Textures/background.png").id,
+					Inferno::ResourceManager::getTexture("assets/textures/background.png").id,
 					0.0f, Inferno::ColorRGB8(255,180,180,255));
 				break;
 			default:

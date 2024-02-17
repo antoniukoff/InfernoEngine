@@ -84,10 +84,10 @@ void MainGame::init() {
     
     m_spriteBatch.init();
     // Initialize sprite font
-    m_spriteFont = std::make_unique<Inferno::SpriteFont>("Fonts/chintzy.ttf", 40);
+    m_spriteFont = std::make_unique<Inferno::SpriteFont>("assets/fonts/chintzy.ttf", 40);
 
     // Compile our texture shader
-    m_textureProgram.compileShaders("Shaders/defaultVert.glsl", "Shaders/defaultFrag.glsl");
+    m_textureProgram.compileShaders("assets/shaders/defaultVert.glsl", "assets/shaders/defaultFrag.glsl");
     m_textureProgram.addAttribure("vertexPosition");
     m_textureProgram.addAttribure("vertexColor");
     m_textureProgram.addAttribure("vertexUV");
@@ -198,7 +198,7 @@ void MainGame::initBalls() {
 
         // Add ball
         m_balls.emplace_back(ballToSpawn->radius, ballToSpawn->mass, pos, direction * ballToSpawn->randSpeed(randomEngine),
-                             Inferno::ResourceManager::getTexture("Textures/circle.png").id,
+                             Inferno::ResourceManager::getTexture("assets/textures/circle.png").id,
                              ballToSpawn->color);
         // Add the ball do the grid. IF YOU EVER CALL EMPLACE BACK AFTER INIT BALLS, m_grid will have DANGLING POINTERS!
            

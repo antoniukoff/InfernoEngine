@@ -48,7 +48,7 @@ GameManager::~GameManager() {
 void GameManager::run() {
 	initSystems();
 	initLevel();
-	Inferno::Music music = m_audioEngine.loadMusic("Sounds/Secunda.mp3");
+	Inferno::Music music = m_audioEngine.loadMusic("assets/sounds/Secunda.mp3");
 	music.play(-1);
 	gameLoop();
 }
@@ -63,7 +63,7 @@ void GameManager::initSystems() {
 	initShaders();
 	m_spriteBatch.init();
 	m_hudBatch.init();
-	m_spriteFont = new Inferno::SpriteFont("Fonts/cCaesarSalad.ttf", 32);
+	m_spriteFont = new Inferno::SpriteFont("assets/fonts/cCaesarSalad.ttf", 32);
 
 	// Initialize camera
 	m_camera.init(m_screenWidth, m_screenHeight);
@@ -87,7 +87,7 @@ void GameManager::initSystems() {
 
 void GameManager::initShaders()
 {
-	m_textureProgram.compileShaders("Shaders/defaultVert.glsl", "Shaders/defaultFrag.glsl");
+	m_textureProgram.compileShaders("assets/shaders/defaultVert.glsl", "assets/shaders/defaultFrag.glsl");
 	m_textureProgram.addAttribure("vertexPos");
 	m_textureProgram.addAttribure("vertexColor");
 	m_textureProgram.addAttribure("vertUV");
@@ -102,7 +102,7 @@ void GameManager::initLevel()
 	const float BULLET_SPEED = 20.0f;
 
 	// Load the level
-	m_levels.push_back(new Level("Levels/Level2.txt"));
+	m_levels.push_back(new Level("assets/levels/Level2.txt"));
 	m_currentLevel = 0;
 
 	// Initialize the player
@@ -133,9 +133,9 @@ void GameManager::initLevel()
 	}
 
 	// Set up player guns
-	m_player->addGun(new Gun("Magnum", 10, 1, 5.0f, 30, BULLET_SPEED, m_audioEngine.loadSoundEffect("Sounds/Shots/powerup_02.wav")));
-	m_player->addGun(new Gun("Shotgun", 60, 12, 20.0f, 150, BULLET_SPEED, m_audioEngine.loadSoundEffect("Sounds/Shots/gun_shot_01.wav")));
-	m_player->addGun(new Gun("MP5", 1, 1, 10.0f, 20, BULLET_SPEED, m_audioEngine.loadSoundEffect("Sounds/Shots/gun_machine_01.wav")));
+	m_player->addGun(new Gun("Magnum", 10, 1, 5.0f, 30, BULLET_SPEED, m_audioEngine.loadSoundEffect("assets/sounds/Shots/powerup_02.wav")));
+	m_player->addGun(new Gun("Shotgun", 60, 12, 20.0f, 150, BULLET_SPEED, m_audioEngine.loadSoundEffect("assets/sounds/Shots/gun_shot_01.wav")));
+	m_player->addGun(new Gun("MP5", 1, 1, 10.0f, 20, BULLET_SPEED, m_audioEngine.loadSoundEffect("assets/sounds/Shots/gun_machine_01.wav")));
 }
 
 
@@ -429,7 +429,7 @@ void GameManager::drawHUD() {
 	const double MAX_LEAK = 1500000;
 	double scaledValue = static_cast<double>(memoryAllocated - memoryDeleted) / MAX_LEAK;
 
-	GLuint barTexture = Inferno::ResourceManager::getTexture("assets/Textures/circle.png").id;
+	GLuint barTexture = Inferno::ResourceManager::getTexture("assets/textures/circle.png").id;
 	m_hudBatch.begin();
 	glm::vec4 destRect(0, 96, 64, 512 * scaledValue);
 	glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);

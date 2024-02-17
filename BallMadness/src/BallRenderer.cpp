@@ -6,7 +6,7 @@ void BallRenderer::renderBalls(Inferno::SpriteBatch& spriteBatch,
 	//Lazy init program
 	if (m_program == nullptr) {
 		m_program = std::make_unique<Inferno::GLSLProgram>();
-		m_program->compileShaders("Shaders/defaultVert.glsl", "Shaders/defaultFrag.glsl");
+		m_program->compileShaders("assets/shaders/defaultVert.glsl", "assets/shaders/defaultFrag.glsl");
 		m_program->addAttribure("vertexPosition");
 		m_program->addAttribure("vertexColor");
 		m_program->addAttribure("vertexUV");
@@ -42,7 +42,7 @@ void MomentumBallRenderer::renderBalls(Inferno::SpriteBatch& spriteBatch, std::v
 {
 	if (m_program == nullptr) {
 		m_program = std::make_unique<Inferno::GLSLProgram>();
-		m_program->compileShaders("Shaders/defaultVert.glsl", "Shaders/defaultFrag.glsl");
+		m_program->compileShaders("assets/shaders/defaultVert.glsl", "assets/shaders/defaultFrag.glsl");
 		m_program->addAttribure("vertexPosition");
 		m_program->addAttribure("vertexColor");
 		m_program->addAttribure("vertexUV");
@@ -88,7 +88,7 @@ void VelocityBallRenderer::renderBalls(Inferno::SpriteBatch& spriteBatch, std::v
 {
 	if (m_program == nullptr) {
 		m_program = std::make_unique<Inferno::GLSLProgram>();
-		m_program->compileShaders("Shaders/defaultVert.glsl", "Shaders/defaultFrag.glsl");
+		m_program->compileShaders("assets/shaders/defaultVert.glsl", "assets/shaders/defaultFrag.glsl");
 		m_program->addAttribure("vertexPosition");
 		m_program->addAttribure("vertexColor");
 		m_program->addAttribure("vertexUV");
@@ -132,7 +132,7 @@ void ShadowBallRenderer::renderBalls(Inferno::SpriteBatch& spriteBatch, std::vec
 
 	if (m_program == nullptr) {
 		m_program = std::make_unique<Inferno::GLSLProgram>();
-		m_program->compileShaders("Shaders/defaultVert.glsl", "Shaders/defaultFrag.glsl");
+		m_program->compileShaders("assets/shaders/defaultVert.glsl", "assets/shaders/defaultFrag.glsl");
 		m_program->addAttribure("vertexPosition");
 		m_program->addAttribure("vertexColor");
 		m_program->addAttribure("vertexUV");
@@ -196,7 +196,7 @@ void TrailBallRenderer::renderBalls(Inferno::SpriteBatch& spriteBatch, std::vect
 {
 	if (m_program == nullptr) {
 		m_program = std::make_unique<Inferno::GLSLProgram>();
-		m_program->compileShaders("Shaders/defaultVert.glsl", "Shaders/defaultFrag.glsl");
+		m_program->compileShaders("assets/shaders/defaultVert.glsl", "assets/shaders/defaultFrag.glsl");
 		m_program->addAttribure("vertexPosition");
 		m_program->addAttribure("vertexColor");
 		m_program->addAttribure("vertexUV");
@@ -258,7 +258,7 @@ void HaloBallRenderer::renderBalls(Inferno::SpriteBatch& spriteBatch, std::vecto
 {
 	if (m_program == nullptr) {
 		m_program = std::make_unique<Inferno::GLSLProgram>();
-		m_program->compileShaders("Shaders/defaultVert.glsl", "Shaders/defaultFrag.glsl");
+		m_program->compileShaders("assets/shaders/defaultVert.glsl", "assets/shaders/defaultFrag.glsl");
 		m_program->addAttribure("vertexPosition");
 		m_program->addAttribure("vertexColor");
 		m_program->addAttribure("vertexUV");

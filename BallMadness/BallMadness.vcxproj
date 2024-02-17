@@ -143,19 +143,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Ball.cpp" />
-    <ClCompile Include="BallController.cpp" />
-    <ClCompile Include="BallRenderer.cpp" />
-    <ClCompile Include="Grid.cpp" />
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="MainGame.cpp" />
+    <ClCompile Include="src\Ball.cpp" />
+    <ClCompile Include="src\BallController.cpp" />
+    <ClCompile Include="src\BallRenderer.cpp" />
+    <ClCompile Include="src\Grid.cpp" />
+    <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\MainGame.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Ball.h" />
-    <ClInclude Include="BallController.h" />
-    <ClInclude Include="BallRenderer.h" />
-    <ClInclude Include="Grid.h" />
-    <ClInclude Include="MainGame.h" />
+    <ClInclude Include="src\Ball.h" />
+    <ClInclude Include="src\BallController.h" />
+    <ClInclude Include="src\BallRenderer.h" />
+    <ClInclude Include="src\Grid.h" />
+    <ClInclude Include="src\MainGame.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\InfernoEngine\InfernoEngine.vcxproj">
