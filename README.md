@@ -1,6 +1,6 @@
 # Inferno Engine
 <p align="center">
-  <img src="/resources/branding/infernoEnginelogo.png.webp" alt="InfernoEngine Logo" style="width: 100%; height: auto;">
+  <img src="/resources/branding/infernoEnginelogo.png" alt="InfernoEngine Logo" style="width: 100%; height: auto;">
 </p>
 
 ## Overview
