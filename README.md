@@ -31,8 +31,7 @@ Inferno Engine is a homemade and versatile game engine developed with a focus on
 4. **Building and Running**:
    - Build the project in either 'Debug' or 'Release' mode depending on your needs.
    - Run the project to see the game engine and its features in action.
-
-## Features
+## Usage
 - **Batching**: Efficient rendering by batching draw calls, reducing CPU and GPU overhead.
 - **Dynamic Camera**: Flexible and dynamic camera system.
 - **GUI Interface**: User-friendly graphical interface for intuitive control and customization of game elements.
@@ -40,7 +39,7 @@ Inferno Engine is a homemade and versatile game engine developed with a focus on
 - **Screen Management**: Screen management for seamless navigation between different game scenes or states.
 - **Debug Drawing**: Integrated debug drawing tools for troubleshooting and performance optimization.
 
-  ## Future Development Plans
+## Future Development Plans
 As the Inferno Engine continues to evolve, here are some of the exciting developments on the horizon:
 
 - **Transition to 3D**
