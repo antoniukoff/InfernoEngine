@@ -1,17 +1,19 @@
 #include "PoolAllocator.h"
 namespace InfernoEngine {
 
+
+
+
+
+
+
     Chunk* PoolAllocator::allocateBlock(size_t chunkSize)
     {
         cout << "\nAllocating block (" << mChunksPerBlock << " chunks):\n\n";
-
         size_t blockSize = mChunksPerBlock * chunkSize;
-
         // The first chunk of the new block.
         Chunk* blockBegin = reinterpret_cast<Chunk*>(malloc(blockSize));
-
         Chunk* chunk = blockBegin;
-
         for (int i = 0; i < mChunksPerBlock - 1; ++i) {
             // Chains all the chunks together 
             chunk->next = reinterpret_cast<Chunk*>(reinterpret_cast<char*>(chunk) + chunkSize);
@@ -22,6 +24,12 @@ namespace InfernoEngine {
         chunk->next = nullptr;
         return blockBegin;
     }
+
+
+
+
+
+
 
 
     void* PoolAllocator::allocate(size_t size)

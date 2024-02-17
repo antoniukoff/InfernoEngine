@@ -26,11 +26,21 @@ namespace Inferno {
         _orthoMatrix = glm::ortho(0.0f, static_cast<float>(_screenWidth), 0.0f, static_cast<float>(_screenHeight));
     }
 
+
+
+
+
+
+
+
+
+
+
     void Camera2D::update()
     {
         if (_needsMatrixUpdate)
         {
-            // Calculate translation to move everything to the opposite side and set the camera origin to the middle of the screen
+            // Calculate translation
             glm::vec3 translate(-_position.x + _screenWidth / 2, -_position.y + _screenHeight / 2, 0.0f);
             _cameraMatrix = glm::translate(_orthoMatrix, translate);
 
@@ -41,6 +51,13 @@ namespace Inferno {
             _needsMatrixUpdate = false;
         }
     }
+
+
+
+
+
+
+    
 
     // Converts screen coordinates to world coordinates
     glm::vec2 Camera2D::converScreenToWorld(glm::vec2 screenCoords)

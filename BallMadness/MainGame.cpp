@@ -73,8 +73,8 @@ void MainGame::run() {
 void MainGame::init() {
     Inferno::init();
 
-    m_screenWidth = 1280;
-    m_screenHeight = 720;
+    m_screenWidth = 1920;
+    m_screenHeight = 1080;
 
     m_window.create("Ball Game", m_screenWidth, m_screenHeight, 0);
     glClearColor(0.0, 0.0, 0.0, 1.0);

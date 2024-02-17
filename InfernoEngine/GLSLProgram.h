@@ -20,7 +20,7 @@ namespace Inferno {
 
 		GLuint getUniformLocation(const string& uniformName);
 
-		void addAttribure(const string& attributeName);
+		void addAttribure(const char* attributeName);
 		void use();
 		void unuse();
 

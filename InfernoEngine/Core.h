@@ -16,5 +16,5 @@ void operator delete(void* memoryLocation, size_t memorySize) {
 }
 
 void printMemory() {
-	printf("Memory leaks: %d\n", memoryAllocated - memoryDeleted);
+	//printf("Memory leaks: %d\n", memoryAllocated - memoryDeleted);
 }

@@ -162,8 +162,6 @@ void BallController::checkCollision(Ball& b1, Ball& b2) {
 
         if (glm::length(b1.velocity) < glm::length(b2.velocity)) {
             bool choice = glm::length(b1.velocity) < glm::length(b2.velocity);
-
-
             choice ? b2.color = b1.color : b1.color = b2.color;
         }
 

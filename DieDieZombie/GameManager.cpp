@@ -118,6 +118,7 @@ void GameManager::initLevel()
 	// Initialize non-player humans
 	for (int i = 0; i < m_levels[m_currentLevel]->getNumHumans(); i++) {
 		glm::vec2 pos(randX(randomEngine) * TILE_WIDTH, randY(randomEngine) * TILE_WIDTH);
+		std::cout << "size of human" << sizeof(Human) << std::endl;
 		Human* human = new Human();
 		human->init(HUMAN_SPEED, pos);
 		m_humans.push_back(human);
@@ -373,7 +374,7 @@ void GameManager::drawGame() {
 	glClearDepth(1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	m_textureProgram.use();
+	m_textureProgram. use();
 
 	// Upload texture uniform
 	glActiveTexture(GL_TEXTURE0);

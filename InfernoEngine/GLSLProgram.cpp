@@ -98,9 +98,9 @@ namespace Inferno {
 		return location;
 	}
 
-	void GLSLProgram::addAttribure(const string& attributeName)
+	void GLSLProgram::addAttribure(const char* attributeName)
 	{
-		glBindAttribLocation(_programID, _numAttributes++, attributeName.c_str());
+		glBindAttribLocation(_programID, _numAttributes++, attributeName);
 	}
 
 	void GLSLProgram::use()

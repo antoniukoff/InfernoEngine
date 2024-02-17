@@ -24,7 +24,6 @@ namespace Inferno {
 		//float m_angle;
 	private:
 		glm::vec2 rotatePoint(glm::vec2 pos, float angle);
-
 	};
 
 	class RenderBatch {
