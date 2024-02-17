@@ -6,7 +6,7 @@
 
 
 ## Introduction
-Vision Forge is a sophisticated level editor designed for creating levels in 2D. It has a wide range of GUI-based design tools to streamline the level design, making the process faster for designers. Designers can immediately test and refine levels using the sandbox built into the project, ensuring they are engaging and gameplay-ready.
+A sophisticated level editor designed for creating prototyping and designing levels in 2D.
 
 ## Motivation
 The motivation behind Vision Forge was to make a user-friendly playground for 2D game building. I integrated design tools with a straightforward GUI to make the level design process as seamless as possible, allowing me to focus on fast prototyping.
