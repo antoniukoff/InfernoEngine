@@ -1,5 +1,5 @@
 # Inferno Engine
-![InfernoEngine Logo](/resources/branding/infernoEnginelogo.png)
+![InfernoEngine Logo](/resources/branding/infernoEnginelogo.png.webp)
 ## Overview
 Inferno Engine is a homemade and versatile game engine developed with a focus on performance and ease of use. the Inferno Engine offers a range of features tailored to assist in building immersive (currently)2D game experiences. 
 
